@@ -11,11 +11,7 @@ void SpriteComponent::update(double dt) {
 	_sprite->setRotation(_parent->getRotation());
 }
 
-void SpriteComponent::update(double dt, float scale, float scale1) {
-	_sprite->setPosition(_parent->getPosition());
-	_sprite->setRotation(_parent->getRotation());
-	_sprite->setScale(scale, scale1);
-}
+
 
 void SpriteComponent::render() { Renderer::queue(_sprite.get()); }
 

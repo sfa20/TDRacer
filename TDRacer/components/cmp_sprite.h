@@ -13,7 +13,6 @@ public:
 
 	explicit SpriteComponent(Entity* p);
 	void update(double dt) override;
-	void update(double dt, float scale, float scale1);
 	void render() override;
 
 	sf::Sprite& getSprite() const;
@@ -26,7 +25,7 @@ public:
 class ShapeComponent : public Component {
 protected:
 	std::shared_ptr<sf::Shape> _shape;
-	// sf::Shape _shape;
+	//sf::Shape _shape;
 
 public:
 	ShapeComponent() = delete;

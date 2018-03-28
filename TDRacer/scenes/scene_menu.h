@@ -2,12 +2,17 @@
 
 #include "engine.h"
 
+
 class MenuScene : public Scene {
 public:
-  MenuScene() = default;
-  ~MenuScene() override = default;
+	MenuScene() = default;
+	~MenuScene() override = default;
 
-  void Load() override;
+	void Load() override;
 
-  void Update(const double& dt) override;
+	void Update(const double& dt, RenderWindow) override;
+
+private:
+	int selectedItemIndex;
+
 };
