@@ -6,7 +6,7 @@ namespace Resources {
 	template<>
 	std::shared_ptr<sf::Font> load(const std::string &name) {
 		auto f = std::make_shared<sf::Font>();
-		if (!f->loadFromFile("bin/" + name)) {
+		if (!f->loadFromFile("res/fonts/" + name)) {
 			throw("not found: " + name);
 		};
 		return f;
@@ -15,7 +15,7 @@ namespace Resources {
 	template <> // explicit specialization for T = texture
 	std::shared_ptr<sf::Texture> load(const std::string& name) {
 		auto tex = std::make_shared<sf::Texture>();
-		if (!tex->loadFromFile("bin/" + name)) {
+		if (!tex->loadFromFile("res/img/" + name)) {
 			throw("not found: " + name);
 		};
 		return tex;
