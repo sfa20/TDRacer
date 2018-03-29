@@ -17,6 +17,8 @@ public:
 
 	void SetText(const std::string& str);
 
+	sf::Text GetText();
+
 	void setPos(float x, float y, float size);
 
 	void setColor(int a, int b, int c, int d);

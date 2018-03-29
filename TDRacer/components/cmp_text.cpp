@@ -98,6 +98,10 @@ void TextComponent::MoveUp() {
 	}
 }
 
+sf::Text TextComponent::GetText() {
+	return _text;
+}
+
 void TextComponent::MoveDown() {
 
 	//used for keyboard movement in menus
