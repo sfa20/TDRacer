@@ -19,12 +19,8 @@ using namespace std;
 using namespace sf;
 using namespace Resources;
 
-
 Texture texture;
-
 static shared_ptr<Entity> mainmenu;
-
-
 
 void MenuScene::Load() {
 
@@ -38,16 +34,19 @@ void MenuScene::Load() {
 		auto s = mainmenu->addComponent<SpriteComponent>();
 
 		//********* LAYER 2 *********
-		//loads background image
-		texture = *Resources::load<Texture>("background.png");
-
+		//loads background image with error in console (Game still runs) - Ask Kevin 
+		/*texture = *Resources::load<Texture>("background.png");*/
+		//Loads background imagae WITHOUT error (unless file is non-existent)
+		if (!texture.loadFromFile("bin/background.png", sf::IntRect(0, 0, 1000, 1000)))
+		{
+			std::cerr << "failed to load spritesheet!" << std::endl;
+		}
+		
 		//sets background image
 		s->getSprite().setTexture(texture, true);
 		s->getSprite().setScale(1.4, 1.4);
 
-
 		//creates text entitys
-	//	auto menu = makeEntity();
 		mainmenu->addComponent<TextComponent>("TD Championship Racer");
 		mainmenu->addComponent<TextComponent>("Single Player");
 		mainmenu->addComponent<TextComponent>("MultiPlayer");
@@ -68,14 +67,7 @@ void MenuScene::Load() {
 
 	}
 	selectedItemIndex = 1; //added - sfa20
-	previousItemIndex = 1;
 	setLoaded(true);
-}
-
-void MenuEvents() {
-	//sf::Event event;
-	//sf::Vector2i mousePos = sf::Mouse::getPosition();
-	//sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
 }
 
 void MenuScene::MoveUp() {
@@ -83,10 +75,10 @@ void MenuScene::MoveUp() {
 
 	//used for keyboard movement in menus
 	if (selectedItemIndex - 1 > 0) {
-		list[selectedItemIndex]->setColor(255, 255, 255, 255);
-		selectedItemIndex--;
-		list[selectedItemIndex]->setColor(255, 0, 0, 255);
-		std::this_thread::sleep_for(std::chrono::milliseconds(150));
+			list[selectedItemIndex]->setColor(255, 255, 255, 255);
+			selectedItemIndex--;
+			list[selectedItemIndex]->setColor(255, 0, 0, 255);
+			std::this_thread::sleep_for(std::chrono::milliseconds(150));
 		//menu[selectedItemIndex].setFillColor(sf::Color(255, 0, 0, 255));
 	}
 }
@@ -106,12 +98,7 @@ void MenuScene::MoveDown() {
 
 void MenuScene::Update(const double& dt) {
 
-	if (sf::Keyboard::isKeyPressed(Keyboard::Space)) {
-		/*	Scene::Update(dt);*/
-	}
-
 	sf::Event event;
-
 
 	sf::RenderWindow& window = Engine::GetWindow();
 	sf::Vector2i mousePos = sf::Mouse::getPosition(window);
@@ -121,34 +108,63 @@ void MenuScene::Update(const double& dt) {
 	auto a = list[1]->GetText();
 	window.pollEvent(event);
 
-
+	//Handles this mouse hovering over the menu options
 	if (sf::Event::MouseMoved) {
-		selectedItemIndex = 1;
-		if (a.getGlobalBounds().contains(mousePosF)) {
+		
+		if (list[1]->GetText().getGlobalBounds().contains(mousePosF)) {
+			list[selectedItemIndex]->setColor(255, 255, 255, 255);
+			selectedItemIndex = 1;
 			list[selectedItemIndex]->setColor(255, 0, 0, 255);
-			
-			
-		};
+		}
 
+		if (list[2]->GetText().getGlobalBounds().contains(mousePosF)) {
+			list[selectedItemIndex]->setColor(255, 255, 255, 255);
+			selectedItemIndex = 2;
+			list[selectedItemIndex]->setColor(255, 0, 0, 255);
+		}
+
+		if (list[3]->GetText().getGlobalBounds().contains(mousePosF)) {
+			list[selectedItemIndex]->setColor(255, 255, 255, 255);
+			selectedItemIndex = 3;
+			list[selectedItemIndex]->setColor(255, 0, 0, 255);
+		}
+
+		if (list[4]->GetText().getGlobalBounds().contains(mousePosF)) {
+			list[selectedItemIndex]->setColor(255, 255, 255, 255);
+			selectedItemIndex = 4;
+			list[selectedItemIndex]->setColor(255, 0, 0, 255);
+		}
 	}
 
-
+	//Handles the Button controls against the menu options
 	if (Mouse::isButtonPressed(Mouse::Left)) {
 
-		
-		auto b = list[2]->GetText();
+		if (list[1]->GetText().getGlobalBounds().contains(mousePosF)) {
+			cout << "Single Player Pressed!" << endl;
+			selectedItemIndex = 1;
+			std::this_thread::sleep_for(std::chrono::milliseconds(150));
+		}
 
-		
+		if (list[2]->GetText().getGlobalBounds().contains(mousePosF)) {
+			cout << "Multiplayer Pressed!" << endl;
+			selectedItemIndex = 2;
+			std::this_thread::sleep_for(std::chrono::milliseconds(150));
+		}
 
-		if (a.getGlobalBounds().contains(mousePosF)) {
-			list[1]->setColor(255, 0, 0, 255);
-			list[2]->setColor(255, 255, 255, 255);
-			list[3]->setColor(255,255, 255, 255);
-			list[4]->setColor(255, 255, 255, 255);
+		if (list[3]->GetText().getGlobalBounds().contains(mousePosF)) {
+			cout << "Options Pressed!" << endl;
+			selectedItemIndex = 3;
+			std::this_thread::sleep_for(std::chrono::milliseconds(150));
+		}
 
+		if (list[4]->GetText().getGlobalBounds().contains(mousePosF)) {
+			cout << "Exit!" << endl;
+			std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+			window.close();
 		}
 	}
 	
+	//Handles Keyboard input and checks against the Menu Options
 	if (sf::Event::KeyPressed) {
 
 		if (sf::Keyboard::isKeyPressed(Keyboard::Up)) {
@@ -164,62 +180,22 @@ void MenuScene::Update(const double& dt) {
 		if (sf::Keyboard::isKeyPressed(Keyboard::Return)) {
 			switch (GetPressedItem()) {
 
-			case 0:
+			case 1:
 				std::cout << "Single player button has been pressed" << std::endl;
 				break;
-			case 1:
+			case 2:
 				std::cout << "Multiplayer button has been pressed" << std::endl;
 				break;
-			case 2:
+			case 3:
 				std::cout << "Options button has been pressed" << std::endl;
 				break;
-			case 3:
+			case 4:
 				window.close();
 				break;
 			}
-			Scene::Update(dt);
+			/*Scene::Update(dt);*/
 		}
-	}
-
-		
-
-	
-			/*case sf::Event::MouseMoved:
-			{
-				if (list[0].getGlobalBounds().contains(mousePosF)) {
-					menu[0].setFillColor(sf::Color(255, 0, 0, 255));
-					menu[1].setFillColor(sf::Color(255, 255, 255, 255));
-					menu[2].setFillColor(sf::Color(255, 255, 255, 255));
-					menu[3].setFillColor(sf::Color(255, 255, 255, 255));
-					selectedItemIndex = 0;
-				}
-
-				if (menu[1].getGlobalBounds().contains(mousePosF)) {
-					menu[1].setFillColor(sf::Color(255, 0, 0, 255));
-					menu[0].setFillColor(sf::Color(255, 255, 255, 255));
-					menu[2].setFillColor(sf::Color(255, 255, 255, 255));
-					menu[3].setFillColor(sf::Color(255, 255, 255, 255));
-					selectedItemIndex = 1;
-				}
-
-				if (menu[2].getGlobalBounds().contains(mousePosF)) {
-					menu[2].setFillColor(sf::Color(255, 0, 0, 255));
-					menu[0].setFillColor(sf::Color(255, 255, 255, 255));
-					menu[1].setFillColor(sf::Color(255, 255, 255, 255));
-					menu[3].setFillColor(sf::Color(255, 255, 255, 255));
-					selectedItemIndex = 2;
-				}
-
-				if (menu[3].getGlobalBounds().contains(mousePosF)) {
-					menu[3].setFillColor(sf::Color(255, 0, 0, 255));
-					menu[0].setFillColor(sf::Color(255, 255, 255, 255));
-					menu[1].setFillColor(sf::Color(255, 255, 255, 255));
-					menu[2].setFillColor(sf::Color(255, 255, 255, 255));
-					selectedItemIndex = 3;
-				}
-				break; */
-		
-	
+	}	
 }
 
 
