@@ -106,10 +106,12 @@ void Engine::Start(unsigned int width, unsigned int height,
 		Render(window);
 		window.display();
 	}
+
 	if (_activeScene != nullptr) {
 		_activeScene->UnLoad();
 		_activeScene = nullptr;
 	}
+
 	window.close();
 	Physics::shutdown();
 	// Render::shutdown();
@@ -135,7 +137,7 @@ void Engine::ChangeScene(Scene* s) {
 	if (!s->isLoaded()) {
 		cout << "Eng: Entering Loading Screen\n";
 		loadingTime = 0;
-		_activeScene->LoadAsync();
+		_activeScene->Load();
 		loading = true;
 	}
 }

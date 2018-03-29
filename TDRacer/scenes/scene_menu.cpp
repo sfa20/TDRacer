@@ -4,6 +4,7 @@
 #include <system_renderer.h>
 #include <system_resources.h>
 #include "scene_menu.h"
+#include "../components/cmp_player_physics.h"
 
 #include "../components/cmp_text.h"
 #include "../components/cmp_sprite.h"
@@ -13,10 +14,11 @@
 
 using namespace std;
 using namespace sf;
+using namespace Resources;
 
+Texture texture;
 
-sf::Texture texture;
-
+static shared_ptr<Entity> mainmenu;
 
 void MenuScene::Load() {
 
@@ -26,64 +28,56 @@ void MenuScene::Load() {
 		//cretes entity for background image
 
 		//********* LAYER 1 *********
-		auto bck = makeEntity();
-		auto k = bck->addComponent<SpriteComponent>();
+		mainmenu = makeEntity();
+		auto s = mainmenu->addComponent<SpriteComponent>();
 
 		//********* LAYER 2 *********
 		//loads background image
-		if (!texture.loadFromFile("res/img/background.png", sf::IntRect(0, 0, 1000, 1000)))
-		{
-			std::cerr << "failed to load spritesheet!" << std::endl;
-		}
+		texture = *Resources::load<Texture>("background.png");
 
 		//sets background image
-		k->getSprite().setTexture(texture, true);
-		k->getSprite().setScale(1.4, 1.4);
+		s->getSprite().setTexture(texture, true);
+		s->getSprite().setScale(1.4, 1.4);
 
 
 		//creates text entitys
-		auto title = makeEntity();
-		auto t = title->addComponent<TextComponent>("TD Championship Racer");
-
-		auto sgp = makeEntity();
-		auto sg = sgp->addComponent<TextComponent>("Single Player");
-
-		auto mup = makeEntity();
-		auto mu = mup->addComponent<TextComponent>("MultiPlayer");
-
-		auto op = makeEntity();
-		auto o = op->addComponent<TextComponent>("Options");
-
-		auto ex = makeEntity();
-		auto e = ex->addComponent<TextComponent>("Exit");
+	//	auto menu = makeEntity();
+		mainmenu->addComponent<TextComponent>("TD Championship Racer");
+		mainmenu->addComponent<TextComponent>("Single Player");
+		mainmenu->addComponent<TextComponent>("MultiPlayer");
+		mainmenu->addComponent<TextComponent>("Options");	
+		mainmenu->addComponent<TextComponent>("Exit");
 
 		//sets positions and size of menu entitys
-		t->setPos(430, 50, 50);
-		sg->setPos(500, 280, 30);
-		mu->setPos(500, 330, 30);
-		o->setPos(500, 370, 30);
-		e->setPos(500, 420, 30);
+		auto list = mainmenu->GetCompatibleComponent<TextComponent>();
+		list[0]->setPos(430, 50, 50);
+		list[1]->setPos(500, 280, 30);
+		list[2]->setPos(500, 330, 30);
+		list[3]->setPos(500, 370, 30);
+		list[4]->setPos(500, 420, 30);
 
 		//sets colours of entitys
-		t->setColor(255, 0, 0, 200);
-		sg->setColor(255, 0, 0, 255);
-
-
+		list[0]->setColor(255, 0, 0, 200);
+		list[1]->setColor(255, 0, 0, 255);
 
 	}
+	selectedItemIndex = 0; //added - sfa20
 	setLoaded(true);
 }
 
+void MenuEvents() {
+	//sf::Event event;
+
+	//sf::Vector2i mousePos = sf::Mouse::getPosition();
+	//sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
+}
+
 void MenuScene::Update(const double& dt) {
-
-
 	if (sf::Keyboard::isKeyPressed(Keyboard::Space)) {
-		Engine::ChangeScene(&level1);
-
-
+		Scene::Update(dt);
 	}
 
-	Scene::Update(dt);
+	//Scene::Update(dt);
 }
 
 

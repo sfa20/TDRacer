@@ -103,6 +103,8 @@ public:
     return std::move(ret);
   }
 
+
+
   // Will return a T component, or anything derived from a T component.
   template <typename T>
   const std::vector<std::shared_ptr<T>> GetCompatibleComponent() {

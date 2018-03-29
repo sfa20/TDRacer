@@ -2,6 +2,10 @@
 
 using namespace std;
 
+
+
+////////		ENTITY CLASS		///////////////
+
 Entity::Entity(Scene* const s) : _position({ 0, 0 }), _rotation(0), _alive(true), _visible(true),
 scene(s), _fordeletion(false) {}
 
@@ -78,6 +82,9 @@ Entity::~Entity() {
 
 	_components.clear();
 }
+
+
+////////		COMPONENT CLASS			////////
 
 Component::~Component() {}
 
