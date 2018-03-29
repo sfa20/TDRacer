@@ -11,6 +11,8 @@
 #include "../game.h"
 #include <SFML/Window/Keyboard.hpp>
 #include <iostream>
+#include <thread>
+#include <chrono>
 
 using namespace std;
 using namespace sf;
@@ -19,6 +21,8 @@ using namespace Resources;
 Texture texture;
 
 static shared_ptr<Entity> mainmenu;
+
+
 
 void MenuScene::Load() {
 
@@ -61,23 +65,85 @@ void MenuScene::Load() {
 		list[1]->setColor(255, 0, 0, 255);
 
 	}
-	selectedItemIndex = 0; //added - sfa20
+	selectedItemIndex = 1; //added - sfa20
 	setLoaded(true);
 }
 
 void MenuEvents() {
 	//sf::Event event;
-
 	//sf::Vector2i mousePos = sf::Mouse::getPosition();
 	//sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
 }
 
+void MenuScene::MoveUp() {
+	auto list = mainmenu->GetCompatibleComponent<TextComponent>();
+
+	//used for keyboard movement in menus
+	if (selectedItemIndex - 1 > 0) {
+		std::cout << "Moved Up" << std::endl;
+		list[selectedItemIndex]->setColor(255, 255, 255, 255);
+		selectedItemIndex--;
+		list[selectedItemIndex]->setColor(255, 0, 0, 255);
+		std::this_thread::sleep_for(std::chrono::milliseconds(200));
+		//menu[selectedItemIndex].setFillColor(sf::Color(255, 0, 0, 255));
+	}
+}
+
+void MenuScene::MoveDown() {
+	auto list = mainmenu->GetCompatibleComponent<TextComponent>();
+
+	//used for keyboard movement in menus
+	if (selectedItemIndex + 1 < 5) {
+		std::cout << selectedItemIndex << std::endl;
+		list[selectedItemIndex]->setColor(255, 255, 255, 255);
+		selectedItemIndex++;
+		std::cout << selectedItemIndex << std::endl;
+		list[selectedItemIndex]->setColor(255, 0, 0, 255);
+		std::this_thread::sleep_for(std::chrono::milliseconds(200));
+		//menu[selectedItemIndex].setFillColor(sf::Color(255, 0, 0, 255));
+	}
+}
+
 void MenuScene::Update(const double& dt) {
 	if (sf::Keyboard::isKeyPressed(Keyboard::Space)) {
-		Scene::Update(dt);
+		/*	Scene::Update(dt);*/
+	}
+	
+
+	sf::Event event;
+
+	sf::RenderWindow& window = Engine::GetWindow();
+	sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+	sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
+
+	if (sf::Keyboard::isKeyPressed(Keyboard::Up)) {
+		if (GetPressedItem() != 0)
+			MoveUp();
 	}
 
-	//Scene::Update(dt);
+	if (sf::Keyboard::isKeyPressed(Keyboard::Down)) {
+		if (GetPressedItem() != 5)
+			MoveDown();
+	}
+
+	if (sf::Keyboard::isKeyPressed(Keyboard::Return)) {
+		switch (GetPressedItem()) {
+
+		case 0:
+			std::cout << "Single player button has been pressed" << std::endl;
+			break;
+		case 1:
+			std::cout << "Multiplayer button has been pressed" << std::endl;
+			break;
+		case 2:
+			std::cout << "Options button has been pressed" << std::endl;
+			break;
+		case 3:
+			window.close();
+			break;
+		}
+		Scene::Update(dt);
+	}
 }
 
 
