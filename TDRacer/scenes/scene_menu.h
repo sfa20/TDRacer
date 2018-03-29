@@ -10,9 +10,9 @@ public:
 
 	void Load() override;
 
-	void Update(const double& dt, RenderWindow) override;
+	void Update(const double& dt) override;
 
 private:
-	int selectedItemIndex;
+	int index;
 
 };

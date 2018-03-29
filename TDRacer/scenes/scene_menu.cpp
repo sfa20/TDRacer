@@ -1,4 +1,5 @@
 #include "engine.h"
+#include "ecm.h"
 #include <SFML/Graphics/Sprite.hpp>
 #include <system_renderer.h>
 #include <system_resources.h>
@@ -16,17 +17,19 @@ using namespace sf;
 
 sf::Texture texture;
 
-int countt;
-
 
 void MenuScene::Load() {
 
-	cout << "Menu Load \n";
-	{
+	cout << "Menu Load \n"; {
+
+		//entitys are created in layer order
 		//cretes entity for background image
+
+		//********* LAYER 1 *********
 		auto bck = makeEntity();
 		auto k = bck->addComponent<SpriteComponent>();
 
+		//********* LAYER 2 *********
 		//loads background image
 		if (!texture.loadFromFile("res/img/background.png", sf::IntRect(0, 0, 1000, 1000)))
 		{
@@ -38,7 +41,7 @@ void MenuScene::Load() {
 		k->getSprite().setScale(1.4, 1.4);
 
 
-
+		//creates text entitys
 		auto title = makeEntity();
 		auto t = title->addComponent<TextComponent>("TD Championship Racer");
 
@@ -54,12 +57,16 @@ void MenuScene::Load() {
 		auto ex = makeEntity();
 		auto e = ex->addComponent<TextComponent>("Exit");
 
-		t->setPos(450, 50);
-		sg->setPos(500, 280);
-		mu->setPos(500, 330);
-		o->setPos(500, 370);
-		e->setPos(500, 420);
+		//sets positions and size of menu entitys
+		t->setPos(430, 50, 50);
+		sg->setPos(500, 280, 30);
+		mu->setPos(500, 330, 30);
+		o->setPos(500, 370, 30);
+		e->setPos(500, 420, 30);
 
+		//sets colours of entitys
+		t->setColor(255, 0, 0, 200);
+		sg->setColor(255, 0, 0, 255);
 
 
 
@@ -67,18 +74,17 @@ void MenuScene::Load() {
 	setLoaded(true);
 }
 
-void MenuScene::Update(const double& dt, RenderWindow) {
-	// cout << "Menu Update "<<dt<<"\n";
+void MenuScene::Update(const double& dt) {
 
 
+	if (sf::Keyboard::isKeyPressed(Keyboard::Space)) {
+		Engine::ChangeScene(&level1);
 
 
-
-
-
-
-
+	}
 
 	Scene::Update(dt);
 }
+
+
 

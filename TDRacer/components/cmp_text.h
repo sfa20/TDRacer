@@ -15,7 +15,9 @@ public:
 
 	void SetText(const std::string& str);
 
-	void setPos(float x, float y);
+	void setPos(float x, float y, float size);
+
+	void setColor(int a, int b, int c, int d);
 
 protected:
 	std::shared_ptr<sf::Font> _font;

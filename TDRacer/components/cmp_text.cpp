@@ -18,8 +18,16 @@ void TextComponent::SetText(const std::string& str) {
 	_text.setString(_string);
 }
 
-void TextComponent::setPos(float x, float y)
+//added by craig sets position
+void TextComponent::setPos(float xPos, float yPos, float size)
 {
-	_text.setPosition(x, y);
+	_text.setPosition(xPos, yPos);
+	_text.setCharacterSize(size);
+}
+
+//added by craig sets color
+void TextComponent::setColor(int a, int b, int c, int d)
+{
+	_text.setFillColor(sf::Color(a, b, c, d));
 }
 
