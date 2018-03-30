@@ -35,13 +35,14 @@ void MenuScene::Load() {
 
 		//********* LAYER 2 *********
 		//loads background image with error in console (Game still runs) - Ask Kevin 
-		/*texture = *Resources::load<Texture>("background.png");*/
+		texture = *Resources::load<Texture>("background.png");
+
 		//Loads background imagae WITHOUT error (unless file is non-existent)
-		if (!texture.loadFromFile("bin/background.png", sf::IntRect(0, 0, 1000, 1000)))
+		/*if (!texture.loadFromFile("background.png", sf::IntRect(0, 0, 1000, 1000)))
 		{
 			std::cerr << "failed to load spritesheet!" << std::endl;
-		}
-		
+		}*/
+
 		//sets background image
 		s->getSprite().setTexture(texture, true);
 		s->getSprite().setScale(1.4, 1.4);
@@ -50,7 +51,7 @@ void MenuScene::Load() {
 		mainmenu->addComponent<TextComponent>("TD Championship Racer");
 		mainmenu->addComponent<TextComponent>("Single Player");
 		mainmenu->addComponent<TextComponent>("MultiPlayer");
-		mainmenu->addComponent<TextComponent>("Options");	
+		mainmenu->addComponent<TextComponent>("Options");
 		mainmenu->addComponent<TextComponent>("Exit");
 
 		//sets positions and size of menu entitys
@@ -75,10 +76,10 @@ void MenuScene::MoveUp() {
 
 	//used for keyboard movement in menus
 	if (selectedItemIndex - 1 > 0) {
-			list[selectedItemIndex]->setColor(255, 255, 255, 255);
-			selectedItemIndex--;
-			list[selectedItemIndex]->setColor(255, 0, 0, 255);
-			std::this_thread::sleep_for(std::chrono::milliseconds(150));
+		list[selectedItemIndex]->setColor(255, 255, 255, 255);
+		selectedItemIndex--;
+		list[selectedItemIndex]->setColor(255, 0, 0, 255);
+		std::this_thread::sleep_for(std::chrono::milliseconds(150));
 		//menu[selectedItemIndex].setFillColor(sf::Color(255, 0, 0, 255));
 	}
 }
@@ -103,14 +104,15 @@ void MenuScene::Update(const double& dt) {
 	sf::RenderWindow& window = Engine::GetWindow();
 	sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 	sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
-	
+
+	//getting entity components
 	auto list = mainmenu->GetCompatibleComponent<TextComponent>();
-	auto a = list[1]->GetText();
+
 	window.pollEvent(event);
 
 	//Handles this mouse hovering over the menu options
 	if (sf::Event::MouseMoved) {
-		
+
 		if (list[1]->GetText().getGlobalBounds().contains(mousePosF)) {
 			list[selectedItemIndex]->setColor(255, 255, 255, 255);
 			selectedItemIndex = 1;
@@ -163,7 +165,7 @@ void MenuScene::Update(const double& dt) {
 			window.close();
 		}
 	}
-	
+
 	//Handles Keyboard input and checks against the Menu Options
 	if (sf::Event::KeyPressed) {
 
@@ -182,12 +184,15 @@ void MenuScene::Update(const double& dt) {
 
 			case 1:
 				std::cout << "Single player button has been pressed" << std::endl;
+				std::this_thread::sleep_for(std::chrono::milliseconds(150));
 				break;
 			case 2:
 				std::cout << "Multiplayer button has been pressed" << std::endl;
+				std::this_thread::sleep_for(std::chrono::milliseconds(150));
 				break;
 			case 3:
 				std::cout << "Options button has been pressed" << std::endl;
+				std::this_thread::sleep_for(std::chrono::milliseconds(150));
 				break;
 			case 4:
 				window.close();
@@ -195,7 +200,7 @@ void MenuScene::Update(const double& dt) {
 			}
 			/*Scene::Update(dt);*/
 		}
-	}	
+	}
 }
 
 
