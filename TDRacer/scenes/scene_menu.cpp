@@ -145,6 +145,7 @@ void MenuScene::Update(const double& dt) {
 			cout << "Single Player Pressed!" << endl;
 			selectedItemIndex = 1;
 			std::this_thread::sleep_for(std::chrono::milliseconds(150));
+			Engine::ChangeScene(&level1);
 		}
 
 		if (list[2]->GetText().getGlobalBounds().contains(mousePosF)) {
@@ -185,6 +186,7 @@ void MenuScene::Update(const double& dt) {
 			case 1:
 				std::cout << "Single player button has been pressed" << std::endl;
 				std::this_thread::sleep_for(std::chrono::milliseconds(150));
+				Engine::ChangeScene(&level1);
 				break;
 			case 2:
 				std::cout << "Multiplayer button has been pressed" << std::endl;
@@ -198,7 +200,6 @@ void MenuScene::Update(const double& dt) {
 				window.close();
 				break;
 			}
-			/*Scene::Update(dt);*/
 		}
 	}
 }

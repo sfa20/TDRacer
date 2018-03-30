@@ -8,8 +8,6 @@ public:
 	TextComponent() = delete;
 	explicit TextComponent(Entity* p, const std::string& str = "");
 	void update(double dt) override;
-	void MoveUp(); // added - sfa20
-	void MoveDown();  // added - sfa20
 	void render() override;
 	int GetPressedItem() { return selectedItemIndex; } //added - sfa20
 
@@ -19,9 +17,9 @@ public:
 
 	sf::Text GetText();
 
-	void setPos(float x, float y, float size);
+	void setPos(float xPos, float yPos, float size);
 
-	void setColor(int a, int b, int c, int d);
+	void setColor(int rgba1, int rgba2, int rgba3, int opacity);
 
 private:
 	int selectedItemIndex;

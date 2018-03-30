@@ -5,36 +5,30 @@
 #include <LevelSystem.h>
 #include <iostream>
 #include <thread>
+#include <system_resources.h>
+#include "LevelSystem.h"
+#include <fstream>
+#include <iostream>
 
 using namespace std;
 using namespace sf;
+using namespace Resources;
 
-static shared_ptr<Entity> player;
+Texture texture1;
+static shared_ptr<Entity> test;
 
 void Level1Scene::Load() {
 
+	ls::loadLevelFile("res/maze_2.txt", 10.f);
 
-	// Create player
-	{
-		player = makeEntity();
-		//player->setPosition(ls::getTilePosition(ls::findTiles(ls::START)[0]));
-		auto s = player->addComponent<ShapeComponent>();
-		s->setShape<sf::RectangleShape>(Vector2f(20.f, 30.f));
-		s->getShape().setFillColor(Color::Magenta);
-		s->getShape().setOrigin(10.f, 15.f);
 
-		player->addComponent<PlayerPhysicsComponent>(Vector2f(20.f, 30.f));
-	}
+	/*test = makeEntity();
+	auto t = test->addComponent<SpriteComponent>();
 
-	// Add physics colliders to level tiles.
-	{
+	texture1 = *Resources::load<Texture>("car_green_small_2.png");
 
-	}
-
-	//Simulate long loading times
-	std::this_thread::sleep_for(std::chrono::milliseconds(3000));
-	cout << " Scene 1 Load Done" << endl;
-
+	t->getSprite().setTexture(texture1);
+*/
 
 }
 
@@ -45,11 +39,11 @@ void Level1Scene::UnLoad() {
 }
 
 void Level1Scene::Update(const double& dt) {
-
 	Scene::Update(dt);
 }
 
 void Level1Scene::Render() {
 
+	ls::render(Engine::GetWindow());
 	Scene::Render();
 }
