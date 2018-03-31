@@ -79,6 +79,7 @@ const sf::Vector2f PhysicsComponent::getVelocity() const {
   return bv2_to_sv2(_body->GetLinearVelocity(), true);
 }
 void PhysicsComponent::setVelocity(const sf::Vector2f& v) {
+
   _body->SetLinearVelocity(sv2_to_bv2(v, true));
 }
 

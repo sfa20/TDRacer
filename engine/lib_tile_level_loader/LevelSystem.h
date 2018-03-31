@@ -14,14 +14,35 @@ public:
 	static void unload();
 	static void render(sf::RenderWindow& window);
 
+	//added
+//	Sprite sprite;
+
 	typedef unsigned char Tile;
 
 	enum TILES {
-		ROAD = 't',
+		//Top
+		//Right
+		//Left
+		//Bottom
+		//Track
+		//Corner1
+		//Corner2
+		//Corner3
+		//Corner4
+		
+		TOP = 'p',
+		RIGHT = 'r',
+		LEFT = 'l',
+		BOTTOM = 'b',
+		TRACK = 't',
+		CORNER1 = 'c',
+		CORNER2 = 'd',
+		CORNER3 = 'e',
+		CORNER4 = 'f',
 		START = 's',
-		END = 'e',
-		WALL = 'g',
-		ENEMY = 'w',
+		END = 'q',
+		GRASS = 'g',
+		WALL = 'w',
 		WAYPOINT = '+'
 	};
 

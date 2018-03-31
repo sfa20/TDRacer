@@ -1,11 +1,13 @@
 #include "LevelSystem.h"
 #include <fstream>
+//#include "../src/engine.h"
+//#include "../../TDRacer/game.h"
 
 using namespace std;
 using namespace sf;
 
 std::map<LevelSystem::Tile, sf::Color> LevelSystem::_colours{
-	{ROAD, Color::White}, {START, Color::Red},{ END, Color::Green },{ WALL, Color::Blue },{ ENEMY, Color::Magenta },{ WAYPOINT, Color::Yellow } };
+	{TRACK, Color::White},{ WALL, Color::Black} };
 
 sf::Color LevelSystem::getColor(LevelSystem::Tile t) {
 	auto it = _colours.find(t);
@@ -64,7 +66,8 @@ void LevelSystem::loadLevelFile(const std::string& path, float tileSize) {
 				w = i;       // set width
 			}
 			else if (w != (widthCheck - 1)) {
-				throw string("non uniform width:" + to_string(h) + " ") + path;
+				//throw string("non uniform width:" + to_string(h) + " ") + path;
+			//	Engine::ChangeScene(&menu);
 			}
 			widthCheck = 0;
 			h++; // increment height
@@ -109,12 +112,15 @@ void LevelSystem::buildSprites(bool optimise) {
 		sf::Vector2f s;
 		sf::Color c;
 	};
+	
 	vector<tp> tps;
+
 	const auto tls = Vector2f(_tileSize, _tileSize);
 	for (size_t y = 0; y < _height; ++y) {
 		for (size_t x = 0; x < _width; ++x) {
 			Tile t = getTile({ x, y });
-			if (t == ROAD) {
+			if (t == TRACK) {
+				
 				continue;
 			}
 			tps.push_back({ getTilePosition({x, y}), tls, getColor(t) });

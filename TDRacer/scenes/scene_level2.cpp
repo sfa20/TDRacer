@@ -89,7 +89,7 @@ void Level2Scene::UnLoad() {
 void Level2Scene::Update(const double& dt) {
 	Scene::Update(dt);
 	const auto pp = player->getPosition();
-	if (ls::getTileAt(pp) == ls::ROAD) {
+	if (ls::getTileAt(pp) == ls::TRACK) {
 		Engine::ChangeScene((Scene*)&level3);
 	}
 	else if (!player->isAlive()) {

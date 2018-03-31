@@ -35,11 +35,10 @@ void PlayerPhysicsComponent::update(double dt) {
 
   //Teleport to start if we fall off map.
   if (pos.y > ls::getHeight() * ls::getTileSize()) {
-    teleport(ls::getTilePosition(ls::findTiles(ls::START)[0]));
+    teleport(ls::getTilePosition(ls::findTiles(ls::CORNER1)[0]));
   }
 
-  if (Keyboard::isKeyPressed(Keyboard::Left) ||
-      Keyboard::isKeyPressed(Keyboard::Right)) {
+  if (Keyboard::isKeyPressed(Keyboard::Left) || Keyboard::isKeyPressed(Keyboard::Right)) {
     // Moving Either Left or Right
     if (Keyboard::isKeyPressed(Keyboard::Right)) {
       if (getVelocity().x < _maxVelocity.x)

@@ -20,6 +20,7 @@ namespace Resources {
 		};
 		return tex;
 	};
+
 #ifdef SOUND
 	template <> // explicit specialization for T = SoundBuffer
 	std::shared_ptr<sf::SoundBuffer> load(const std::string& name) {
