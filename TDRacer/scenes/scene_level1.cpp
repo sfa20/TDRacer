@@ -30,7 +30,7 @@ static shared_ptr<Entity> player;
 
 void Level1Scene::Load() {
 	//Load Level File
-	ls::loadLevelFile("res/maze_2.txt", 25.f);
+	ls::loadLevelFile("res/maze.txt", 25.f);
 	
 	//Loads background imagae WITHOUT error (unless file is non-existent)
 	if (!roadTexture.loadFromFile("res/img/Straights/straight_noBorder.png", sf::IntRect(0, 0, 1000, 1000)))
@@ -73,8 +73,11 @@ void Level1Scene::Load() {
 	{
 		std::cerr << "failed to load spritesheet!" << std::endl;
 	}
-
 	
+	
+#pragma region MapSetup
+
+
 	//Get position of grass tiles and set sprites to each position
 	auto grassTiles = ls::findTiles(ls::GRASS);
 	for each (auto t in grassTiles)
@@ -109,7 +112,6 @@ void Level1Scene::Load() {
 //		t3->getSprite().setPosition(g);
 
 	}
-
 
 	//Get position of TopTrack tiles and set sprites to each postition
 	auto peakTiles = ls::findTiles(ls::TOP);
@@ -299,6 +301,10 @@ void Level1Scene::Load() {
 	}
 	//Get vector2f position of the first tile in startpos
 //	test2->setPosition(ls::getTilePosition(corner1Tiles[0]));
+
+
+#pragma endregion
+
 
 //	Create an PlayerCar Entity, add component and set texture
 	player = makeEntity();

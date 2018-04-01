@@ -11,9 +11,7 @@ void PhysicsComponent::update(double dt) {
   _parent->setRotation((180 / b2_pi) * _body->GetAngle());
 }
 
-PhysicsComponent::PhysicsComponent(Entity* p, bool dyn,
-                                   const Vector2f& size)
-    : Component(p), _dynamic(dyn) {
+PhysicsComponent::PhysicsComponent(Entity* p, bool dyn, const Vector2f& size) : Component(p), _dynamic(dyn) {
 
   b2BodyDef BodyDef;
   // Is Dynamic(moving), or static(Stationary)
@@ -78,6 +76,7 @@ void PhysicsComponent::teleport(const sf::Vector2f& v) {
 const sf::Vector2f PhysicsComponent::getVelocity() const {
   return bv2_to_sv2(_body->GetLinearVelocity(), true);
 }
+
 void PhysicsComponent::setVelocity(const sf::Vector2f& v) {
 
   _body->SetLinearVelocity(sv2_to_bv2(v, true));
@@ -98,6 +97,7 @@ void PhysicsComponent::render() {}
 void PhysicsComponent::impulse(const sf::Vector2f& i) {
   auto a = b2Vec2(i.x, i.y * -1.0f);
   _body->ApplyLinearImpulseToCenter(a, true);
+ 
 }
 
 void PhysicsComponent::dampen(const sf::Vector2f& i) {
@@ -112,8 +112,7 @@ bool PhysicsComponent::isTouching(const PhysicsComponent& pc) const {
   return isTouching(pc, bc);
 }
 
-bool PhysicsComponent::isTouching(const PhysicsComponent& pc,
-                                  b2Contact const* bc) const {
+bool PhysicsComponent::isTouching(const PhysicsComponent& pc, b2Contact const* bc) const {
   const auto _otherFixture = pc.getFixture();
   const auto& w = *Physics::GetWorld();
   const auto contactList = w.GetContactList();

@@ -31,54 +31,62 @@ bool PlayerPhysicsComponent::isGrounded() const {
 
 void PlayerPhysicsComponent::update(double dt) {
 
-  const auto pos = _parent->getPosition();
+	const auto pos = _parent->getPosition();
 
-  //Teleport to start if we fall off map.
-  if (pos.y > ls::getHeight() * ls::getTileSize()) {
-    teleport(ls::getTilePosition(ls::findTiles(ls::CORNER1)[0]));
-  }
+	//Teleport to start if we fall off map.
+	if (pos.y > ls::getHeight() * ls::getTileSize()) {
+		teleport(ls::getTilePosition(ls::findTiles(ls::CORNER1)[0]));
+	}
 
-  if (Keyboard::isKeyPressed(Keyboard::Left) || Keyboard::isKeyPressed(Keyboard::Right)) {
-    // Moving Either Left or Right
-    if (Keyboard::isKeyPressed(Keyboard::Right)) {
-      if (getVelocity().x < _maxVelocity.x)
-        impulse({(float)(dt * _groundspeed), 0});
-    } else {
-      if (getVelocity().x > -_maxVelocity.x)
-        impulse({-(float)(dt * _groundspeed), 0});
-    }
-  } else {
-    // Dampen X axis movement
-    dampen({0.9f, 1.0f});
-  }
+	if (Keyboard::isKeyPressed(Keyboard::A) || Keyboard::isKeyPressed(Keyboard::D) || Keyboard::isKeyPressed(Keyboard::W) || Keyboard::isKeyPressed(Keyboard::S)) {
+	  
+		if (Keyboard::isKeyPressed(Keyboard::W)) {
+			
+		}
+		else if (Keyboard::isKeyPressed(Keyboard::S)) {
 
-  // Handle Jump
-  if (Keyboard::isKeyPressed(Keyboard::Up)) {
-    _grounded = isGrounded();
-    if (_grounded) {
-      setVelocity(Vector2f(getVelocity().x, 0.f));
-      teleport(Vector2f(pos.x, pos.y - 2.0f));
-      impulse(Vector2f(0, -6.f));
-    }
-  }
+		}
+		else if (Keyboard::isKeyPressed(Keyboard::D)) { // Moving Either Left or Right
+			if (getVelocity().x < _maxVelocity.x)
+				impulse({(float)(dt * _groundspeed), 0});
+		} 
+		else if (Keyboard::isKeyPressed(Keyboard::A)) {
+			if (getVelocity().x > -_maxVelocity.x)
+				impulse({-(float)(dt * _groundspeed), 0});
+		}
+	} 
+	else  {
+	  // Dampen X axis movement
+		dampen({0.5f, 0.5f});
+	}
 
-  //Are we in air?
-  if (!_grounded) {
-    // Check to see if we have landed yet
-    _grounded = isGrounded();
-    // disable friction while jumping
-    setFriction(0.f);
-  } else {
-    setFriction(0.1f);
-  }
+	// Handle Jump
+	if (Keyboard::isKeyPressed(Keyboard::Up)) {
+		_grounded = isGrounded();
+		if (_grounded) {
+			setVelocity(Vector2f(getVelocity().x, 0.f));
+			teleport(Vector2f(pos.x, pos.y - 2.0f));
+			impulse(Vector2f(0, -6.f));
+		}
+	}
 
-  // Clamp velocity.
-  auto v = getVelocity();
-  v.x = copysign(min(abs(v.x), _maxVelocity.x), v.x);
-  v.y = copysign(min(abs(v.y), _maxVelocity.y), v.y);
-  setVelocity(v);
+	//Are we in air?
+	if (!_grounded) {
+	  // Check to see if we have landed yet
+	  _grounded = isGrounded();
+	  // disable friction while jumping
+	  setFriction(0.f);
+	} else {
+	  setFriction(0.1f);
+	}
 
-  PhysicsComponent::update(dt);
+	// Clamp velocity.
+	auto v = getVelocity();
+	v.x = copysign(min(abs(v.x), _maxVelocity.x), v.x);
+	v.y = copysign(min(abs(v.y), _maxVelocity.y), v.y);
+	setVelocity(v);
+
+	PhysicsComponent::update(dt);
 }
 
 PlayerPhysicsComponent::PlayerPhysicsComponent(Entity* p,
