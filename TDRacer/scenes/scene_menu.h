@@ -18,7 +18,5 @@ public:
 private:
 	int index;
 	int selectedItemIndex;
-	int previousItemIndex;
 
 };
- 

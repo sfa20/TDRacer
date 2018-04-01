@@ -22,6 +22,7 @@ using namespace Resources;
 Texture texture;
 static shared_ptr<Entity> mainmenu;
 
+
 void MenuScene::Load() {
 
 	cout << "Menu Load \n"; {
@@ -49,9 +50,9 @@ void MenuScene::Load() {
 
 		//creates text entitys
 		mainmenu->addComponent<TextComponent>("TD Championship Racer");
-		mainmenu->addComponent<TextComponent>("Single Player");
-		mainmenu->addComponent<TextComponent>("MultiPlayer");
+		mainmenu->addComponent<TextComponent>("Play game");
 		mainmenu->addComponent<TextComponent>("Options");
+		mainmenu->addComponent<TextComponent>("Credits");
 		mainmenu->addComponent<TextComponent>("Exit");
 
 		//sets positions and size of menu entitys
@@ -142,20 +143,21 @@ void MenuScene::Update(const double& dt) {
 	if (Mouse::isButtonPressed(Mouse::Left)) {
 
 		if (list[1]->GetText().getGlobalBounds().contains(mousePosF)) {
-			cout << "Single Player Pressed!" << endl;
+			cout << "Play game Pressed!" << endl;
 			selectedItemIndex = 1;
 			std::this_thread::sleep_for(std::chrono::milliseconds(150));
 			Engine::ChangeScene(&level1);
 		}
 
 		if (list[2]->GetText().getGlobalBounds().contains(mousePosF)) {
-			cout << "Multiplayer Pressed!" << endl;
+			cout << "Options Pressed!" << endl;
 			selectedItemIndex = 2;
 			std::this_thread::sleep_for(std::chrono::milliseconds(150));
+			Engine::ChangeScene(&optionsMenu);
 		}
 
 		if (list[3]->GetText().getGlobalBounds().contains(mousePosF)) {
-			cout << "Options Pressed!" << endl;
+			cout << "Credits Pressed!" << endl;
 			selectedItemIndex = 3;
 			std::this_thread::sleep_for(std::chrono::milliseconds(150));
 		}
@@ -184,16 +186,17 @@ void MenuScene::Update(const double& dt) {
 			switch (GetPressedItem()) {
 
 			case 1:
-				std::cout << "Single player button has been pressed" << std::endl;
+				std::cout << "Play game button has been pressed" << std::endl;
 				std::this_thread::sleep_for(std::chrono::milliseconds(150));
 				Engine::ChangeScene(&level1);
 				break;
 			case 2:
-				std::cout << "Multiplayer button has been pressed" << std::endl;
+				std::cout << "Options button has been pressed" << std::endl;
 				std::this_thread::sleep_for(std::chrono::milliseconds(150));
+				Engine::ChangeScene(&optionsMenu);
 				break;
 			case 3:
-				std::cout << "Options button has been pressed" << std::endl;
+				std::cout << "Credits button has been pressed" << std::endl;
 				std::this_thread::sleep_for(std::chrono::milliseconds(150));
 				break;
 			case 4:
