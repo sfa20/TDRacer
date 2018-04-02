@@ -14,7 +14,9 @@ using namespace std;
 using namespace sf;
 using namespace Resources;
 
-sf::Music music;
+SoundBuffer buffer;
+Sound sound;
+
 Texture splashTexture;
 Texture grassTexture1;
 Texture roadTexture1;
@@ -27,10 +29,15 @@ Texture box2dTexture;
 
 static std::shared_ptr<Entity> txt;
 
-void SplashScreen::Load()
-{
-	ls::loadLevelFile("res/opening.txt", 25.f);
+void SplashScreen::Load() {
 
+	ls::loadLevelFile("res/opening.txt", 50.f);
+
+	//loads sound
+	if (!buffer.loadFromFile("res/opening.wav"))
+	{
+		std::cerr << "failed to load music!" << std::endl;
+	}
 	if (!grassTexture1.loadFromFile("res/img/grass.png", sf::IntRect(0, 0, 1000, 1000)))
 	{
 		std::cerr << "failed to load spritesheet!" << std::endl;
@@ -66,7 +73,7 @@ void SplashScreen::Load()
 		//Add a new sprite component set texture and scale
 		auto t3 = grass->addComponent<SpriteComponent>();
 		t3->getSprite().setTexture(grassTexture1);
-		t3->getSprite().setScale(0.195f, 0.195f);
+		t3->getSprite().setScale(0.400f, 0.400f);
 
 		//get tile position - vector2f
 		auto g = ls::getTilePosition(t);
@@ -83,7 +90,7 @@ void SplashScreen::Load()
 		//Add a new sprite component set texture and scale
 		auto t2 = track->addComponent<SpriteComponent>();
 		t2->getSprite().setTexture(roadTexture1);
-		t2->getSprite().setScale(0.195f, 0.195f);
+		t2->getSprite().setScale(0.400f, 0.400f);
 
 		//get tile position - vector2f
 		auto g = ls::getTilePosition(t);
@@ -99,7 +106,7 @@ void SplashScreen::Load()
 		//Add a new sprite component set texture and scale
 		auto t2 = peak->addComponent<SpriteComponent>();
 		t2->getSprite().setTexture(peakTexture1);
-		t2->getSprite().setScale(0.195f, 0.195f);
+		t2->getSprite().setScale(0.400f, 0.400f);
 
 		//get tile position - vector2f
 		auto g = ls::getTilePosition(t);
@@ -117,7 +124,7 @@ void SplashScreen::Load()
 		//Add a new sprite component set texture and scale
 		auto t2 = bottom->addComponent<SpriteComponent>();
 		t2->getSprite().setTexture(bottomTexture1);
-		t2->getSprite().setScale(0.195f, 0.195f);
+		t2->getSprite().setScale(0.400f, 0.400f);
 
 		//get tile position - vector2f
 		auto g = ls::getTilePosition(t);
@@ -127,14 +134,9 @@ void SplashScreen::Load()
 
 	}
 
-	//loads music
-	if (!music.openFromFile("res/opening.wav"))
-	{
-		std::cerr << "failed to load music!" << std::endl;
-	}
+	sound.setBuffer(buffer);
 
-	music.play();
-	music.setVolume(100);
+	sound.play();
 
 	std::cout << "Menu Load \n";
 	{
@@ -176,6 +178,7 @@ void SplashScreen::Update(const double & dt)
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) || sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 		std::this_thread::sleep_for(std::chrono::milliseconds(500));
+		sound.stop();
 		Engine::ChangeScene(&menuScreen);
 	}
 
