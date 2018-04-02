@@ -17,9 +17,11 @@ public:
 
 	sf::Text GetText();
 
-	void setPos(float xPos, float yPos, float size);
+	void setCenterPos(float xPos, float yPos, float size);
 
 	void setColor(int rgba1, int rgba2, int rgba3, int opacity);
+
+	void fadeTxt();
 
 private:
 	int selectedItemIndex;

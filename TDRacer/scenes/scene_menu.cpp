@@ -19,11 +19,11 @@ using namespace std;
 using namespace sf;
 using namespace Resources;
 
-Texture texture;
-static shared_ptr<Entity> mainmenu;
+Texture mainTex;
+static shared_ptr<Entity> mainMenu;
 
 
-void MenuScene::Load() {
+void MenuScreen::Load() {
 
 	cout << "Menu Load \n"; {
 
@@ -31,12 +31,12 @@ void MenuScene::Load() {
 		//cretes entity for background image
 
 		//********* LAYER 1 *********
-		mainmenu = makeEntity();
-		auto s = mainmenu->addComponent<SpriteComponent>();
+		mainMenu = makeEntity();
+		auto s = mainMenu->addComponent<SpriteComponent>();
 
 		//********* LAYER 2 *********
 		//loads background image with error in console (Game still runs) - Ask Kevin 
-		texture = *Resources::load<Texture>("background.png");
+		mainTex = *Resources::load<Texture>("background.png");
 
 		//Loads background imagae WITHOUT error (unless file is non-existent)
 		/*if (!texture.loadFromFile("background.png", sf::IntRect(0, 0, 1000, 1000)))
@@ -45,23 +45,24 @@ void MenuScene::Load() {
 		}*/
 
 		//sets background image
-		s->getSprite().setTexture(texture, true);
-		s->getSprite().setScale(1.4, 1.4);
+		s->getSprite().setTexture(mainTex, true);
+		s->getSprite().setScale(2.1, 2);
 
 		//creates text entitys
-		mainmenu->addComponent<TextComponent>("TD Championship Racer");
-		mainmenu->addComponent<TextComponent>("Play game");
-		mainmenu->addComponent<TextComponent>("Options");
-		mainmenu->addComponent<TextComponent>("Credits");
-		mainmenu->addComponent<TextComponent>("Exit");
+		mainMenu->addComponent<TextComponent>("TD Championship Racer");
+		mainMenu->addComponent<TextComponent>("Play game");
+		mainMenu->addComponent<TextComponent>("Options");
+		mainMenu->addComponent<TextComponent>("Credits");
+		mainMenu->addComponent<TextComponent>("Exit");
+
 
 		//sets positions and size of menu entitys
-		auto list = mainmenu->GetCompatibleComponent<TextComponent>();
-		list[0]->setPos(430, 50, 50);
-		list[1]->setPos(500, 280, 30);
-		list[2]->setPos(500, 330, 30);
-		list[3]->setPos(500, 370, 30);
-		list[4]->setPos(500, 420, 30);
+		auto list = mainMenu->GetCompatibleComponent<TextComponent>();
+		list[0]->setCenterPos(Engine::getWindowSize().x / 2.f, 100.f, 50.f);
+		list[1]->setCenterPos(Engine::getWindowSize().x / 2.f, 520.f, 50.f);
+		list[2]->setCenterPos(Engine::getWindowSize().x / 2.f, 570.f, 50.f);
+		list[3]->setCenterPos(Engine::getWindowSize().x / 2.f, 620.f, 50.f);
+		list[4]->setCenterPos(Engine::getWindowSize().x / 2.f, 670.f, 50.f);
 
 		//sets colours of entitys
 		list[0]->setColor(255, 0, 0, 200);
@@ -72,8 +73,8 @@ void MenuScene::Load() {
 	setLoaded(true);
 }
 
-void MenuScene::MoveUp() {
-	auto list = mainmenu->GetCompatibleComponent<TextComponent>();
+void MenuScreen::MoveUp() {
+	auto list = mainMenu->GetCompatibleComponent<TextComponent>();
 
 	//used for keyboard movement in menus
 	if (selectedItemIndex - 1 > 0) {
@@ -81,12 +82,11 @@ void MenuScene::MoveUp() {
 		selectedItemIndex--;
 		list[selectedItemIndex]->setColor(255, 0, 0, 255);
 		std::this_thread::sleep_for(std::chrono::milliseconds(150));
-		//menu[selectedItemIndex].setFillColor(sf::Color(255, 0, 0, 255));
 	}
 }
 
-void MenuScene::MoveDown() {
-	auto list = mainmenu->GetCompatibleComponent<TextComponent>();
+void MenuScreen::MoveDown() {
+	auto list = mainMenu->GetCompatibleComponent<TextComponent>();
 
 	//used for keyboard movement in menus
 	if (selectedItemIndex + 1 < 5) {
@@ -94,11 +94,10 @@ void MenuScene::MoveDown() {
 		selectedItemIndex++;
 		list[selectedItemIndex]->setColor(255, 0, 0, 255);
 		std::this_thread::sleep_for(std::chrono::milliseconds(150));
-		//menu[selectedItemIndex].setFillColor(sf::Color(255, 0, 0, 255));
 	}
 }
 
-void MenuScene::Update(const double& dt) {
+void MenuScreen::Update(const double& dt) {
 
 	sf::Event event;
 
@@ -107,7 +106,7 @@ void MenuScene::Update(const double& dt) {
 	sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
 
 	//getting entity components
-	auto list = mainmenu->GetCompatibleComponent<TextComponent>();
+	auto list = mainMenu->GetCompatibleComponent<TextComponent>();
 
 	window.pollEvent(event);
 
@@ -146,14 +145,14 @@ void MenuScene::Update(const double& dt) {
 			cout << "Play game Pressed!" << endl;
 			selectedItemIndex = 1;
 			std::this_thread::sleep_for(std::chrono::milliseconds(150));
-			Engine::ChangeScene(&level1);
+			Engine::ChangeScene(&loadScreen);
 		}
 
 		if (list[2]->GetText().getGlobalBounds().contains(mousePosF)) {
 			cout << "Options Pressed!" << endl;
 			selectedItemIndex = 2;
 			std::this_thread::sleep_for(std::chrono::milliseconds(150));
-			Engine::ChangeScene(&optionsMenu);
+			Engine::ChangeScene(&optionScreen);
 		}
 
 		if (list[3]->GetText().getGlobalBounds().contains(mousePosF)) {
@@ -188,12 +187,12 @@ void MenuScene::Update(const double& dt) {
 			case 1:
 				std::cout << "Play game button has been pressed" << std::endl;
 				std::this_thread::sleep_for(std::chrono::milliseconds(150));
-				Engine::ChangeScene(&level1);
+				Engine::ChangeScene(&loadScreen);
 				break;
 			case 2:
 				std::cout << "Options button has been pressed" << std::endl;
 				std::this_thread::sleep_for(std::chrono::milliseconds(150));
-				Engine::ChangeScene(&optionsMenu);
+				Engine::ChangeScene(&optionScreen);
 				break;
 			case 3:
 				std::cout << "Credits button has been pressed" << std::endl;

@@ -3,10 +3,10 @@
 #include "engine.h"
 
 
-class MenuScene : public Scene {
+class MenuScreen : public Scene {
 public:
-	MenuScene() = default;
-	~MenuScene() override = default;
+	MenuScreen() = default;
+	~MenuScreen() override = default;
 
 
 	int GetPressedItem() { return selectedItemIndex; } //added - sfa20	

@@ -2,16 +2,17 @@
 
 #include "engine.h"
 
-class AvatarScreen : public Scene {
+class LoadScreen : public Scene {
 public:
-	AvatarScreen() = default;
-	~AvatarScreen() override = default;
+	LoadScreen() = default;
+	~LoadScreen() override = default;
 
-	int GetPressedItem() { return selectedItemIndex; } //added - sfa20	
 	void Load() override;
+	int GetPressedItem() { return selectedItemIndex; } //added - sfa20	
 	void MoveUp();
 	void MoveDown();
 	void Update(const double& dt) override;
 private:
 	int selectedItemIndex;
+
 };

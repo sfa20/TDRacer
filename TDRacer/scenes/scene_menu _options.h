@@ -3,10 +3,10 @@
 #include "engine.h"
 
 
-class OptionScene : public Scene {
+class OptionScreen : public Scene {
 public:
-	OptionScene() = default;
-	~OptionScene() override = default;
+	OptionScreen() = default;
+	~OptionScreen() override = default;
 
 
 	int GetPressedItem() { return selectedItemIndex; } //added - sfa20	

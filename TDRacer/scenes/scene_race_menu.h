@@ -1,12 +1,12 @@
-//#pragma once
-//
-//#include "engine.h"
-//
-//class RaceMenu : public Scene {
-//public:
-//	RaceMenu() = default;
-//	~RaceMenu() override = default;
-//
-//	void Load() override;
-//	void Update(const double& dt) override;
-//};
+#pragma once
+
+#include "engine.h"
+
+class RaceMenuScreen : public Scene {
+public:
+	RaceMenuScreen() = default;
+	~RaceMenuScreen() override = default;
+
+	void Load() override;
+	void Update(const double& dt) override;
+};

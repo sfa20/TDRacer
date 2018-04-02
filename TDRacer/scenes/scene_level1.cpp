@@ -31,11 +31,11 @@ static shared_ptr<Entity> player;
 void Level1Scene::Load() {
 	//Load Level File
 	ls::loadLevelFile("res/maze_2.txt", 25.f);
-	
+
 	//Loads background imagae WITHOUT error (unless file is non-existent)
 	if (!roadTexture.loadFromFile("res/img/Straights/straight_noBorder.png", sf::IntRect(0, 0, 1000, 1000)))
 	{
-	std::cerr << "failed to load spritesheet!" << std::endl;
+		std::cerr << "failed to load spritesheet!" << std::endl;
 	}
 	if (!peakTexture.loadFromFile("res/img/Straights/straight_horizontal_noBorder_bottom.png", sf::IntRect(0, 0, 1000, 1000)))
 	{
@@ -74,7 +74,7 @@ void Level1Scene::Load() {
 		std::cerr << "failed to load spritesheet!" << std::endl;
 	}
 
-	
+
 	//Get position of grass tiles and set sprites to each position
 	auto grassTiles = ls::findTiles(ls::GRASS);
 	for each (auto t in grassTiles)
@@ -84,12 +84,12 @@ void Level1Scene::Load() {
 		//Add a new sprite component set texture and scale
 		auto t3 = grass->addComponent<SpriteComponent>();
 		t3->getSprite().setTexture(grassTexture);
-		t3->getSprite().setScale(0.195f,0.195f);
+		t3->getSprite().setScale(0.195f, 0.195f);
 
 		//get tile position - vector2f
 		auto g = ls::getTilePosition(t);
 		grass->setPosition(g);
-//		t3->getSprite().setPosition(g);
+		//		t3->getSprite().setPosition(g);
 
 	}
 
@@ -106,7 +106,7 @@ void Level1Scene::Load() {
 		//get tile position - vector2f
 		auto g = ls::getTilePosition(t);
 		wall->setPosition(g);
-//		t3->getSprite().setPosition(g);
+		//		t3->getSprite().setPosition(g);
 
 	}
 
@@ -125,8 +125,8 @@ void Level1Scene::Load() {
 		//get tile position - vector2f
 		auto g = ls::getTilePosition(t);
 		peak->setPosition(g);
-//		t2->getSprite().setPosition(g);
-		
+		//		t2->getSprite().setPosition(g);
+
 
 	}
 
@@ -146,7 +146,7 @@ void Level1Scene::Load() {
 		auto g = ls::getTilePosition(t);
 		bottom->setPosition(g);
 
-//		t2->getSprite().setPosition(g);
+		//		t2->getSprite().setPosition(g);
 
 	}
 
@@ -165,7 +165,7 @@ void Level1Scene::Load() {
 		//get tile position - vector2f
 		auto g = ls::getTilePosition(t);
 		right->setPosition(g);
-//		t2->getSprite().setPosition(g);
+		//		t2->getSprite().setPosition(g);
 
 	}
 
@@ -183,7 +183,7 @@ void Level1Scene::Load() {
 		//get tile position - vector2f
 		auto g = ls::getTilePosition(t);
 		left->setPosition(g);
-//		t2->getSprite().setPosition(g);
+		//		t2->getSprite().setPosition(g);
 
 	}
 
@@ -194,17 +194,17 @@ void Level1Scene::Load() {
 		static shared_ptr<Entity> track;
 		track = makeEntity();
 		//Add a new sprite component set texture and scale
-		auto t2 = track->addComponent<SpriteComponent>(); 
+		auto t2 = track->addComponent<SpriteComponent>();
 		t2->getSprite().setTexture(roadTexture);
 		t2->getSprite().setScale(0.195f, 0.195f);
 
 		//get tile position - vector2f
 		auto g = ls::getTilePosition(t);
 		track->setPosition(g);
-//		t2->getSprite().setPosition(g);
-	
+		//		t2->getSprite().setPosition(g);
+
 	}
-	
+
 	//Get position of Corner tiles and set sprites to each postition
 	auto corner1Tiles = ls::findTiles(ls::CORNER1);
 	for each (auto t in corner1Tiles)
@@ -219,12 +219,12 @@ void Level1Scene::Load() {
 		auto t2 = corn1->addComponent<SpriteComponent>();
 		t2->getSprite().setTexture(cornerTexture1);
 		t2->getSprite().setScale(0.195f, 0.195f);
-		
+
 
 		//get tile position - vector2f
 		auto g = ls::getTilePosition(t);
 		corn1->setPosition(g);
-//		t1->getSprite().setPosition(g);
+		//		t1->getSprite().setPosition(g);
 		t2->getSprite().setPosition(g);
 
 	}
@@ -247,8 +247,8 @@ void Level1Scene::Load() {
 		//get tile position - vector2f
 		auto g = ls::getTilePosition(t);
 		corn2->setPosition(g);
-//		t1->getSprite().setPosition(g);
-//		t2->getSprite().setPosition(g);
+		//		t1->getSprite().setPosition(g);
+		//		t2->getSprite().setPosition(g);
 
 	}
 
@@ -270,11 +270,11 @@ void Level1Scene::Load() {
 		//get tile position - vector2f
 		auto g = ls::getTilePosition(t);
 		corn3->setPosition(g);
-//		t1->getSprite().setPosition(g);
-//		t2->getSprite().setPosition(g);
+		//		t1->getSprite().setPosition(g);
+		//		t2->getSprite().setPosition(g);
 
 	}
-	
+
 	//Get position of track tiles and set sprites to each postition
 	auto corner4Tiles = ls::findTiles(ls::CORNER4);
 	for each (auto t in corner4Tiles)
@@ -293,8 +293,8 @@ void Level1Scene::Load() {
 		//get tile position - vector2f
 		auto g = ls::getTilePosition(t);
 		corn4->setPosition(g);
-//		t1->getSprite().setPosition(g);
-//		t2->getSprite().setPosition(g);
+		//		t1->getSprite().setPosition(g);
+		//		t2->getSprite().setPosition(g);
 
 	}
 	//Get vector2f position of the first tile in startpos
@@ -304,7 +304,7 @@ void Level1Scene::Load() {
 	player = makeEntity();
 	auto t = player->addComponent<SpriteComponent>();
 	texture1 = *Resources::load<Texture>("car_green_small_2.png");
-	t->getSprite().setTexture(texture1); 
+	t->getSprite().setTexture(texture1);
 	t->getSprite().setScale(0.5f, 0.5);
 
 	auto l = ls::findTiles(ls::CORNER1);
@@ -312,7 +312,7 @@ void Level1Scene::Load() {
 	auto m = player->GetCompatibleComponent<SpriteComponent>();
 	m[0]->getSprite().setPosition(lv);
 
-	auto p = player->addComponent<PlayerPhysicsComponent> (Vector2f(20.f, 20.f));
+	auto p = player->addComponent<PlayerPhysicsComponent>(Vector2f(20.f, 20.f));
 
 
 }

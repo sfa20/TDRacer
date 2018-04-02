@@ -29,7 +29,7 @@ public:
 		//Corner2
 		//Corner3
 		//Corner4
-		
+
 		TOP = 'p',
 		RIGHT = 'r',
 		LEFT = 'l',
