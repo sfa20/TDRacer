@@ -2,7 +2,6 @@
 
 #include "engine.h"
 
-
 class MenuScreen : public Scene {
 public:
 	MenuScreen() = default;
@@ -16,7 +15,5 @@ public:
 	void Update(const double& dt) override;
 
 private:
-	int index;
 	int selectedItemIndex;
-
 };

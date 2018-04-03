@@ -11,6 +11,11 @@
 #include "scenes/scene_load_screen.h"
 #include "scenes/scene_load_profile.h"
 #include "scenes/scene_race_menu.h"
+#include "scenes/scene_track_select.h"
+#include "scenes/scene_car_select.h"
+#include "scenes/scene_sounds.h"
+#include "scenes/scene_controls.h"
+#include "scenes/scene_graphics.h"
 
 /****************Menus*********************************/
 extern SplashScreen splashScreen;
@@ -20,9 +25,13 @@ extern LoadScreen loadScreen;
 extern LoadProfileScreen loadPScreen;
 extern AvatarScreen avatarScreen;
 extern RaceMenuScreen raceMenuScreen;
+extern TrackSelectScreen trackSelectScreen;
+extern CarSelectScreen carSelectScreen;
+extern SoundScreen soundScreen;
+extern GraphicScreen graphicScreen;
+extern ControlScreen controlScreen;
 
-
-/***************Levels********************************/
+/***************Races********************************/
 extern Level1Scene level1;
 extern Level2Scene level2;
 extern Level3Scene level3;

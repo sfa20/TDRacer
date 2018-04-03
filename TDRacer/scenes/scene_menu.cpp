@@ -46,7 +46,7 @@ void MenuScreen::Load() {
 
 		//sets background image
 		s->getSprite().setTexture(mainTex, true);
-		s->getSprite().setScale(2.1, 2);
+		s->getSprite().setScale(2.1f, 2.f);
 
 		//creates text entitys
 		mainMenu->addComponent<TextComponent>("TD Championship Racer");
@@ -54,6 +54,10 @@ void MenuScreen::Load() {
 		mainMenu->addComponent<TextComponent>("Options");
 		mainMenu->addComponent<TextComponent>("Credits");
 		mainMenu->addComponent<TextComponent>("Exit");
+		/**************************************************************************************/
+		auto a = mainMenu->addComponent<ShapeComponent>();
+		a->setShape<RectangleShape>(RectangleShape(Vector2f(100.f, 100.f)));
+
 
 
 		//sets positions and size of menu entitys

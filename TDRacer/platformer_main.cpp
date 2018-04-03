@@ -7,7 +7,11 @@
 #include "scenes/scene_load_screen.h"
 #include "scenes/scene_load_profile.h"
 #include "scenes/scene_race_menu.h"
-#include "SFML/Audio.hpp"
+#include "scenes/scene_track_select.h"
+#include "scenes/scene_car_select.h"
+#include "scenes/scene_controls.h"
+#include "scenes/scene_graphics.h"
+#include "scenes/scene_sounds.h"
 
 using namespace std;
 
@@ -19,13 +23,17 @@ AvatarScreen avatarScreen;
 LoadScreen loadScreen;
 LoadProfileScreen loadPScreen;
 RaceMenuScreen raceMenuScreen;
+TrackSelectScreen trackSelectScreen;
+CarSelectScreen carSelectScreen;
+GraphicScreen graphicScreen;
+ControlScreen controlScreen;
+SoundScreen soundScreen;
 
 
 /***************Levels********************************/
 Level1Scene level1;
 Level2Scene level2;
 Level3Scene level3;
-
 
 int main() {
 

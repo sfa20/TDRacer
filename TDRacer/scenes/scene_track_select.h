@@ -2,10 +2,10 @@
 
 #include "engine.h"
 
-class RaceMenuScreen : public Scene {
+class TrackSelectScreen : public Scene {
 public:
-	RaceMenuScreen() = default;
-	~RaceMenuScreen() override = default;
+	TrackSelectScreen() = default;
+	~TrackSelectScreen() override = default;
 
 	int GetPressedItem() { return selectedItemIndex; } //added - sfa20	
 	void Load() override;

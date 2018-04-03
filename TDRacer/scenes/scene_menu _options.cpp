@@ -142,27 +142,27 @@ void OptionScreen::Update(const double& dt) {
 			cout << "Controls Pressed!" << endl;
 			selectedItemIndex = 1;
 			std::this_thread::sleep_for(std::chrono::milliseconds(150));
-
+			Engine::ChangeScene(&controlScreen);
 		}
 
 		if (list[2]->GetText().getGlobalBounds().contains(mousePosF)) {
 			cout << "Graphics Pressed!" << endl;
 			selectedItemIndex = 2;
 			std::this_thread::sleep_for(std::chrono::milliseconds(150));
-
-
+			Engine::ChangeScene(&graphicScreen);
 		}
 
 		if (list[3]->GetText().getGlobalBounds().contains(mousePosF)) {
 			cout << "Sound Pressed!" << endl;
 			selectedItemIndex = 3;
 			std::this_thread::sleep_for(std::chrono::milliseconds(150));
+			Engine::ChangeScene(&soundScreen);
 		}
 
 		if (list[4]->GetText().getGlobalBounds().contains(mousePosF)) {
 			cout << "Main menu!" << endl;
 			std::this_thread::sleep_for(std::chrono::milliseconds(2000));
-			Engine::ChangeScene(&optionScreen);
+			Engine::ChangeScene(&menuScreen);
 		}
 	}
 	//Handles Keyboard input and checks against the Menu Options
@@ -184,14 +184,17 @@ void OptionScreen::Update(const double& dt) {
 			case 1:
 				std::cout << "Controls button has been pressed" << std::endl;
 				std::this_thread::sleep_for(std::chrono::milliseconds(150));
+				Engine::ChangeScene(&controlScreen);
 				break;
 			case 2:
 				std::cout << "Graphics button has been pressed" << std::endl;
 				std::this_thread::sleep_for(std::chrono::milliseconds(150));
+				Engine::ChangeScene(&graphicScreen);
 				break;
 			case 3:
 				std::cout << "Sound button has been pressed" << std::endl;
 				std::this_thread::sleep_for(std::chrono::milliseconds(150));
+				Engine::ChangeScene(&soundScreen);
 				break;
 			case 4:
 				std::cout << "Sound button has been pressed" << std::endl;
