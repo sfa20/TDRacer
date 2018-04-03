@@ -26,7 +26,6 @@ Texture sfmlTexture;
 Texture box2dTexture;
 
 
-
 static std::shared_ptr<Entity> txt;
 
 void SplashScreen::Load() {
@@ -78,7 +77,7 @@ void SplashScreen::Load() {
 		//get tile position - vector2f
 		auto g = ls::getTilePosition(t);
 		grass->setPosition(g);
-		//		t3->getSprite().setPosition(g);
+		/*t3->getSprite().setPosition(g);*/
 
 	}
 
