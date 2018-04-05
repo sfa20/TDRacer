@@ -3,18 +3,21 @@
 #include "cmp_physics.h"
 
 class PlayerPhysicsComponent : public PhysicsComponent {
-protected:
+private:
   b2Vec2 _size;
   sf::Vector2f _maxVelocity;
-  bool _grounded;
+  float maxSpeed;
+ 
+  //bool _grounded;
   float _groundspeed;
 
-  bool isGrounded() const;
+  //Not Used
+  //bool isGrounded() const;
 
 public:
   void update(double dt) override;
-
   explicit PlayerPhysicsComponent(Entity* p, const sf::Vector2f& size);
 
   PlayerPhysicsComponent() = delete;
 };
+

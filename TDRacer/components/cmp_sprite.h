@@ -3,15 +3,20 @@
 #include "ecm.h"
 #include <SFML/Graphics/Shape.hpp>
 #include <SFML/Graphics/Sprite.hpp>
+#include <Box2D\Box2D.h>
 
 class SpriteComponent : public Component {
 protected:
 	std::shared_ptr<sf::Sprite> _sprite;
-
+	b2Body* body; //added
+	b2BodyDef bodyDef; //added
 public:
 	SpriteComponent() = delete;
 
 	explicit SpriteComponent(Entity* p);
+	
+	void setBody(); //added
+
 	void update(double dt) override;
 	void render() override;
 
@@ -21,6 +26,12 @@ public:
 		_sprite.reset(new sf::Sprite(params...));
 	}
 };
+
+
+
+
+
+
 
 class ShapeComponent : public Component {
 protected:

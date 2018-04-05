@@ -6,9 +6,12 @@
 #include <iostream>
 #include <thread>
 #include <system_resources.h>
+#include <system_physics.h>
 #include "LevelSystem.h"
 #include <fstream>
 #include <iostream>
+
+#include "../components/cmp_car_body.h"
 
 using namespace std;
 using namespace sf;
@@ -30,12 +33,15 @@ static shared_ptr<Entity> player;
 
 void Level1Scene::Load() {
 	//Load Level File
-	ls::loadLevelFile("res/maze.txt", 25.f);
+	ls::loadLevelFile("res/maze.txt", 50.f);
 	
+
+#pragma region LoadTextures
+
 	//Loads background imagae WITHOUT error (unless file is non-existent)
 	if (!roadTexture.loadFromFile("res/img/Straights/straight_noBorder.png", sf::IntRect(0, 0, 1000, 1000)))
 	{
-	std::cerr << "failed to load spritesheet!" << std::endl;
+		std::cerr << "failed to load spritesheet!" << std::endl;
 	}
 	if (!peakTexture.loadFromFile("res/img/Straights/straight_horizontal_noBorder_bottom.png", sf::IntRect(0, 0, 1000, 1000)))
 	{
@@ -73,10 +79,12 @@ void Level1Scene::Load() {
 	{
 		std::cerr << "failed to load spritesheet!" << std::endl;
 	}
-	
-	
-#pragma region MapSetup
 
+
+#pragma endregion
+
+
+#pragma region MapSetup
 
 	//Get position of grass tiles and set sprites to each position
 	auto grassTiles = ls::findTiles(ls::GRASS);
@@ -87,7 +95,7 @@ void Level1Scene::Load() {
 		//Add a new sprite component set texture and scale
 		auto t3 = grass->addComponent<SpriteComponent>();
 		t3->getSprite().setTexture(grassTexture);
-		t3->getSprite().setScale(0.195f,0.195f);
+		t3->getSprite().setScale(0.400f,0.400f);
 
 		//get tile position - vector2f
 		auto g = ls::getTilePosition(t);
@@ -104,7 +112,7 @@ void Level1Scene::Load() {
 		//Add a new sprite component set texture and scale
 		auto t3 = wall->addComponent<SpriteComponent>();
 		t3->getSprite().setTexture(grassTexture);
-		t3->getSprite().setScale(0.195f, 0.195f);
+		t3->getSprite().setScale(0.400f, 0.400f);
 
 		//get tile position - vector2f
 		auto g = ls::getTilePosition(t);
@@ -122,7 +130,7 @@ void Level1Scene::Load() {
 		//Add a new sprite component set texture and scale
 		auto t2 = peak->addComponent<SpriteComponent>();
 		t2->getSprite().setTexture(peakTexture);
-		t2->getSprite().setScale(0.195f, 0.195f);
+		t2->getSprite().setScale(0.400f, 0.400f);
 
 		//get tile position - vector2f
 		auto g = ls::getTilePosition(t);
@@ -142,7 +150,7 @@ void Level1Scene::Load() {
 		//Add a new sprite component set texture and scale
 		auto t2 = bottom->addComponent<SpriteComponent>();
 		t2->getSprite().setTexture(bottomTexture);
-		t2->getSprite().setScale(0.195f, 0.195f);
+		t2->getSprite().setScale(0.400f, 0.400f);
 
 		//get tile position - vector2f
 		auto g = ls::getTilePosition(t);
@@ -306,20 +314,44 @@ void Level1Scene::Load() {
 #pragma endregion
 
 
+#pragma region CreatePlayer 
+
 //	Create an PlayerCar Entity, add component and set texture
 	player = makeEntity();
-	auto t = player->addComponent<SpriteComponent>();
-	texture1 = *Resources::load<Texture>("car_green_small_2.png");
-	t->getSprite().setTexture(texture1); 
-	t->getSprite().setScale(0.5f, 0.5);
 
+	//Adds a Sprite component
+	auto t = player->addComponent<SpriteComponent>(); //Add a sprite component
+//  	t->setBody(); //Set the b2d body
+	texture1 = *Resources::load<Texture>("car_green_small_2.png");
+	t->getSprite().setTexture(texture1);
+	t->getSprite().setScale(0.5f, 0.5);
+	t->getSprite().setColor(Color::Red);
+
+	//Find the starting position (will update once start line is added
 	auto l = ls::findTiles(ls::CORNER1);
 	auto lv = ls::getTilePosition(l[0]);
-	auto m = player->GetCompatibleComponent<SpriteComponent>();
-	m[0]->getSprite().setPosition(lv);
 
-	auto p = player->addComponent<PlayerPhysicsComponent> (Vector2f(20.f, 20.f));
+	//Add a Player Physics Component
+	auto p = player->addComponent<PlayerPhysicsComponent>(Vector2f(20.f, 20.f));
+	p->setMass(400.f);
+	p->setFriction(400.f);
+	p->setRestitution(400.f);
+	//Set the players starting position
+	player->setPosition(lv);
 
+
+	//Testing with multiple shapes
+	//player = makeEntity();
+	//auto s1 = player->addComponent<ShapeComponent>();
+	//s1->setShape<RectangleShape>(RectangleShape(Vector2f(100.f,100.f)));
+	//s1->getShape().setFillColor(Color::Green);
+	//auto s2 = player->addComponent<ShapeComponent>();
+	//s2->setShape<CircleShape>(CircleShape(50.f));
+	//s2->getShape().setFillColor(Color::Red);
+	//auto p = player->addComponent<PlayerPhysicsComponent>(Vector2f(20.f, 20.f));
+	//player->setPosition(lv);
+
+#pragma endregion
 
 }
 
