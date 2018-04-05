@@ -17,15 +17,6 @@ using namespace Resources;
 SoundBuffer buffer;
 Sound sound;
 
-Texture splashTexture;
-Texture grassTexture1;
-Texture roadTexture1;
-Texture peakTexture1;
-Texture bottomTexture1;
-Texture sfmlTexture;
-Texture box2dTexture;
-
-
 static std::shared_ptr<Entity> txt;
 
 void SplashScreen::Load() {
@@ -37,30 +28,6 @@ void SplashScreen::Load() {
 	{
 		std::cerr << "failed to load music!" << std::endl;
 	}
-	if (!grassTexture1.loadFromFile("res/img/grass.png", sf::IntRect(0, 0, 1000, 1000)))
-	{
-		std::cerr << "failed to load spritesheet!" << std::endl;
-	}
-	if (!roadTexture1.loadFromFile("res/img/Straights/straight_noBorder.png", sf::IntRect(0, 0, 1000, 1000)))
-	{
-		std::cerr << "failed to load spritesheet!" << std::endl;
-	}
-	if (!peakTexture1.loadFromFile("res/img/Straights/straight_horizontal_noBorder_bottom.png", sf::IntRect(0, 0, 1000, 1000)))
-	{
-		std::cerr << "failed to load spritesheet!" << std::endl;
-	}
-	if (!bottomTexture1.loadFromFile("res/img/Straights/straight_horizontal_noBorder_top.png", sf::IntRect(0, 0, 1000, 1000)))
-	{
-		std::cerr << "failed to load spritesheet!" << std::endl;
-	}
-	if (!sfmlTexture.loadFromFile("res/img/sfml.png", sf::IntRect(0, 0, 1000, 1000)))
-	{
-		std::cerr << "failed to load spritesheet!" << std::endl;
-	}
-	if (!box2dTexture.loadFromFile("res/img/box2d.png", sf::IntRect(0, 0, 1000, 1000)))
-	{
-		std::cerr << "failed to load spritesheet!" << std::endl;
-	}
 
 
 	//Get position of grass tiles and set sprites to each position
@@ -71,7 +38,7 @@ void SplashScreen::Load() {
 		grass = makeEntity();
 		//Add a new sprite component set texture and scale
 		auto t3 = grass->addComponent<SpriteComponent>();
-		t3->getSprite().setTexture(grassTexture1);
+		t3->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
 		t3->getSprite().setScale(0.400f, 0.400f);
 
 		//get tile position - vector2f
@@ -88,7 +55,7 @@ void SplashScreen::Load() {
 		track = makeEntity();
 		//Add a new sprite component set texture and scale
 		auto t2 = track->addComponent<SpriteComponent>();
-		t2->getSprite().setTexture(roadTexture1);
+		t2->getSprite().setTexture(*Resources::get<Texture>("Straights/straight_noBorder.png"));
 		t2->getSprite().setScale(0.400f, 0.400f);
 
 		//get tile position - vector2f
@@ -104,7 +71,7 @@ void SplashScreen::Load() {
 		peak = makeEntity();
 		//Add a new sprite component set texture and scale
 		auto t2 = peak->addComponent<SpriteComponent>();
-		t2->getSprite().setTexture(peakTexture1);
+		t2->getSprite().setTexture(*Resources::get<Texture>("Straights/straight_horizontal_noBorder_bottom.png"));
 		t2->getSprite().setScale(0.400f, 0.400f);
 
 		//get tile position - vector2f
@@ -122,7 +89,7 @@ void SplashScreen::Load() {
 
 		//Add a new sprite component set texture and scale
 		auto t2 = bottom->addComponent<SpriteComponent>();
-		t2->getSprite().setTexture(bottomTexture1);
+		t2->getSprite().setTexture(*Resources::get<Texture>("Straights/straight_horizontal_noBorder_top.png"));
 		t2->getSprite().setScale(0.400f, 0.400f);
 
 		//get tile position - vector2f
@@ -143,18 +110,18 @@ void SplashScreen::Load() {
 		//creates entitys for splash and adds sprite component
 		auto splash = makeEntity();
 		auto t = splash->addComponent<SpriteComponent>();
-		t->getSprite().setTexture(box2dTexture);
+		t->getSprite().setTexture(*Resources::get<Texture>("box2d.png"));
 		splash->setPosition(sf::Vector2f(Engine::getWindowSize().y / 2.f + 400, 700));
 
 		auto splash1 = makeEntity();
 		auto s = splash1->addComponent<SpriteComponent>();
-		s->getSprite().setTexture(sfmlTexture);
+		s->getSprite().setTexture(*Resources::get<Texture>("sfml.png"));
 		splash1->setPosition(sf::Vector2f(Engine::getWindowSize().y / 2.f - 100, 790));
 
 
 
 
-		//creates entitys for splash and adds text components
+		////creates entitys for splash and adds text components
 		txt = makeEntity();
 		auto title = txt->addComponent<TextComponent>("TD CHAMPIONSHIP RACER");
 		auto start = txt->addComponent<TextComponent>("PRESS SPACE OR CLICK MOUSE TO START");
@@ -163,15 +130,13 @@ void SplashScreen::Load() {
 		title->setCenterPos(Engine::getWindowSize().x / 2.f, 100.f, 50);
 		start->setCenterPos(Engine::getWindowSize().x / 2.f, 600.f, 50);
 
-
 	}
 	setLoaded(true);
 }
 
-
 void SplashScreen::Update(const double & dt)
 {
-	auto test = txt->GetCompatibleComponent<TextComponent>();
+	/*auto test = txt->GetCompatibleComponent<TextComponent>();*/
 
 	// cout << "Menu Update "<<dt<<"\n";	
 

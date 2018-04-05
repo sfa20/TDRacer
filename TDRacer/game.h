@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include "scenes/scene_level1.h"
@@ -17,7 +16,8 @@
 #include "scenes/scene_controls.h"
 #include "scenes/scene_graphics.h"
 
-/****************Menus*********************************/
+
+/****************MENUS*********************************/
 extern SplashScreen splashScreen;
 extern MenuScreen menuScreen;
 extern OptionScreen optionScreen;
@@ -31,7 +31,11 @@ extern SoundScreen soundScreen;
 extern GraphicScreen graphicScreen;
 extern ControlScreen controlScreen;
 
-/***************Races********************************/
+/***************RACES********************************/
 extern Level1Scene level1;
 extern Level2Scene level2;
 extern Level3Scene level3;
+
+
+
+

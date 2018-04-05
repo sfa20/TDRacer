@@ -14,16 +14,6 @@ using namespace std;
 using namespace sf;
 using namespace Resources;
 
-Texture grassTexture4;
-Texture roadTexture4;
-Texture peakTexture4;
-Texture bottomTexture4;
-Texture cornerTexture13;
-Texture cornerTexture14;
-Texture cornerTexture15;
-Texture cornerTexture16;
-Texture rightTexture4;
-Texture leftTexture4;
 static shared_ptr<Entity> txt;
 
 void LoadScreen::Load()
@@ -33,48 +23,6 @@ void LoadScreen::Load()
 	{
 		ls::loadLevelFile("res/menu.txt", 50.f);
 
-		//Loads background imagae WITHOUT error (unless file is non-existent)
-		if (!roadTexture4.loadFromFile("res/img/Straights/straight_noBorder.png", sf::IntRect(0, 0, 1000, 1000)))
-		{
-			std::cerr << "failed to load spritesheet!" << std::endl;
-		}
-		if (!peakTexture4.loadFromFile("res/img/Straights/straight_horizontal_noBorder_bottom.png", sf::IntRect(0, 0, 1000, 1000)))
-		{
-			std::cerr << "failed to load spritesheet!" << std::endl;
-		}
-		if (!bottomTexture4.loadFromFile("res/img/Straights/straight_horizontal_noBorder_top.png", sf::IntRect(0, 0, 1000, 1000)))
-		{
-			std::cerr << "failed to load spritesheet!" << std::endl;
-		}
-		if (!grassTexture4.loadFromFile("res/img/grass.png", sf::IntRect(0, 0, 1000, 1000)))
-		{
-			std::cerr << "failed to load spritesheet!" << std::endl;
-		}
-		if (!cornerTexture13.loadFromFile("res/img/Corners/90DegreeTopRight.png", sf::IntRect(0, 0, 1000, 1000)))
-		{
-			std::cerr << "failed to load spritesheet!" << std::endl;
-		}
-		if (!cornerTexture14.loadFromFile("res/img/Corners/90DegreeTopLeft.png", sf::IntRect(0, 0, 1000, 1000)))
-		{
-			std::cerr << "failed to load spritesheet!" << std::endl;
-		}
-		if (!cornerTexture15.loadFromFile("res/img/Corners/90DegreeBottomLeft.png", sf::IntRect(0, 0, 1000, 1000)))
-		{
-			std::cerr << "failed to load spritesheet!" << std::endl;
-		}
-		if (!cornerTexture16.loadFromFile("res/img/Corners/90DegreeBottomRight.png", sf::IntRect(0, 0, 1000, 1000)))
-		{
-			std::cerr << "failed to load spritesheet!" << std::endl;
-		}
-		if (!rightTexture4.loadFromFile("res/img/Straights/straight_vertical_noBorder_left.png", sf::IntRect(0, 0, 1000, 1000)))
-		{
-			std::cerr << "failed to load spritesheet!" << std::endl;
-		}
-		if (!leftTexture4.loadFromFile("res/img/Straights/straight_vertical_noBorder_right.png", sf::IntRect(0, 0, 1000, 1000)))
-		{
-			std::cerr << "failed to load spritesheet!" << std::endl;
-		}
-
 		//Get position of grass tiles and set sprites to each position
 		auto grassTiles = ls::findTiles(ls::GRASS);
 		for each (auto t in grassTiles)
@@ -83,7 +31,7 @@ void LoadScreen::Load()
 			grass = makeEntity();
 			//Add a new sprite component set texture and scale
 			auto t3 = grass->addComponent<SpriteComponent>();
-			t3->getSprite().setTexture(grassTexture4);
+			t3->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
 			t3->getSprite().setScale(0.400f, 0.400f);
 
 			//get tile position - vector2f
@@ -99,7 +47,7 @@ void LoadScreen::Load()
 			peak = makeEntity();
 			//Add a new sprite component set texture and scale
 			auto t2 = peak->addComponent<SpriteComponent>();
-			t2->getSprite().setTexture(peakTexture4);
+			t2->getSprite().setTexture(*Resources::get<Texture>("Straights/straight_horizontal_noBorder_bottom.png"));
 			t2->getSprite().setScale(0.400f, 0.400f);
 
 			//get tile position - vector2f
@@ -117,7 +65,7 @@ void LoadScreen::Load()
 
 			//Add a new sprite component set texture and scale
 			auto t2 = bottom->addComponent<SpriteComponent>();
-			t2->getSprite().setTexture(bottomTexture4);
+			t2->getSprite().setTexture(*Resources::get<Texture>("Straights/straight_horizontal_noBorder_top.png"));
 			t2->getSprite().setScale(0.400f, 0.400f);
 
 			//get tile position - vector2f
@@ -134,7 +82,7 @@ void LoadScreen::Load()
 			track = makeEntity();
 			//Add a new sprite component set texture and scale
 			auto t2 = track->addComponent<SpriteComponent>();
-			t2->getSprite().setTexture(roadTexture4);
+			t2->getSprite().setTexture(*Resources::get<Texture>("Straights/straight_noBorder.png"));
 			t2->getSprite().setScale(0.400f, 0.400f);
 
 			//get tile position - vector2f
@@ -143,7 +91,7 @@ void LoadScreen::Load()
 			t2->getSprite().setPosition(g);
 
 		}
-		//Get position of Corner tiles and set sprites to each postition
+		////Get position of Corner tiles and set sprites to each postition
 		auto corner1Tiles = ls::findTiles(ls::CORNER1);
 		for each (auto t in corner1Tiles)
 		{
@@ -151,11 +99,11 @@ void LoadScreen::Load()
 			corn1 = makeEntity();
 
 			auto t1 = corn1->addComponent<SpriteComponent>();
-			t1->getSprite().setTexture(grassTexture4);
+			t1->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
 			t1->getSprite().setScale(0.400f, 0.400f);
 			//Add a new sprite component set texture and scale
 			auto t2 = corn1->addComponent<SpriteComponent>();
-			t2->getSprite().setTexture(cornerTexture13);
+			t2->getSprite().setTexture(*Resources::get<Texture>("Corners/90DegreeTopRight.png"));
 			t2->getSprite().setScale(0.400f, 0.400f);
 
 
@@ -167,18 +115,18 @@ void LoadScreen::Load()
 
 		}
 
-		//Get position of track tiles and set sprites to each postition
+		////Get position of track tiles and set sprites to each postition
 		auto corner2Tiles = ls::findTiles(ls::CORNER2);
 		for each (auto t in corner2Tiles)
 		{
 			static shared_ptr<Entity> corn2;
 			corn2 = makeEntity();
 			auto t1 = corn2->addComponent<SpriteComponent>();
-			t1->getSprite().setTexture(grassTexture4);
+			t1->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
 			t1->getSprite().setScale(0.400f, 0.400f);
 			//Add a new sprite component set texture and scale
 			auto t2 = corn2->addComponent<SpriteComponent>();
-			t2->getSprite().setTexture(cornerTexture14);
+			t2->getSprite().setTexture(*Resources::get<Texture>("Corners/90DegreeTopLeft.png"));
 			t2->getSprite().setScale(0.400f, 0.400f);
 
 
@@ -190,18 +138,18 @@ void LoadScreen::Load()
 
 		}
 
-		//Get position of track tiles and set sprites to each postition
+		////Get position of track tiles and set sprites to each postition
 		auto corner3Tiles = ls::findTiles(ls::CORNER3);
 		for each (auto t in corner3Tiles)
 		{
 			static shared_ptr<Entity> corn3;
 			corn3 = makeEntity();
 			auto t1 = corn3->addComponent<SpriteComponent>();
-			t1->getSprite().setTexture(grassTexture4);
+			t1->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
 			t1->getSprite().setScale(0.400f, 0.400f);
 			//Add a new sprite component set texture and scale
 			auto t2 = corn3->addComponent<SpriteComponent>();
-			t2->getSprite().setTexture(cornerTexture15);
+			t2->getSprite().setTexture(*Resources::get<Texture>("Corners/90DegreeBottomLeft.png"));
 			t2->getSprite().setScale(0.400f, 0.400f);
 
 
@@ -213,18 +161,18 @@ void LoadScreen::Load()
 
 		}
 
-		//Get position of track tiles and set sprites to each postition
+		////Get position of track tiles and set sprites to each postition
 		auto corner4Tiles = ls::findTiles(ls::CORNER4);
 		for each (auto t in corner4Tiles)
 		{
 			static shared_ptr<Entity> corn4;
 			corn4 = makeEntity();
 			auto t1 = corn4->addComponent<SpriteComponent>();
-			t1->getSprite().setTexture(grassTexture4);
+			t1->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
 			t1->getSprite().setScale(0.400f, 0.400f);
 			//Add a new sprite component set texture and scale
 			auto t2 = corn4->addComponent<SpriteComponent>();
-			t2->getSprite().setTexture(cornerTexture16);
+			t2->getSprite().setTexture(*Resources::get<Texture>("Corners/90DegreeBottomRight.png"));
 			t2->getSprite().setScale(0.400f, 0.400f);
 
 
@@ -244,7 +192,7 @@ void LoadScreen::Load()
 
 			//Add a new sprite component set texture and scale
 			auto t2 = right->addComponent<SpriteComponent>();
-			t2->getSprite().setTexture(rightTexture4);
+			t2->getSprite().setTexture(*Resources::get<Texture>("Straights/straight_vertical_noBorder_left.png"));
 			t2->getSprite().setScale(0.400f, 0.400f);
 
 			//get tile position - vector2f
@@ -254,7 +202,7 @@ void LoadScreen::Load()
 
 		}
 
-		//Get position of LeftTrack tiles and set sprites to each postition
+		////Get position of LeftTrack tiles and set sprites to each postition
 		auto leftTiles = ls::findTiles(ls::LEFT);
 		for each (auto t in leftTiles)
 		{
@@ -262,7 +210,7 @@ void LoadScreen::Load()
 			left = makeEntity();
 			//Add a new sprite component set texture and scale
 			auto t2 = left->addComponent<SpriteComponent>();
-			t2->getSprite().setTexture(leftTexture4);
+			t2->getSprite().setTexture(*Resources::get<Texture>("Straights/straight_vertical_noBorder_right.png"));
 			t2->getSprite().setScale(0.400f, 0.400f);
 
 			//get tile position - vector2f
@@ -271,28 +219,17 @@ void LoadScreen::Load()
 			t2->getSprite().setPosition(g);
 
 		}
-		auto start = makeEntity();
-		auto s = start->addComponent<SpriteComponent>();
 
 		txt = makeEntity();
 		auto title = txt->addComponent<TextComponent>("TD CHAMPIONSHIP RACER");
 		auto control = txt->addComponent<TextComponent>("New game");
 		auto control1 = txt->addComponent<TextComponent>("Load game");
 
-
-		//Loads background imagae WITHOUT error (unless file is non-existent)
-		/*if (!splashTexture.loadFromFile("background.png", sf::IntRect(0, 0, 1000, 1000)))
-		{
-		std::cerr << "failed to load spritesheet!" << std::endl;
-		}*/
-
 		title->setCenterPos(Engine::getWindowSize().x / 2.f, 100.f, 50.f);
 		control->setCenterPos(Engine::getWindowSize().x / 2.f, 520.f, 50.f);
 		control1->setCenterPos(Engine::getWindowSize().x / 2.f, 570.f, 50.f);
 
 		control->setColor(255, 0, 0, 255);
-
-
 	}
 	setLoaded(true);
 	selectedItemIndex = 1;
