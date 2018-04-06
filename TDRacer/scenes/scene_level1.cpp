@@ -332,10 +332,10 @@ void Level1Scene::Load() {
 	auto lv = ls::getTilePosition(l[0]);
 
 	//Add a Player Physics Component
-	auto p = player->addComponent<PlayerPhysicsComponent>(Vector2f(20.f, 20.f));
-	p->setMass(400.f);
-	p->setFriction(400.f);
-	p->setRestitution(400.f);
+	auto p = player->addComponent<PlayerPhysicsComponent>(Vector2f(40.f, 20.f));
+	//p->setMass(1);
+	//p->setFriction(1);
+	//p->setRestitution(1);
 	//Set the players starting position
 	player->setPosition(lv);
 

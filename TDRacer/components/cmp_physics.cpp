@@ -35,13 +35,13 @@ PhysicsComponent::PhysicsComponent(Entity* p, bool dyn, const Vector2f& size) : 
 	b2FixtureDef FixtureDef;
     // Fixture properties
     FixtureDef.density = _dynamic ? 10.f : 0.f;
-    FixtureDef.friction = _dynamic ? 0.1f : 0.8f;
+    FixtureDef.friction = _dynamic ? 0.05f : 0.8f;
     FixtureDef.restitution = .2;
     FixtureDef.shape = &Shape;
     // Add to body
     _fixture = _body->CreateFixture(&FixtureDef);
     //_fixture->SetRestitution(.9)
-    //FixtureDef.restitution = .2;
+
   }
 
   // An ideal Pod/capusle shape should be used for the player,
@@ -72,7 +72,9 @@ PhysicsComponent::PhysicsComponent(Entity* p, bool dyn, const Vector2f& size) : 
 }
 
 
-void PhysicsComponent::setFriction(float r) { _fixture->SetFriction(r); }
+void PhysicsComponent::setFriction(float r) { 
+	_fixture->SetFriction(r); 
+}
 
 
 void PhysicsComponent::setMass(float m) { 
@@ -124,23 +126,32 @@ void PhysicsComponent::impulse(const sf::Vector2f& i) {
 
 void PhysicsComponent::turnRight() {
 	
-	auto g = _body->GetWorldVector(b2Vec2(0, 0.2));
-
-	_body->SetAngularVelocity(1.5);
-	_body->ApplyAngularImpulse(100, true);
-
+	auto g = _body->GetWorldVector(b2Vec2(0, 0.1));
+	_body->SetAngularVelocity(1.4f);
+	
+	//_body->ApplyAngularImpulse(100, true);
 }
+
 
 void PhysicsComponent::turnLeft() {
 	//sin(_body->GetAngle() * )
-	_body->SetAngularVelocity(-2);
-	_body->ApplyAngularImpulse(100, true);
+	float turnSpeed = 0.2;
+	auto angle = _body->GetAngle();
+
+	angle += turnSpeed * getVelocity().x / 30.f;
+
+	auto t = sin(angle);
+
+	_body->ApplyForce(b2Vec2(4, 4), b2Vec2(0, 1), true);
+	_body->SetAngularVelocity(-1.5);
+	//_body->ApplyAngularImpulse(100, true);
 
 	//turn speed
 	//angle += turnspeed * speed/ maxspeed
 	//angle -= turnspeed * spee5d/ maxspeed
 		
 }
+
 
 void PhysicsComponent::stopTurning() {
 	//Stop Turning
@@ -159,10 +170,12 @@ void PhysicsComponent::dampen(const sf::Vector2f& i) {
 
 }
 
+
 bool PhysicsComponent::isTouching(const PhysicsComponent& pc) const {
   b2Contact* bc;
   return isTouching(pc, bc);
 }
+
 
 bool PhysicsComponent::isTouching(const PhysicsComponent& pc, b2Contact const* bc) const {
   const auto _otherFixture = pc.getFixture();
@@ -182,6 +195,7 @@ bool PhysicsComponent::isTouching(const PhysicsComponent& pc, b2Contact const* b
   return false;
 }
 
+
 std::vector<const b2Contact const*> PhysicsComponent::getTouching() const {
   std::vector<const b2Contact const*> ret;
 
@@ -196,6 +210,7 @@ std::vector<const b2Contact const*> PhysicsComponent::getTouching() const {
 
   return ret;
 }
+
 
 void PhysicsComponent::setRestitution(float r) {
   _fixture->SetRestitution(r);

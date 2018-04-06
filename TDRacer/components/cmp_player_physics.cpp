@@ -39,70 +39,55 @@ void PlayerPhysicsComponent::update(double dt) {
 	}
 
 	//This gets the world vector for moving the Entity
-	auto worldVector = _body->GetWorldVector(b2Vec2(0, 0.2));
+	//Currently controlling the speed of the car - something needs done to control speed somehow
+	auto worldVector = _body->GetWorldVector(b2Vec2(0, 1));
 
 	//Handle keyboard input from user
-	if (Keyboard::isKeyPressed(Keyboard::A) || Keyboard::isKeyPressed(Keyboard::D) || Keyboard::isKeyPressed(Keyboard::W) || Keyboard::isKeyPressed(Keyboard::S)) {
+	if (Keyboard::isKeyPressed(Keyboard::W) || Keyboard::isKeyPressed(Keyboard::S)) {
 
 		if (Keyboard::isKeyPressed(Keyboard::W)) {
 			if (getVelocity().x < _maxVelocity.x) {
 				impulse({ -worldVector.x, -worldVector.y });
-				stopTurning(); 
+				stopTurning();
 			}
 		}
 		else if (Keyboard::isKeyPressed(Keyboard::S)) {
 			impulse({ worldVector.x, worldVector.y });
-			stopTurning(); 
+			stopTurning();
 		}
-		else if (Keyboard::isKeyPressed(Keyboard::D)) {
-			dampen({ 0.1f, 0.1f });
-			impulse({ -worldVector.x, -worldVector.y }); 
-			turnRight(); 
-			
-		}
-		else if (Keyboard::isKeyPressed(Keyboard::A)) {
-			cout << getVelocity() << endl;
-			dampen({ 0.1f, 0.1f }); 
-			impulse({ -worldVector.x, -worldVector.y });
-			turnLeft(); 
-		}
+		
 	}
 	else {
 		// Dampen X axis movement
-		dampen({ 0.1f, 0.1f });
+		dampen({ 0.015f, 0.015f });
 		stopTurning(); //Added
 	}
 
-	if (Keyboard::isKeyPressed(Keyboard::Space)) {
-		dampen({ 1, 1 });
+	if (Keyboard::isKeyPressed(Keyboard::A) || Keyboard::isKeyPressed(Keyboard::D)) {
+	
+		if (Keyboard::isKeyPressed(Keyboard::D)) {
+			dampen({ 0.1f, 0.1f });
+			//impulse({ -worldVector.x, -worldVector.y }); 
+			turnRight();
+
+		}
+		else if (Keyboard::isKeyPressed(Keyboard::A)) {
+			cout << getVelocity() << endl;
+			dampen({ 0.1f, 0.1f });
+			//impulse({ -worldVector.x, -worldVector.y });
+			turnLeft();
+		}
+	
+	}
+	else {
+		// Dampen X axis movement
+		dampen({ 0.015f, 0.015f });
+		stopTurning(); //Added
 	}
 
 
 	//Old Impulse
 	//		//impulse({0, -(float)(dt * _groundspeed) });
-
-	
-	//Not Used
-	// Handle Jump
-	/*if (Keyboard::isKeyPressed(Keyboard::Up)) {
-		_grounded = isGrounded();
-		if (_grounded) {
-			setVelocity(Vector2f(getVelocity().x, 0.f));
-			teleport(Vector2f(pos.x, pos.y - 2.0f));
-			impulse(Vector2f(0, -6.f));
-		}
-	}*/
-
-	//Are we in air?
-	//Not Used
-	//if (!_grounded) {
-	//  // Check to see if we have landed yet
-	//  _grounded = isGrounded();
-	//  // disable friction while jumping
-	//  setFriction(0.f);
-	//} else {
-	//  setFriction(0.1f);
-	//}
 	
 	// Clamp velocity.
 	auto v = getVelocity();
@@ -110,28 +95,20 @@ void PlayerPhysicsComponent::update(double dt) {
 	v.y = copysign(min(abs(v.y), _maxVelocity.y), v.y);
 	setVelocity(v);
 
-	//float timeStep = 1 / 20.0;
-	//int velocityIterations = 8;
-	//int positionIterations = 3;
-
-	//Physics::GetWorld()->Step(timeStep, velocityIterations, positionIterations);
-
 	PhysicsComponent::update(dt);
 }
 
+
 PlayerPhysicsComponent::PlayerPhysicsComponent(Entity* p, const Vector2f& size) : PhysicsComponent(p, true, size) {
 	_size = sv2_to_bv2(size, true);
-	maxSpeed = 30.f;
+	maxSpeed = 60.f;
 	_maxVelocity = Vector2f(200.f, 400.f);
-	_groundspeed = 30.f;
-//  _grounded = false;
+	_groundspeed = 60.f;
 	_body->SetSleepingAllowed(false);
 	_body->SetFixedRotation(true);
 	
 	//Bullet items have higher-res collision detection
 	_body->SetBullet(true);
-
-
 
 }
 
