@@ -25,6 +25,7 @@ int resIndex = 0;
 int windowModeIndex = 1;
 int sizeOfModes;
 int stringCount = 0;
+int sizeRes;
 
 
 
@@ -52,10 +53,6 @@ void GraphicScreen::Load() {
 			<< mode.bitsPerPixel << " bpp" << std::endl;
 	}
 
-
-	// Create a window with the same pixel depth as the desktop
-	/*sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
-	window.create(sf::VideoMode(1024, 768, desktop.bitsPerPixel), "SFML window");*/
 
 
 
@@ -379,8 +376,8 @@ void GraphicScreen::Update(const double & dt)
 
 		if (list[2]->GetText().getGlobalBounds().contains(mousePosF)) {
 
-			int sizeRes = res->max_size();
-			auto convertRes = res[resIndex];
+			sizeRes = res->max_size();
+
 
 			if (resIndex >= 0)
 			{
@@ -453,96 +450,110 @@ void GraphicScreen::Update(const double & dt)
 	}
 
 	//Handles Keyboard input and checks against the Menu Options
-	//if (sf::Event::KeyPressed) {
+	if (sf::Event::KeyPressed) {
 
-	//	if (sf::Keyboard::isKeyPressed(Keyboard::Up)) {
-	//		if (GetPressedItem() != 1)
-	//			MoveUp();
-	//	}
+		if (sf::Keyboard::isKeyPressed(Keyboard::Up)) {
+			if (GetPressedItem() != 1)
+				MoveUp();
+		}
 
-	//	if (sf::Keyboard::isKeyPressed(Keyboard::Down)) {
-	//		if (GetPressedItem() != 5)
-	//			MoveDown();
-	//	}
+		if (sf::Keyboard::isKeyPressed(Keyboard::Down)) {
+			if (GetPressedItem() != 5)
+				MoveDown();
+		}
 
-	//	if (sf::Keyboard::isKeyPressed(Keyboard::Return)) {
-	//		switch (GetPressedItem()) {
+		if (sf::Keyboard::isKeyPressed(Keyboard::Return)) {
+			switch (GetPressedItem()) {
 
-	//		case 1:
-	//			//controls vsync selection for keyboard
-	//			std::cout << "vSync button has been pressed" << std::endl;
-	//			if (vSyncIndex == 0)
-	//			{
-	//				vSyncIndex++;
-	//				list[1]->SetText("V-SYNC : " + vSyncSetting[vSyncIndex]);
-	//				Engine::setVsync(true);
-	//			}
-	//			else
-	//			{
-	//				vSyncIndex--;
-	//				list[1]->SetText("V-SYNC : " + vSyncSetting[vSyncIndex]);
-	//				Engine::setVsync(false);
-	//			}
+			case 1:
+				//controls vsync selection for keyboard
+				std::cout << "vSync button has been pressed" << std::endl;
+				if (vSyncIndex == 0)
+				{
+					vSyncIndex++;
+					list[1]->SetText("V-SYNC : OFF");
+					Engine::setVsync(false);
+				}
+				else
+				{
+					vSyncIndex--;
+					list[1]->SetText("V-SYNC : ON ");
+					Engine::setVsync(true);
+				}
 
-	//			std::this_thread::sleep_for(std::chrono::milliseconds(150));
-	//			break;
-	//		case 2:
-	//			std::cout << "Track 2 Options button has been pressed" << std::endl;
-	//			if (resIndex >= 0)
-	//			{
-	//				list[2]->SetText("RESOLUTION : " + res[resIndex]);
-	//				resIndex++;
-	//			}
-	//			if (resIndex == sizeOfModes)
-	//			{
-	//				resIndex = 0;
-	//				list[2]->SetText("RESOLUTION : " + res[resIndex]);
-	//			}
-	//			std::this_thread::sleep_for(std::chrono::milliseconds(150));
-	//			break;
-	//		case 3:
-	//			if (windowModeIndex >= 0)
-	//			{
-	//				list[3]->SetText("WINDOW MODE : " + windowModeSetting[windowModeIndex]);
-	//				windowModeIndex++;
-	//			}
-	//			else
-	//			{
-	//				list[3]->SetText("WINDOW MODE : " + windowModeSetting[windowModeIndex]);
-	//				windowModeIndex--;
-	//			}
-	//			std::cout << "Window style button has been pressed" << std::endl;
-	//			std::this_thread::sleep_for(std::chrono::milliseconds(150));
-	//			break;
-	//		case 4:
-	//			std::cout << "Track 4 button has been pressed" << std::endl;
-	//			std::this_thread::sleep_for(std::chrono::milliseconds(150));
-	//			std::string masterString = res[resIndex];
-	//			std::stringstream iss(masterString);
-
-	//			while (iss.good())
-	//			{
-	//				stringCount++;
-
-	//				std::string resString;
-	//				getline(iss, resString, 'x');
-
-	//				if (stringCount == 1)
-	//					nWidth = atoi(resString.c_str());
-	//				else
-	//					nHeight = atoi(resString.c_str());
-	//			}
-
-	//			if (windowModeSetting[windowModeIndex] == "FULLSCREEN")
-	//			{
-	//				Engine::Start(nWidth, nHeight, "TD Championship Racer", &menuScreen, true);
-	//			}
-	//			else if (windowModeSetting[windowModeIndex] == "WINDOWED")
-	//			{
-	//				Engine::Start(nWidth, nHeight, "TD Championship Racer", &menuScreen, false);
-	//			}
+				std::this_thread::sleep_for(std::chrono::milliseconds(150));
+				break;
+			case 2:
+				std::cout << "Track 2 Options button has been pressed" << std::endl;
+				sizeRes = res->max_size();
 
 
-	//			break;
+				if (resIndex >= 0)
+				{
+					list[2]->SetText("RESOLUTION : " + res[resIndex]);
+					resIndex++;
+
+				}
+				if (resIndex == sizeOfModes)
+				{
+					resIndex = 0;
+					list[2]->SetText("RESOLUTION : " + res[resIndex]);
+				}
+
+				std::this_thread::sleep_for(std::chrono::milliseconds(150));
+				break;
+			case 3:
+				if (windowModeIndex == 0)
+				{
+					list[3]->SetText("WINDOW MODE : WINDOWED ");
+					windowModeIndex++;
+				}
+				else
+				{
+					list[3]->SetText("WINDOW MODE : FULLSCREEN ");
+					windowModeIndex--;
+				}
+				std::cout << "Window style button has been pressed" << std::endl;
+				std::this_thread::sleep_for(std::chrono::milliseconds(150));
+				break;
+			case 4:
+				std::cout << "Track 4 button has been pressed" << std::endl;
+				std::this_thread::sleep_for(std::chrono::milliseconds(150));
+				std::string masterString = res[resIndex];
+				std::stringstream iss(masterString);
+
+				while (iss.good())
+				{
+					stringCount++;
+
+					std::string resString;
+					getline(iss, resString, 'x');
+
+					if (stringCount == 1)
+						nWidth = atoi(resString.c_str());
+					else
+						nHeight = atoi(resString.c_str());
+				}
+				if (windowModeIndex == 1)
+				{
+					settingConfirmed = true;
+					nisFullscreen = true;
+
+					window.close();
+				}
+				else
+				{
+					settingConfirmed = true;
+					nisFullscreen = false;
+
+					window.close();
+				}
+
+
+
+				break;
+			}
+		}
+	}
 }
 

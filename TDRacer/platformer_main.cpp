@@ -67,8 +67,5 @@ int main() {
 		Engine::Start(nWidth, nHeight, "TD Championship Racer", &splashScreen, nisFullscreen);
 		settingConfirmed = false;
 	}
-
-
-
 }
 
