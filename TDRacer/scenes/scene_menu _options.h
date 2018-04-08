@@ -2,10 +2,11 @@
 
 #include "engine.h"
 
-class MenuScreen : public Scene {
+
+class OptionScreen : public Scene {
 public:
-	MenuScreen() = default;
-	~MenuScreen() override = default;
+	OptionScreen() = default;
+	~OptionScreen() override = default;
 
 
 	int GetPressedItem() { return selectedItemIndex; } //added - sfa20	
@@ -15,5 +16,6 @@ public:
 	void Update(const double& dt) override;
 
 private:
+	int index;
 	int selectedItemIndex;
 };

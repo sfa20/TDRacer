@@ -28,15 +28,24 @@ void TextComponent::SetText(const std::string& str) {
 
 
 //added by craig sets position
-void TextComponent::setPos(float xPos, float yPos, float size)
+void TextComponent::setCenterPos(float xPos, float yPos, float size)
 {
-	_text.setPosition(xPos, yPos);
+
 	_text.setCharacterSize(size);
+	sf::FloatRect textRect = _text.getLocalBounds();
+	_text.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+	_text.setPosition(xPos, yPos);
+
 }
 
 //added by craig sets color
 void TextComponent::setColor(int rgba1, int rgba2, int rgba3, int opacity)
 {
 	_text.setFillColor(sf::Color(rgba1, rgba2, rgba3, opacity));
+}
+
+void TextComponent::fadeTxt()
+{
+
 }
 

@@ -2,11 +2,10 @@
 
 #include "engine.h"
 
-class MenuScreen : public Scene {
+class CarSelectScreen : public Scene {
 public:
-	MenuScreen() = default;
-	~MenuScreen() override = default;
-
+	CarSelectScreen() = default;
+	~CarSelectScreen() override = default;
 
 	int GetPressedItem() { return selectedItemIndex; } //added - sfa20	
 	void Load() override;

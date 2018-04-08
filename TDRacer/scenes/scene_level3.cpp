@@ -62,7 +62,7 @@ void Level3Scene::Update(const double& dt) {
 	Scene::Update(dt);
 	const auto pp = player->getPosition();
 	if (ls::getTileAt(pp) == ls::START) {
-		Engine::ChangeScene((Scene*)&level1);
+		/*Engine::ChangeScene((Scene*)&level1);*/
 	}
 	else if (!player->isAlive()) {
 		Engine::ChangeScene((Scene*)&level3);
