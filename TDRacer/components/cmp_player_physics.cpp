@@ -72,7 +72,7 @@ void PlayerPhysicsComponent::update(double dt) {
 
 		}
 		else if (Keyboard::isKeyPressed(Keyboard::A)) {
-			cout << getVelocity() << endl;
+			//cout << getVelocity() << en5dl;
 			dampen({ 0.1f, 0.1f });
 			//impulse({ -worldVector.x, -worldVector.y });
 			turnLeft();

@@ -12,7 +12,8 @@
 #include "LevelSystem.h"
 #include <fstream>
 #include <iostream>
-
+#include "../components/cmp_timer.h"
+#include "../components/cmp_lap_timer.h"
 #include "../components/cmp_car_body.h"
 
 using namespace std;
@@ -21,7 +22,7 @@ using namespace Resources;
 
 static shared_ptr<Entity> player;
 static shared_ptr<Entity> raceTimer;
-
+Vector2f Scale;
 
 void Level1Scene::Load() {
 	//Load Level File
@@ -30,7 +31,7 @@ void Level1Scene::Load() {
 
 #pragma region Setup Map
 
-	Vector2f Scale = { 0.400f, 0.400f };
+	Scale = { 0.400f, 0.400f };
 
 	//////////////Added////////////
 	auto startTilesLeft = ls::findTiles(ls::STARTLEFT);
@@ -287,69 +288,43 @@ void Level1Scene::Load() {
 #pragma endregion
 
 
+#pragma region Setup Timer
+
 		raceTimer = makeEntity();
 		auto c = raceTimer->addComponent<TextComponent>("Timer: ");
 		c->setCenterPos(Engine::getWindowSize().x - 400.f, 20.f, 40.f);
-		auto c2 = raceTimer->addComponent<RaceTimer>();
+		auto c2 = raceTimer->addComponent<Timer>();
+		auto c3 = raceTimer->addComponent<LapTimer>();
+		c3->start();
+		/*
+		auto c3 = raceTimer->addComponent<RaceTimer>();*/
 		c2->start();
+		/*	c3->start();*/
+
+#pragma endregion
 
 
-
+		
 #pragma region CreatePlayer 
 
-//	Create an PlayerCar Entity, add component and set texture
+	//Create an PlayerCar Entity, add component and set texture
 	player = makeEntity();
 
 	//Adds a Sprite component
 	auto t = player->addComponent<SpriteComponent>(); //Add a sprite component
-//  	t->setBody(); //Set the b2d body
-
 	t->getSprite().setTexture(*Resources::load<Texture>("car_green_small_2.png"));
 	t->getSprite().setScale(0.5f, 0.5);
 	t->getSprite().setColor(Color::Red);
 
-	//Find the starting position (will update once start line is added
-	auto l = ls::findTiles(ls::CORNER1);
+	//Add a Player Physics Component
+	auto p = player->addComponent<PlayerPhysicsComponent>(Vector2f(20.f, 20.f));
+
+	//Find the starting position 
+	auto l = ls::findTiles(ls::START);
 	auto lv = ls::getTilePosition(l[0]);
 
-
-		//c->GetText().setCharacterSize(14);
-	//	//Get vector2f position of the first tile in startpos
-	////	test2->setPosition(ls::getTilePosition(corner1Tiles[0]));
-	//
-	////	Create an PlayerCar Entity, add component and set texture
-	//	player = makeEntity();
-	//	auto t = player->addComponent<SpriteComponent>();
-	//	texture1 = *Resources::load<Texture>("car_green_small_2.png");
-	//	t->getSprite().setTexture(texture1);
-	//	t->getSprite().setScale(0.5f, 0.5);
-	//
-	//	auto l = ls::findTiles(ls::CORNER1);
-	//	auto lv = ls::getTilePosition(l[0]);
-	//	auto m = player->GetCompatibleComponent<SpriteComponent>();
-	//	m[0]->getSprite().setPosition(lv);
-	//
-	//	auto p = player->addComponent<PlayerPhysicsComponent>(Vector2f(20.f, 20.f));
-
-	//Add a Player Physics Component
-	auto p = player->addComponent<PlayerPhysicsComponent>(Vector2f(40.f, 20.f));
-	//p->setMass(1);
-	//p->setFriction(1);
-	//p->setRestitution(1);
 	//Set the players starting position
-	player->setPosition(lv);
-
-
-	//Testing with multiple shapes
-	//player = makeEntity();
-	//auto s1 = player->addComponent<ShapeComponent>();
-	//s1->setShape<RectangleShape>(RectangleShape(Vector2f(100.f,100.f)));
-	//s1->getShape().setFillColor(Color::Green);
-	//auto s2 = player->addComponent<ShapeComponent>();
-	//s2->setShape<CircleShape>(CircleShape(50.f));
-	//s2->getShape().setFillColor(Color::Red);
-	//auto p = player->addComponent<PlayerPhysicsComponent>(Vector2f(20.f, 20.f));
-	//player->setPosition(lv);
+	player->setPosition(Vector2f(200,200));
 
 #pragma endregion
 
@@ -361,24 +336,74 @@ void Level1Scene::UnLoad() {
 	Scene::UnLoad();
 }
 
+
 void Level1Scene::Update(const double& dt) {
-	
+
+	//Update the RaceTimer
 	raceTimer->update(dt);
-
+	
 	//Get the race timer
-	auto a = raceTimer->GetCompatibleComponent<RaceTimer>()[0];
+	auto a = raceTimer->GetCompatibleComponent<Timer>()[0];
 
-	//Get mins, scecs and milliseconds
-	auto m = a->getMins();
-	auto s = a->getSecs();
-	auto ms = a->getMillisecs();
-
-	//Create a string based on above values
-	string time = "Timer: " + to_string(m) + " : " + to_string(s) + " : " + to_string(ms);
+	//Get the current time
+	string time = a->getTime();
 
 	//Get the text component and set this to the time string created above
 	auto b = raceTimer->GetCompatibleComponent<TextComponent>()[0];
 	b->SetText(time);
+
+	//End of Race Timer
+
+
+	//testing player going over finish
+	
+	auto s1 = ls::getTilePosition(ls::findTiles(ls::START)[0]);
+	auto s2 = ls::getTilePosition(ls::findTiles(ls::STARTLEFT)[0]);
+	auto s3 = ls::getTilePosition(ls::findTiles(ls::STARTRIGHT)[0]);
+
+	auto tileSize = ls::getTileSize();
+
+	//get the second race timer added to entity
+	auto lt = raceTimer->GetCompatibleComponent<LapTimer>()[0];
+	
+	//New Lap Incrementor - will increment when player goes over the finsih
+	if (player->getPosition().y > s2.y - tileSize / 2 && player->getPosition().y < s3.y + tileSize / 2) {
+		if (player->getPosition().x > s2.x - tileSize / 2 && player->getPosition().x < s3.x + tileSize / 2) {
+			
+			auto j = lt->getLapCounter();
+			
+			if (j) {
+				lt->setLapCounter(false);
+				lt->reset();
+				lt->setLaptime(lt->getCurrentLap());
+				lt->increaseLapCounter();
+				cout << "Current Lap: " << lt->getCurrentLap() << endl;
+				cout << lt->getLapTimes() << endl;
+			}
+		}
+	}
+
+	lt->temp = lt->getClock().getElapsedTime().asMilliseconds();
+	if (lt->temp > 10000) {
+		lt->setLapCounter(true);
+	}
+
+	cout << to_string(lt->temp) << endl;
+
+	//auto s11 = ls::getTileAt(playerpos);
+		//cout << p << endl;
+
+	//Lap Incrementer - will be replaced with player going over the line
+	/*if (a->getMins() >= a->getCurrentLap()) {
+		if (a->getSecs() <= 1) {
+			a->setLaptime(a->getCurrentLap());
+			a->setCurrentLap();
+		}
+	}*/
+
+	/*cout << a->getLapTimes() << endl;*/
+
+
 
 
 	Scene::Update(dt);
