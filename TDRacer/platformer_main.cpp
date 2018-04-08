@@ -39,7 +39,6 @@ Level2Scene level2;
 Level3Scene level3;
 
 int main() {
-	Engine::Start(1920, 1080, "TD Championship Racer", &menu);
 	//loads game textures
 	*Resources::load<Texture>("grass.png");
 	*Resources::load<Texture>("Straights/straight_noBorder.png");
