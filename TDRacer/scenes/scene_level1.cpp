@@ -340,8 +340,7 @@ void Level1Scene::Load() {
 	//Adds a Sprite component
 	auto t = player->addComponent<SpriteComponent>(); //Add a sprite component
 //  	t->setBody(); //Set the b2d body
-	texture1 = *Resources::load<Texture>("car_green_small_2.png");
-	t->getSprite().setTexture(texture1);
+	t->getSprite().setTexture(*Resources::load<Texture>("car_green_small_2.png"));
 	t->getSprite().setScale(0.5f, 0.5);
 	t->getSprite().setColor(Color::Red);
 
