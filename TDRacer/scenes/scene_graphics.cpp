@@ -18,17 +18,15 @@ using namespace Resources;
 static std::shared_ptr<Entity> txt;
 
 //INFORMATION FOR SETTINGS MENU
-string vSyncSetting[2]{ "OFF","ON" };
 string * res;
-string windowModeSetting[2]{ "FULLSCREEN"," WINDOWED" };
 
-int vSyncIndex = 0;
+int vSyncIndex = 1;
 int resIndex = 0;
-int windowModeIndex = 0;
+int windowModeIndex = 1;
 int sizeOfModes;
 int stringCount = 0;
-int nHeight;
-int nWidth;
+
+
 
 
 
@@ -271,9 +269,9 @@ void GraphicScreen::Load() {
 		//creates entitys for splash and adds text components
 		txt = makeEntity();
 		auto title = txt->addComponent<TextComponent>("TD CHAMPIONSHIP RACER");
-		auto control1 = txt->addComponent<TextComponent>("V-SYNC : " + vSyncSetting[vSyncIndex]);
+		auto control1 = txt->addComponent<TextComponent>("V-SYNC : OFF");
 		auto control2 = txt->addComponent<TextComponent>("RESOLUTION : " + currentWidth + " x " + currentHeight);
-		auto control3 = txt->addComponent<TextComponent>("WINDOW MODE : " + windowModeSetting[windowModeIndex]);
+		auto control3 = txt->addComponent<TextComponent>("WINDOW MODE : WINDOWED ");
 		auto control4 = txt->addComponent<TextComponent>("BACK TO MENU");
 
 
@@ -365,14 +363,14 @@ void GraphicScreen::Update(const double & dt)
 			if (vSyncIndex == 0)
 			{
 				vSyncIndex++;
-				list[1]->SetText("V-SYNC : " + vSyncSetting[vSyncIndex]);
-				Engine::setVsync(true);
+				list[1]->SetText("V-SYNC : OFF");
+				Engine::setVsync(false);
 			}
 			else
 			{
 				vSyncIndex--;
-				list[1]->SetText("V-SYNC : " + vSyncSetting[vSyncIndex]);
-				Engine::setVsync(false);
+				list[1]->SetText("V-SYNC : ON ");
+				Engine::setVsync(true);
 			}
 			cout << "vSync pressed" << endl;
 			selectedItemIndex = 1;
@@ -402,6 +400,16 @@ void GraphicScreen::Update(const double & dt)
 		}
 		if (list[3]->GetText().getGlobalBounds().contains(mousePosF)) {
 			cout << "WINDOW MODE PRESSED!" << endl;
+			if (windowModeIndex == 0)
+			{
+				list[3]->SetText("WINDOW MODE : WINDOWED ");
+				windowModeIndex++;
+			}
+			else
+			{
+				list[3]->SetText("WINDOW MODE : FULLSCREEN ");
+				windowModeIndex--;
+			}
 			selectedItemIndex = 3;
 			std::this_thread::sleep_for(std::chrono::milliseconds(150));
 		}
@@ -409,7 +417,6 @@ void GraphicScreen::Update(const double & dt)
 			cout << "OPTIONS MENU PRESSED!" << endl;
 			selectedItemIndex = 4;
 			std::this_thread::sleep_for(std::chrono::milliseconds(150));
-			window.close();
 
 			std::string masterString = res[resIndex];
 			std::stringstream iss(masterString);
@@ -428,64 +435,114 @@ void GraphicScreen::Update(const double & dt)
 					nHeight = atoi(resString.c_str());
 			}
 
-			Engine::Start(nWidth, nHeight, "TD Championship Racer", &menuScreen);
-			/*Engine::ChangeScene(&menuScreen);*/
+			if (windowModeIndex == 1)
+			{
+				settingConfirmed = true;
+				nisFullscreen = true;
+
+				window.close();
+			}
+			else
+			{
+				settingConfirmed = true;
+				nisFullscreen = false;
+
+				window.close();
+			}
 		}
 	}
 
 	//Handles Keyboard input and checks against the Menu Options
-	if (sf::Event::KeyPressed) {
+	//if (sf::Event::KeyPressed) {
 
-		if (sf::Keyboard::isKeyPressed(Keyboard::Up)) {
-			if (GetPressedItem() != 1)
-				MoveUp();
-		}
+	//	if (sf::Keyboard::isKeyPressed(Keyboard::Up)) {
+	//		if (GetPressedItem() != 1)
+	//			MoveUp();
+	//	}
 
-		if (sf::Keyboard::isKeyPressed(Keyboard::Down)) {
-			if (GetPressedItem() != 7)
-				MoveDown();
-		}
+	//	if (sf::Keyboard::isKeyPressed(Keyboard::Down)) {
+	//		if (GetPressedItem() != 5)
+	//			MoveDown();
+	//	}
 
-		if (sf::Keyboard::isKeyPressed(Keyboard::Return)) {
-			switch (GetPressedItem()) {
+	//	if (sf::Keyboard::isKeyPressed(Keyboard::Return)) {
+	//		switch (GetPressedItem()) {
 
-			case 1:
-				//controls vsync selection for keyboard
-				std::cout << "vSync button has been pressed" << std::endl;
-				if (vSyncIndex == 0)
-				{
-					vSyncIndex++;
-					list[1]->SetText("V-SYNC : " + vSyncSetting[vSyncIndex]);
-					Engine::setVsync(true);
-				}
-				else
-				{
-					vSyncIndex--;
-					list[1]->SetText("V-SYNC : " + vSyncSetting[vSyncIndex]);
-					Engine::setVsync(false);
-				}
+	//		case 1:
+	//			//controls vsync selection for keyboard
+	//			std::cout << "vSync button has been pressed" << std::endl;
+	//			if (vSyncIndex == 0)
+	//			{
+	//				vSyncIndex++;
+	//				list[1]->SetText("V-SYNC : " + vSyncSetting[vSyncIndex]);
+	//				Engine::setVsync(true);
+	//			}
+	//			else
+	//			{
+	//				vSyncIndex--;
+	//				list[1]->SetText("V-SYNC : " + vSyncSetting[vSyncIndex]);
+	//				Engine::setVsync(false);
+	//			}
 
-				std::this_thread::sleep_for(std::chrono::milliseconds(150));
-				break;
-			case 2:
-				std::cout << "Track 2 Options button has been pressed" << std::endl;
-				if (resIndex >= 0)
-				{
-					list[2]->SetText("RESOLUTION : " + res[resIndex]);
-					resIndex++;
-				}
-				if (resIndex == sizeOfModes)
-				{
-					resIndex = 0;
-					list[2]->SetText("RESOLUTION : " + res[resIndex]);
-				}
-				std::this_thread::sleep_for(std::chrono::milliseconds(150));
-				break;
-			case 3:
-				std::cout << "Track 3 button has been pressed" << std::endl;
-				std::this_thread::sleep_for(std::chrono::milliseconds(150));
-				break;
-			}
-		}
-	}
+	//			std::this_thread::sleep_for(std::chrono::milliseconds(150));
+	//			break;
+	//		case 2:
+	//			std::cout << "Track 2 Options button has been pressed" << std::endl;
+	//			if (resIndex >= 0)
+	//			{
+	//				list[2]->SetText("RESOLUTION : " + res[resIndex]);
+	//				resIndex++;
+	//			}
+	//			if (resIndex == sizeOfModes)
+	//			{
+	//				resIndex = 0;
+	//				list[2]->SetText("RESOLUTION : " + res[resIndex]);
+	//			}
+	//			std::this_thread::sleep_for(std::chrono::milliseconds(150));
+	//			break;
+	//		case 3:
+	//			if (windowModeIndex >= 0)
+	//			{
+	//				list[3]->SetText("WINDOW MODE : " + windowModeSetting[windowModeIndex]);
+	//				windowModeIndex++;
+	//			}
+	//			else
+	//			{
+	//				list[3]->SetText("WINDOW MODE : " + windowModeSetting[windowModeIndex]);
+	//				windowModeIndex--;
+	//			}
+	//			std::cout << "Window style button has been pressed" << std::endl;
+	//			std::this_thread::sleep_for(std::chrono::milliseconds(150));
+	//			break;
+	//		case 4:
+	//			std::cout << "Track 4 button has been pressed" << std::endl;
+	//			std::this_thread::sleep_for(std::chrono::milliseconds(150));
+	//			std::string masterString = res[resIndex];
+	//			std::stringstream iss(masterString);
+
+	//			while (iss.good())
+	//			{
+	//				stringCount++;
+
+	//				std::string resString;
+	//				getline(iss, resString, 'x');
+
+	//				if (stringCount == 1)
+	//					nWidth = atoi(resString.c_str());
+	//				else
+	//					nHeight = atoi(resString.c_str());
+	//			}
+
+	//			if (windowModeSetting[windowModeIndex] == "FULLSCREEN")
+	//			{
+	//				Engine::Start(nWidth, nHeight, "TD Championship Racer", &menuScreen, true);
+	//			}
+	//			else if (windowModeSetting[windowModeIndex] == "WINDOWED")
+	//			{
+	//				Engine::Start(nWidth, nHeight, "TD Championship Racer", &menuScreen, false);
+	//			}
+
+
+	//			break;
 }
+

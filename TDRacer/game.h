@@ -36,6 +36,13 @@ extern Level1Scene level1;
 extern Level2Scene level2;
 extern Level3Scene level3;
 
+/*************************Settings******************/
+extern bool settingConfirmed;
+extern bool nisFullscreen;
+extern int nHeight;
+extern int nWidth;
+
+
 
 
 

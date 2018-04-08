@@ -13,6 +13,7 @@
 #include "scenes/scene_graphics.h"
 #include "scenes/scene_sounds.h"
 #include "system_resources.h"
+#include "SFML/Graphics.hpp"
 
 using namespace std;
 using namespace sf;
@@ -38,6 +39,11 @@ Level1Scene level1;
 Level2Scene level2;
 Level3Scene level3;
 
+bool settingConfirmed = false;
+bool nisFullscreen = false;
+int nHeight;
+int nWidth;
+
 int main() {
 	//loads game textures
 	*Resources::load<Texture>("grass.png");
@@ -53,5 +59,16 @@ int main() {
 	*Resources::load<Texture>("sfml.png");
 	*Resources::load<Texture>("box2d.png");
 
-	Engine::Start(1920, 1080, "TD Championship Racer", &splashScreen);
+
+	Engine::Start(1920, 1080, "TD Championship Racer", &splashScreen, nisFullscreen);
+
+	while (settingConfirmed == true)
+	{
+		Engine::Start(nWidth, nHeight, "TD Championship Racer", &splashScreen, nisFullscreen);
+		settingConfirmed = false;
+	}
+
+
+
 }
+
