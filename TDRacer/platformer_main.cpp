@@ -53,5 +53,5 @@ int main() {
 	*Resources::load<Texture>("sfml.png");
 	*Resources::load<Texture>("box2d.png");
 
-	Engine::Start(1920, 1080, "TD Championship Racer", &splashScreen);
+	Engine::Start(1920, 1080, "TD Championship Racer", &level1);
 }
