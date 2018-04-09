@@ -65,7 +65,7 @@ int LapTimer::getCurrentLap() {
 
 void LapTimer::setLaptime(int lap) {
 
-	switch (lap)
+	switch (lap)	
 	{
 	case 1: 
 		lap1 = "Lap 1: " + to_string(getMins()) + ":" + to_string(getSecs()) + ":" + to_string(getMillisecs());
