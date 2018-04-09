@@ -61,7 +61,6 @@ int main() {
 	*Resources::load<Texture>("Straights/startLine_vertical_noBorder_left.png");
 	*Resources::load<Texture>("Straights/startLine_vertical_noBorder.png");
 	*Resources::load<Texture>("Straights/startLine_vertical_noBorder_right.png");
-}
 
 
 	/*****************SOUND EFFECTS*****************/
@@ -74,8 +73,6 @@ int main() {
 	{
 		Engine::Start(nWidth, nHeight, "TD Championship Racer", &splashScreen, nisFullscreen);
 	}
-
-
 
 }
 
