@@ -26,9 +26,8 @@ Vector2f Scale;
 
 void Level1Scene::Load() {
 	//Load Level File
-	ls::loadLevelFile("res/maze.txt", 50.f);
+	ls::loadLevelFile("res/maze.txt", 50.5f);
 	
-
 #pragma region Setup Map
 
 	Scale = { 0.400f, 0.400f };
@@ -294,12 +293,9 @@ void Level1Scene::Load() {
 		auto c = raceTimer->addComponent<TextComponent>("Timer: ");
 		c->setCenterPos(Engine::getWindowSize().x - 400.f, 20.f, 40.f);
 		auto c2 = raceTimer->addComponent<Timer>();
+		c2->start();
 		auto c3 = raceTimer->addComponent<LapTimer>();
 		c3->start();
-		/*
-		auto c3 = raceTimer->addComponent<RaceTimer>();*/
-		c2->start();
-		/*	c3->start();*/
 
 #pragma endregion
 
