@@ -45,7 +45,7 @@ int nHeight;
 int nWidth;
 
 int main() {
-	//loads game textures
+	/*****************TEXTURES*****************/
 	*Resources::load<Texture>("grass.png");
 	*Resources::load<Texture>("Straights/straight_noBorder.png");
 	*Resources::load<Texture>("Straights/straight_horizontal_noBorder_bottom.png");
@@ -59,13 +59,18 @@ int main() {
 	*Resources::load<Texture>("sfml.png");
 	*Resources::load<Texture>("box2d.png");
 
+	/*****************SOUND EFFECTS*****************/
+	*Resources::load<SoundBuffer>("opening.wav");
+	*Resources::load<SoundBuffer>("beep.wav");
 
 	Engine::Start(1920, 1080, "TD Championship Racer", &splashScreen, nisFullscreen);
 
-	while (settingConfirmed == true)
+	while (!sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
 	{
 		Engine::Start(nWidth, nHeight, "TD Championship Racer", &splashScreen, nisFullscreen);
-		settingConfirmed = false;
 	}
+
+
+
 }
 

@@ -7,6 +7,7 @@
 #include <system_renderer.h>
 #include <system_resources.h>
 #include "../components/cmp_sprite.h"
+#include "../components//cmp_sound.h"
 #include <LevelSystem.h>
 
 
@@ -14,21 +15,18 @@ using namespace std;
 using namespace sf;
 using namespace Resources;
 
-SoundBuffer buffer;
-Sound sound;
-
 static std::shared_ptr<Entity> txt;
 
 void SplashScreen::Load() {
 
 	ls::loadLevelFile("res/opening.txt", 50.f);
 
-	//loads sound
-	if (!buffer.loadFromFile("res/opening.wav"))
-	{
-		std::cerr << "failed to load music!" << std::endl;
-	}
+	//adds sound effect entity to splash screen menu
+	auto openingSoundEntity = makeEntity();
+	auto openingSound = openingSoundEntity->addComponent<SoundComponent>();
 
+	openingSound->getSound().setBuffer(*Resources::get<SoundBuffer>("opening.wav"));
+	openingSound->getSound().play();
 
 	//Get position of grass tiles and set sprites to each position
 	auto grassTiles = ls::findTiles(ls::GRASS);
@@ -100,10 +98,6 @@ void SplashScreen::Load() {
 
 	}
 
-	sound.setBuffer(buffer);
-
-	sound.play();
-
 	std::cout << "Menu Load \n";
 	{
 
@@ -136,13 +130,8 @@ void SplashScreen::Load() {
 
 void SplashScreen::Update(const double & dt)
 {
-	/*auto test = txt->GetCompatibleComponent<TextComponent>();*/
-
-	// cout << "Menu Update "<<dt<<"\n";	
-
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) || sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 		std::this_thread::sleep_for(std::chrono::milliseconds(500));
-		sound.stop();
 		Engine::ChangeScene(&menuScreen);
 	}
 

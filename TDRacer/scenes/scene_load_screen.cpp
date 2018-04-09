@@ -1,20 +1,26 @@
-#include "scene_load_screen.h"
-#include <iostream>
-#include "SFML\Window\Keyboard.hpp"
-#include "SFML\Audio.hpp"
-#include "../game.h"
+#include "LevelSystem.h"
+#include "scene_splash_screen.h"
+#include "engine.h"
+#include "ecm.h"
+#include "../components/cmp_player_physics.h"
+#include "../components/cmp_sound.h"
 #include "../components/cmp_text.h"
+#include "../components/cmp_sprite.h"
+#include "../game.h"
+#include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Window/Keyboard.hpp>
 #include <system_renderer.h>
 #include <system_resources.h>
-#include "../components/cmp_sprite.h"
-#include "LevelSystem.h"
-
+#include <iostream>
+#include <thread>
+#include <chrono>
 
 using namespace std;
 using namespace sf;
 using namespace Resources;
 
-static shared_ptr<Entity> txt;
+static shared_ptr<Entity> loadS;
+static shared_ptr<Entity> loadSound;
 
 void LoadScreen::Load()
 {
@@ -220,10 +226,14 @@ void LoadScreen::Load()
 
 		}
 
-		txt = makeEntity();
-		auto title = txt->addComponent<TextComponent>("TD CHAMPIONSHIP RACER");
-		auto control = txt->addComponent<TextComponent>("New game");
-		auto control1 = txt->addComponent<TextComponent>("Load game");
+		loadS = makeEntity();
+		auto title = loadS->addComponent<TextComponent>("TD CHAMPIONSHIP RACER");
+		auto control = loadS->addComponent<TextComponent>("New game");
+		auto control1 = loadS->addComponent<TextComponent>("Load game");
+
+		loadSound = makeEntity();
+		auto beep = loadSound->addComponent<SoundComponent>();
+		beep->getSound().setBuffer(*Resources::get<SoundBuffer>("beep.wav"));
 
 		title->setCenterPos(Engine::getWindowSize().x / 2.f, 100.f, 50.f);
 		control->setCenterPos(Engine::getWindowSize().x / 2.f, 520.f, 50.f);
@@ -235,26 +245,26 @@ void LoadScreen::Load()
 	selectedItemIndex = 1;
 }
 void LoadScreen::MoveUp() {
-	auto list = txt->GetCompatibleComponent<TextComponent>();
+	auto txt_cmp = loadS->GetCompatibleComponent<TextComponent>();
 
 	//used for keyboard movement in menus
 	if (selectedItemIndex - 1 > 0) {
-		list[selectedItemIndex]->setColor(255, 255, 255, 255);
+		txt_cmp[selectedItemIndex]->setColor(255, 255, 255, 255);
 		selectedItemIndex--;
-		list[selectedItemIndex]->setColor(255, 0, 0, 255);
+		txt_cmp[selectedItemIndex]->setColor(255, 0, 0, 255);
 		std::this_thread::sleep_for(std::chrono::milliseconds(150));
 		//menu[selectedItemIndex].setFillColor(sf::Color(255, 0, 0, 255));
 	}
 }
 
 void LoadScreen::MoveDown() {
-	auto list = txt->GetCompatibleComponent<TextComponent>();
+	auto txt_cmp = loadS->GetCompatibleComponent<TextComponent>();
 
 	//used for keyboard movement in menus
 	if (selectedItemIndex + 1 < 5) {
-		list[selectedItemIndex]->setColor(255, 255, 255, 255);
+		txt_cmp[selectedItemIndex]->setColor(255, 255, 255, 255);
 		selectedItemIndex++;
-		list[selectedItemIndex]->setColor(255, 0, 0, 255);
+		txt_cmp[selectedItemIndex]->setColor(255, 0, 0, 255);
 		std::this_thread::sleep_for(std::chrono::milliseconds(150));
 		//menu[selectedItemIndex].setFillColor(sf::Color(255, 0, 0, 255));
 	}
@@ -262,7 +272,8 @@ void LoadScreen::MoveDown() {
 
 void LoadScreen::Update(const double & dt)
 {
-	auto list = txt->GetCompatibleComponent<TextComponent>();
+	auto txt_cmp = loadS->GetCompatibleComponent<TextComponent>();
+	auto sound_cmp = loadSound->GetCompatibleComponent<SoundComponent>();
 
 	sf::Event startEvent;;
 
@@ -275,30 +286,32 @@ void LoadScreen::Update(const double & dt)
 	//Handles this mouse hovering over the menu options
 	if (sf::Event::MouseMoved) {
 
-		if (list[1]->GetText().getGlobalBounds().contains(mousePosF)) {
-			list[selectedItemIndex]->setColor(255, 255, 255, 255);
+		if (txt_cmp[1]->GetText().getGlobalBounds().contains(mousePosF)) {
+			txt_cmp[selectedItemIndex]->setColor(255, 255, 255, 255);
 			selectedItemIndex = 1;
-			list[selectedItemIndex]->setColor(255, 0, 0, 255);
+			txt_cmp[selectedItemIndex]->setColor(255, 0, 0, 255);
 		}
 
-		if (list[2]->GetText().getGlobalBounds().contains(mousePosF)) {
-			list[selectedItemIndex]->setColor(255, 255, 255, 255);
+		if (txt_cmp[2]->GetText().getGlobalBounds().contains(mousePosF)) {
+			txt_cmp[selectedItemIndex]->setColor(255, 255, 255, 255);
 			selectedItemIndex = 2;
-			list[selectedItemIndex]->setColor(255, 0, 0, 255);
+			txt_cmp[selectedItemIndex]->setColor(255, 0, 0, 255);
 		}
 	}
 	if (Mouse::isButtonPressed(Mouse::Left)) {
 
-		if (list[1]->GetText().getGlobalBounds().contains(mousePosF)) {
+		if (txt_cmp[1]->GetText().getGlobalBounds().contains(mousePosF)) {
 			cout << "New game Pressed!" << endl;
+			sound_cmp[0]->getSound().play();
 			selectedItemIndex = 1;
 			std::this_thread::sleep_for(std::chrono::milliseconds(150));
 			Engine::ChangeScene(&loadPScreen);
 
 		}
 
-		if (list[2]->GetText().getGlobalBounds().contains(mousePosF)) {
+		if (txt_cmp[2]->GetText().getGlobalBounds().contains(mousePosF)) {
 			cout << "Load game Pressed!" << endl;
+			sound_cmp[0]->getSound().play();
 			selectedItemIndex = 2;
 			std::this_thread::sleep_for(std::chrono::milliseconds(150));
 
@@ -324,11 +337,13 @@ void LoadScreen::Update(const double & dt)
 
 			case 1:
 				std::cout << "New game has been pressed" << std::endl;
+				sound_cmp[0]->getSound().play();
 				std::this_thread::sleep_for(std::chrono::milliseconds(150));
 				Engine::ChangeScene(&avatarScreen);
 				break;
 			case 2:
 				std::cout << "Load game has been pressed" << std::endl;
+				sound_cmp[0]->getSound().play();
 				std::this_thread::sleep_for(std::chrono::milliseconds(150));
 				Engine::ChangeScene(&loadPScreen);
 				break;
