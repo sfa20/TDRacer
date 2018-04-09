@@ -7,89 +7,110 @@ using namespace std;
 using namespace sf;
 using namespace Physics;
 
-bool PlayerPhysicsComponent::isGrounded() const {
-  auto touch = getTouching();
-  const auto& pos = _body->GetPosition();
-  const float halfPlrHeigt = _size.y * .5f;
-  const float halfPlrWidth = _size.x * .52f;
-  b2WorldManifold manifold;
-  for (const auto& contact : touch) {
-    contact->GetWorldManifold(&manifold);
-    const int numPoints = contact->GetManifold()->pointCount;
-    bool onTop = numPoints > 0;
-    // If all contacts are below the player.
-    for (int j = 0; j < numPoints; j++) {
-      onTop &= (manifold.points[j].y < pos.y - halfPlrHeigt);
-    }
-    if (onTop) {
-      return true;
-    }
-  }
-
-  return false;
-}
+//bool PlayerPhysicsComponent::isGrounded() const {
+//  auto touch = getTouching();
+//  const auto& pos = _body->GetPosition();
+//  const float halfPlrHeigt = _size.y * .5f;
+//  const float halfPlrWidth = _size.x * .52f;
+//  b2WorldManifold manifold;
+//  for (const auto& contact : touch) {
+//    contact->GetWorldManifold(&manifold);
+//    const int numPoints = contact->GetManifold()->pointCount;
+//    bool onTop = numPoints > 0;
+//    // If all contacts are below the player.
+//    for (int j = 0; j < numPoints; j++) {
+//      onTop &= (manifold.points[j].y < pos.y - halfPlrHeigt);
+//    }
+//    if (onTop) {
+//      return true;
+//    }
+//  }
+//
+//  return false;
+//}
 
 void PlayerPhysicsComponent::update(double dt) {
 
-  const auto pos = _parent->getPosition();
+	const auto pos = _parent->getPosition();
+	//
+	//Teleport to start if we fall off map. 
+	if (pos.y > ls::getHeight() * ls::getTileSize() || pos.x > ls::getWidth() * ls::getTileSize() || pos.x < 0 || pos.y < 0) {
+		teleport(ls::getTilePosition(ls::findTiles(ls::CORNER1)[0]));
+	}
 
-  //Teleport to start if we fall off map.
-  if (pos.y > ls::getHeight() * ls::getTileSize()) {
-    teleport(ls::getTilePosition(ls::findTiles(ls::CORNER1)[0]));
-  }
+	//This gets the world vector for moving the Entity
+	//Currently controlling the speed of the car - something needs done to control speed somehow
+	auto worldVector = _body->GetWorldVector(b2Vec2(0, 1));
 
-  if (Keyboard::isKeyPressed(Keyboard::Left) || Keyboard::isKeyPressed(Keyboard::Right)) {
-    // Moving Either Left or Right
-    if (Keyboard::isKeyPressed(Keyboard::Right)) {
-      if (getVelocity().x < _maxVelocity.x)
-        impulse({(float)(dt * _groundspeed), 0});
-    } else {
-      if (getVelocity().x > -_maxVelocity.x)
-        impulse({-(float)(dt * _groundspeed), 0});
-    }
-  } else {
-    // Dampen X axis movement
-    dampen({0.9f, 1.0f});
-  }
+	//Handle keyboard input from user
+	if (Keyboard::isKeyPressed(Keyboard::W) || Keyboard::isKeyPressed(Keyboard::S)) {
 
-  // Handle Jump
-  if (Keyboard::isKeyPressed(Keyboard::Up)) {
-    _grounded = isGrounded();
-    if (_grounded) {
-      setVelocity(Vector2f(getVelocity().x, 0.f));
-      teleport(Vector2f(pos.x, pos.y - 2.0f));
-      impulse(Vector2f(0, -6.f));
-    }
-  }
+		if (Keyboard::isKeyPressed(Keyboard::W)) {
+			if (getVelocity().x < _maxVelocity.x) {
+				impulse({ -worldVector.x, -worldVector.y });
+				stopTurning();
+			}
+		}
+		else if (Keyboard::isKeyPressed(Keyboard::S)) {
+			impulse({ worldVector.x, worldVector.y });
+			stopTurning();
+		}
+		
+	}
+	else {
+		// Dampen X axis movement
+		dampen({ 0.015f, 0.015f });
+		stopTurning(); //Added
+	}
 
-  //Are we in air?
-  if (!_grounded) {
-    // Check to see if we have landed yet
-    _grounded = isGrounded();
-    // disable friction while jumping
-    setFriction(0.f);
-  } else {
-    setFriction(0.1f);
-  }
+	if (Keyboard::isKeyPressed(Keyboard::A) || Keyboard::isKeyPressed(Keyboard::D)) {
+	
+		if (Keyboard::isKeyPressed(Keyboard::D)) {
+			dampen({ 0.1f, 0.1f });
+			//impulse({ -worldVector.x, -worldVector.y }); 
+			turnRight();
 
-  // Clamp velocity.
-  auto v = getVelocity();
-  v.x = copysign(min(abs(v.x), _maxVelocity.x), v.x);
-  v.y = copysign(min(abs(v.y), _maxVelocity.y), v.y);
-  setVelocity(v);
+		}
+		else if (Keyboard::isKeyPressed(Keyboard::A)) {
+			//cout << getVelocity() << en5dl;
+			dampen({ 0.1f, 0.1f });
+			//impulse({ -worldVector.x, -worldVector.y });
+			turnLeft();
+		}
+	
+	}
+	else {
+		// Dampen X axis movement
+		dampen({ 0.015f, 0.015f });
+		stopTurning(); //Added
+	}
 
-  PhysicsComponent::update(dt);
+
+	//Old Impulse
+	//		//impulse({0, -(float)(dt * _groundspeed) });
+	
+	// Clamp velocity.
+	auto v = getVelocity();
+	v.x = copysign(min(abs(v.x), _maxVelocity.x), v.x);
+	v.y = copysign(min(abs(v.y), _maxVelocity.y), v.y);
+	setVelocity(v);
+
+	PhysicsComponent::update(dt);
 }
 
-PlayerPhysicsComponent::PlayerPhysicsComponent(Entity* p,
-                                               const Vector2f& size)
-    : PhysicsComponent(p, true, size) {
-  _size = sv2_to_bv2(size, true);
-  _maxVelocity = Vector2f(200.f, 400.f);
-  _groundspeed = 30.f;
-  _grounded = false;
-  _body->SetSleepingAllowed(false);
-  _body->SetFixedRotation(true);
-  //Bullet items have higher-res collision detection
-  _body->SetBullet(true);
+
+PlayerPhysicsComponent::PlayerPhysicsComponent(Entity* p, const Vector2f& size) : PhysicsComponent(p, true, size) {
+	_size = sv2_to_bv2(size, true);
+	maxSpeed = 60.f;
+	_maxVelocity = Vector2f(200.f, 400.f);
+	_groundspeed = 60.f;
+	_body->SetSleepingAllowed(false);
+	_body->SetFixedRotation(true);
+	
+	//Bullet items have higher-res collision detection
+	_body->SetBullet(true);
+
 }
+
+
+//Engine::GetWindow().mapPixelToCoords

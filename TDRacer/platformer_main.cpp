@@ -52,6 +52,8 @@ int main() {
 	*Resources::load<Texture>("Straights/straight_vertical_noBorder_left.png");
 	*Resources::load<Texture>("sfml.png");
 	*Resources::load<Texture>("box2d.png");
-
-	Engine::Start(1920, 1080, "TD Championship Racer", &splashScreen);
+	*Resources::load<Texture>("Straights/startLine_vertical_noBorder_left.png");
+	*Resources::load<Texture>("Straights/startLine_vertical_noBorder.png");
+	*Resources::load<Texture>("Straights/startLine_vertical_noBorder_right.png");
+	Engine::Start(1920, 1080, "TD Championship Racer", &level1);
 }

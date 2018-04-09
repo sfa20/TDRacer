@@ -11,10 +11,10 @@ const int32 velocityIterations = 6;
 const int32 positionIterations = 2;
 
 void initialise() {
-  b2Vec2 gravity(0.0f, -10.0f);
-  // Construct a world object, which will hold and simulate the rigid
-  // bodies.
+  b2Vec2 gravity(0.0f, 0.0f);
+  // Construct a world object, which will hold and simulate the rigid bodies.
   world.reset(new b2World(gravity));
+  
 }
 
 void shutdown() { world.reset(); }
@@ -45,3 +45,4 @@ const Vector2f invert_height(const Vector2f& in) {
   return Vector2f(in.x, 720 - in.y);
 }
 } // namespace Physics
+

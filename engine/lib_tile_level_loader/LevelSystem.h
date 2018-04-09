@@ -39,6 +39,8 @@ public:
 		CORNER2 = 'd',
 		CORNER3 = 'e',
 		CORNER4 = 'f',
+		STARTLEFT = '<',
+		STARTRIGHT = '>',
 		START = 's',
 		END = 'q',
 		GRASS = 'g',
