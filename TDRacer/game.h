@@ -17,7 +17,7 @@
 #include "scenes/scene_graphics.h"
 
 
-/****************MENUS*********************************/
+/************************MENUS*************************/
 extern SplashScreen splashScreen;
 extern MenuScreen menuScreen;
 extern OptionScreen optionScreen;
@@ -31,8 +31,16 @@ extern SoundScreen soundScreen;
 extern GraphicScreen graphicScreen;
 extern ControlScreen controlScreen;
 
-/***************RACES********************************/
+/******************RACES*****************************/
 extern Level1Scene level1;
 extern Level2Scene level2;
 extern Level3Scene level3;
+
+
+/****************SETTINGS****************************/
+extern bool settingConfirmed;
+extern bool nisFullscreen;
+extern int nHeight;
+extern int nWidth;
+
 

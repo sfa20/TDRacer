@@ -1,25 +1,28 @@
+#include "LevelSystem.h"
+#include "scene_splash_screen.h"
 #include "engine.h"
 #include "ecm.h"
-#include <SFML/Graphics/Sprite.hpp>
-#include <system_renderer.h>
-#include <system_resources.h>
 #include "../components/cmp_player_physics.h"
-
+#include "../components/cmp_sound.h"
 #include "../components/cmp_text.h"
 #include "../components/cmp_sprite.h"
 #include "../game.h"
+#include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Window/Keyboard.hpp>
+#include <system_renderer.h>
+#include <system_resources.h>
 #include <iostream>
 #include <thread>
 #include <chrono>
-#include "LevelSystem.h"
-#include "scene_splash_screen.h"
+
 
 using namespace std;
 using namespace sf;
 using namespace Resources;
 
 static shared_ptr<Entity> mainMenu;
+static shared_ptr<Entity> menuSound;
+
 
 void MenuScreen::Load() {
 
@@ -237,10 +240,9 @@ void MenuScreen::Load() {
 		mainMenu->addComponent<TextComponent>("Credits");
 		mainMenu->addComponent<TextComponent>("Exit");
 		/**************************************************************************************/
-		/*auto a = mainMenu->addComponent<ShapeComponent>();
-		a->setShape<RectangleShape>(RectangleShape(Vector2f(100.f, 100.f)));*/
-
-
+		menuSound = makeEntity();
+		auto beep = menuSound->addComponent<SoundComponent>();
+		beep->getSound().setBuffer(*Resources::get<SoundBuffer>("beep.wav"));
 
 		//sets positions and size of menu entitys
 		auto list = mainMenu->GetCompatibleComponent<TextComponent>();
@@ -252,33 +254,31 @@ void MenuScreen::Load() {
 
 		//sets colours of entitys
 		list[1]->setColor(255, 0, 0, 255);
-
-
 	}
 	selectedItemIndex = 1; //added - sfa20
 	setLoaded(true);
 }
 
 void MenuScreen::MoveUp() {
-	auto list = mainMenu->GetCompatibleComponent<TextComponent>();
+	auto txt_cmp = mainMenu->GetCompatibleComponent<TextComponent>();
 
 	//used for keyboard movement in menus
 	if (selectedItemIndex - 1 > 0) {
-		list[selectedItemIndex]->setColor(255, 255, 255, 255);
+		txt_cmp[selectedItemIndex]->setColor(255, 255, 255, 255);
 		selectedItemIndex--;
-		list[selectedItemIndex]->setColor(255, 0, 0, 255);
+		txt_cmp[selectedItemIndex]->setColor(255, 0, 0, 255);
 		std::this_thread::sleep_for(std::chrono::milliseconds(150));
 	}
 }
 
 void MenuScreen::MoveDown() {
-	auto list = mainMenu->GetCompatibleComponent<TextComponent>();
+	auto txt_cmp = mainMenu->GetCompatibleComponent<TextComponent>();
 
 	//used for keyboard movement in menus
 	if (selectedItemIndex + 1 < 5) {
-		list[selectedItemIndex]->setColor(255, 255, 255, 255);
+		txt_cmp[selectedItemIndex]->setColor(255, 255, 255, 255);
 		selectedItemIndex++;
-		list[selectedItemIndex]->setColor(255, 0, 0, 255);
+		txt_cmp[selectedItemIndex]->setColor(255, 0, 0, 255);
 		std::this_thread::sleep_for(std::chrono::milliseconds(150));
 	}
 }
@@ -292,64 +292,66 @@ void MenuScreen::Update(const double& dt) {
 	sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
 
 	//getting entity components
-	auto list = mainMenu->GetCompatibleComponent<TextComponent>();
+	auto txt_cmp = mainMenu->GetCompatibleComponent<TextComponent>();
+	auto sound_cmp = menuSound->GetCompatibleComponent<SoundComponent>();
 
 	window.pollEvent(event);
 
 	//Handles this mouse hovering over the menu options
 	if (sf::Event::MouseMoved) {
 
-		if (list[1]->GetText().getGlobalBounds().contains(mousePosF)) {
-			list[selectedItemIndex]->setColor(255, 255, 255, 255);
+		if (txt_cmp[1]->GetText().getGlobalBounds().contains(mousePosF)) {
+			txt_cmp[selectedItemIndex]->setColor(255, 255, 255, 255);
 			selectedItemIndex = 1;
-			list[selectedItemIndex]->setColor(255, 0, 0, 255);
+			txt_cmp[selectedItemIndex]->setColor(255, 0, 0, 255);
 		}
-
-		if (list[2]->GetText().getGlobalBounds().contains(mousePosF)) {
-			list[selectedItemIndex]->setColor(255, 255, 255, 255);
+		else if (txt_cmp[2]->GetText().getGlobalBounds().contains(mousePosF)) {
+			txt_cmp[selectedItemIndex]->setColor(255, 255, 255, 255);
 			selectedItemIndex = 2;
-			list[selectedItemIndex]->setColor(255, 0, 0, 255);
+			txt_cmp[selectedItemIndex]->setColor(255, 0, 0, 255);
 		}
-
-		if (list[3]->GetText().getGlobalBounds().contains(mousePosF)) {
-			list[selectedItemIndex]->setColor(255, 255, 255, 255);
+		else if (txt_cmp[3]->GetText().getGlobalBounds().contains(mousePosF)) {
+			txt_cmp[selectedItemIndex]->setColor(255, 255, 255, 255);
 			selectedItemIndex = 3;
-			list[selectedItemIndex]->setColor(255, 0, 0, 255);
+			txt_cmp[selectedItemIndex]->setColor(255, 0, 0, 255);
 		}
-
-		if (list[4]->GetText().getGlobalBounds().contains(mousePosF)) {
-			list[selectedItemIndex]->setColor(255, 255, 255, 255);
+		else if (txt_cmp[4]->GetText().getGlobalBounds().contains(mousePosF)) {
+			txt_cmp[selectedItemIndex]->setColor(255, 255, 255, 255);
 			selectedItemIndex = 4;
-			list[selectedItemIndex]->setColor(255, 0, 0, 255);
+			txt_cmp[selectedItemIndex]->setColor(255, 0, 0, 255);
 		}
 	}
 
 	////Handles the Button controls against the menu options
 	if (Mouse::isButtonPressed(Mouse::Left)) {
 
-		if (list[1]->GetText().getGlobalBounds().contains(mousePosF)) {
+		if (txt_cmp[1]->GetText().getGlobalBounds().contains(mousePosF)) {
 			cout << "Play game Pressed!" << endl;
 			selectedItemIndex = 1;
+			sound_cmp[0]->getSound().play();
 			std::this_thread::sleep_for(std::chrono::milliseconds(150));
 			Engine::ChangeScene(&loadScreen);
 		}
 
-		if (list[2]->GetText().getGlobalBounds().contains(mousePosF)) {
+		if (txt_cmp[2]->GetText().getGlobalBounds().contains(mousePosF)) {
 			cout << "Options Pressed!" << endl;
 			selectedItemIndex = 2;
+			sound_cmp[0]->getSound().play();
 			std::this_thread::sleep_for(std::chrono::milliseconds(150));
 			Engine::ChangeScene(&optionScreen);
 		}
 
-		if (list[3]->GetText().getGlobalBounds().contains(mousePosF)) {
+		if (txt_cmp[3]->GetText().getGlobalBounds().contains(mousePosF)) {
 			cout << "Credits Pressed!" << endl;
 			selectedItemIndex = 3;
+			sound_cmp[0]->getSound().play();
 			std::this_thread::sleep_for(std::chrono::milliseconds(150));
 		}
 
-		if (list[4]->GetText().getGlobalBounds().contains(mousePosF)) {
+		if (txt_cmp[4]->GetText().getGlobalBounds().contains(mousePosF)) {
 			cout << "Exit!" << endl;
-			std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+			sound_cmp[0]->getSound().play();
+			std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 			window.close();
 		}
 	}
@@ -372,19 +374,23 @@ void MenuScreen::Update(const double& dt) {
 
 			case 1:
 				std::cout << "Play game button has been pressed" << std::endl;
+				sound_cmp[0]->getSound().play();
 				std::this_thread::sleep_for(std::chrono::milliseconds(150));
 				Engine::ChangeScene(&loadScreen);
 				break;
 			case 2:
 				std::cout << "Options button has been pressed" << std::endl;
+				sound_cmp[0]->getSound().play();
 				std::this_thread::sleep_for(std::chrono::milliseconds(150));
 				Engine::ChangeScene(&optionScreen);
 				break;
 			case 3:
 				std::cout << "Credits button has been pressed" << std::endl;
+				sound_cmp[0]->getSound().play();
 				std::this_thread::sleep_for(std::chrono::milliseconds(150));
 				break;
 			case 4:
+				sound_cmp[0]->getSound().play();
 				window.close();
 				break;
 			}

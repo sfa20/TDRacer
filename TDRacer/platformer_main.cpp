@@ -13,6 +13,7 @@
 #include "scenes/scene_graphics.h"
 #include "scenes/scene_sounds.h"
 #include "system_resources.h"
+#include "SFML/Graphics.hpp"
 
 using namespace std;
 using namespace sf;
@@ -38,8 +39,13 @@ Level1Scene level1;
 Level2Scene level2;
 Level3Scene level3;
 
+bool settingConfirmed = false;
+bool nisFullscreen = false;
+int nHeight;
+int nWidth;
+
 int main() {
-	//loads game textures
+	/*****************TEXTURES*****************/
 	*Resources::load<Texture>("grass.png");
 	*Resources::load<Texture>("Straights/straight_noBorder.png");
 	*Resources::load<Texture>("Straights/straight_horizontal_noBorder_bottom.png");
@@ -55,5 +61,21 @@ int main() {
 	*Resources::load<Texture>("Straights/startLine_vertical_noBorder_left.png");
 	*Resources::load<Texture>("Straights/startLine_vertical_noBorder.png");
 	*Resources::load<Texture>("Straights/startLine_vertical_noBorder_right.png");
-	Engine::Start(1920, 1080, "TD Championship Racer", &level1);
 }
+
+
+	/*****************SOUND EFFECTS*****************/
+	*Resources::load<SoundBuffer>("opening.wav");
+	*Resources::load<SoundBuffer>("beep.wav");
+
+	Engine::Start(1920, 1080, "TD Championship Racer", &splashScreen, nisFullscreen);
+
+	while (!sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
+	{
+		Engine::Start(nWidth, nHeight, "TD Championship Racer", &splashScreen, nisFullscreen);
+	}
+
+
+
+}
+

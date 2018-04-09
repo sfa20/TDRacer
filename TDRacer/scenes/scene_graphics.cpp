@@ -1,40 +1,41 @@
-#include "scene_graphics.h"
-#include <iostream>
-#include "SFML\Window\Keyboard.hpp"
-#include "SFML\Audio.hpp"
-#include "../game.h"
+#include "LevelSystem.h"
+#include "scene_splash_screen.h"
+#include "engine.h"
+#include "ecm.h"
+#include "../components/cmp_player_physics.h"
+#include "../components/cmp_sound.h"
 #include "../components/cmp_text.h"
+#include "../components/cmp_sprite.h"
+#include "../game.h"
+#include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Window/Keyboard.hpp>
 #include <system_renderer.h>
 #include <system_resources.h>
-#include "../components/cmp_sprite.h"
-#include <LevelSystem.h>
-#include <vector>
-
+#include <iostream>
+#include <thread>
+#include <chrono>
 
 using namespace std;
 using namespace sf;
 using namespace Resources;
 
-static std::shared_ptr<Entity> txt;
+static shared_ptr<Entity> graphic;
+static shared_ptr<Entity> graphicSound;
 
 //INFORMATION FOR SETTINGS MENU
-string vSyncSetting[2]{ "OFF","ON" };
 string * res;
-string windowModeSetting[2]{ "FULLSCREEN"," WINDOWED" };
 
-int vSyncIndex = 0;
+int vSyncIndex = 1;
 int resIndex = 0;
-int windowModeIndex = 0;
+int windowModeIndex = 1;
 int sizeOfModes;
 int stringCount = 0;
-int nHeight;
-int nWidth;
-
+int sizeRes;
 
 
 void GraphicScreen::Load() {
 
-	// Display the list of all the video modes available for fullscreen
+	// Display the txt_cmp of all the video modes available for fullscreen
 	std::vector<sf::VideoMode> modes = sf::VideoMode::getFullscreenModes();
 
 	sizeOfModes = modes.size();
@@ -54,10 +55,6 @@ void GraphicScreen::Load() {
 			<< mode.bitsPerPixel << " bpp" << std::endl;
 	}
 
-
-	// Create a window with the same pixel depth as the desktop
-	/*sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
-	window.create(sf::VideoMode(1024, 768, desktop.bitsPerPixel), "SFML window");*/
 
 
 
@@ -269,12 +266,16 @@ void GraphicScreen::Load() {
 		std::string currentHeight = std::to_string(b);
 
 		//creates entitys for splash and adds text components
-		txt = makeEntity();
-		auto title = txt->addComponent<TextComponent>("TD CHAMPIONSHIP RACER");
-		auto control1 = txt->addComponent<TextComponent>("V-SYNC : " + vSyncSetting[vSyncIndex]);
-		auto control2 = txt->addComponent<TextComponent>("RESOLUTION : " + currentWidth + " x " + currentHeight);
-		auto control3 = txt->addComponent<TextComponent>("WINDOW MODE : " + windowModeSetting[windowModeIndex]);
-		auto control4 = txt->addComponent<TextComponent>("BACK TO MENU");
+		graphic = makeEntity();
+		auto title = graphic->addComponent<TextComponent>("TD CHAMPIONSHIP RACER");
+		auto control1 = graphic->addComponent<TextComponent>("V-SYNC : OFF");
+		auto control2 = graphic->addComponent<TextComponent>("RESOLUTION : " + currentWidth + " x " + currentHeight);
+		auto control3 = graphic->addComponent<TextComponent>("WINDOW MODE : FULLSCREEN ");
+		auto control4 = graphic->addComponent<TextComponent>("BACK TO MENU");
+
+		graphicSound = makeEntity();
+		auto beep = graphicSound->addComponent<SoundComponent>();
+		beep->getSound().setBuffer(*Resources::get<SoundBuffer>("beep.wav"));
 
 
 
@@ -291,25 +292,25 @@ void GraphicScreen::Load() {
 }
 
 void GraphicScreen::MoveUp() {
-	auto list = txt->GetCompatibleComponent<TextComponent>();
+	auto txt_cmp = graphic->GetCompatibleComponent<TextComponent>();
 
 	//used for keyboard movement in menus
 	if (selectedItemIndex - 1 > 0) {
-		list[selectedItemIndex]->setColor(255, 255, 255, 255);
+		txt_cmp[selectedItemIndex]->setColor(255, 255, 255, 255);
 		selectedItemIndex--;
-		list[selectedItemIndex]->setColor(255, 0, 0, 255);
+		txt_cmp[selectedItemIndex]->setColor(255, 0, 0, 255);
 		std::this_thread::sleep_for(std::chrono::milliseconds(150));
 	}
 }
 
 void GraphicScreen::MoveDown() {
-	auto list = txt->GetCompatibleComponent<TextComponent>();
+	auto txt_cmp = graphic->GetCompatibleComponent<TextComponent>();
 
 	//used for keyboard movement in menus
 	if (selectedItemIndex + 1 < 5) {
-		list[selectedItemIndex]->setColor(255, 255, 255, 255);
+		txt_cmp[selectedItemIndex]->setColor(255, 255, 255, 255);
 		selectedItemIndex++;
-		list[selectedItemIndex]->setColor(255, 0, 0, 255);
+		txt_cmp[selectedItemIndex]->setColor(255, 0, 0, 255);
 		std::this_thread::sleep_for(std::chrono::milliseconds(150));
 	}
 }
@@ -324,34 +325,35 @@ void GraphicScreen::Update(const double & dt)
 	sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
 
 	//getting entity components
-	auto list = txt->GetCompatibleComponent<TextComponent>();
+	auto txt_cmp = graphic->GetCompatibleComponent<TextComponent>();
+	auto sound_cmp = graphicSound->GetCompatibleComponent<SoundComponent>();
 
 	window.pollEvent(event);
 
 	//Handles this mouse hovering over the menu options
 	if (sf::Event::MouseMoved) {
 
-		if (list[1]->GetText().getGlobalBounds().contains(mousePosF)) {
-			list[selectedItemIndex]->setColor(255, 255, 255, 255);
+		if (txt_cmp[1]->GetText().getGlobalBounds().contains(mousePosF)) {
+			txt_cmp[selectedItemIndex]->setColor(255, 255, 255, 255);
 			selectedItemIndex = 1;
-			list[selectedItemIndex]->setColor(255, 0, 0, 255);
+			txt_cmp[selectedItemIndex]->setColor(255, 0, 0, 255);
 		}
 
-		if (list[2]->GetText().getGlobalBounds().contains(mousePosF)) {
-			list[selectedItemIndex]->setColor(255, 255, 255, 255);
+		if (txt_cmp[2]->GetText().getGlobalBounds().contains(mousePosF)) {
+			txt_cmp[selectedItemIndex]->setColor(255, 255, 255, 255);
 			selectedItemIndex = 2;
-			list[selectedItemIndex]->setColor(255, 0, 0, 255);
+			txt_cmp[selectedItemIndex]->setColor(255, 0, 0, 255);
 		}
 
-		if (list[3]->GetText().getGlobalBounds().contains(mousePosF)) {
-			list[selectedItemIndex]->setColor(255, 255, 255, 255);
+		if (txt_cmp[3]->GetText().getGlobalBounds().contains(mousePosF)) {
+			txt_cmp[selectedItemIndex]->setColor(255, 255, 255, 255);
 			selectedItemIndex = 3;
-			list[selectedItemIndex]->setColor(255, 0, 0, 255);
+			txt_cmp[selectedItemIndex]->setColor(255, 0, 0, 255);
 		}
-		if (list[4]->GetText().getGlobalBounds().contains(mousePosF)) {
-			list[selectedItemIndex]->setColor(255, 255, 255, 255);
+		if (txt_cmp[4]->GetText().getGlobalBounds().contains(mousePosF)) {
+			txt_cmp[selectedItemIndex]->setColor(255, 255, 255, 255);
 			selectedItemIndex = 4;
-			list[selectedItemIndex]->setColor(255, 0, 0, 255);
+			txt_cmp[selectedItemIndex]->setColor(255, 0, 0, 255);
 		}
 
 	}
@@ -360,56 +362,67 @@ void GraphicScreen::Update(const double & dt)
 	if (Mouse::isButtonPressed(Mouse::Left)) {
 
 		//controls vsync selection for mouse
-		if (list[1]->GetText().getGlobalBounds().contains(mousePosF)) {
+		if (txt_cmp[1]->GetText().getGlobalBounds().contains(mousePosF)) {
 
 			if (vSyncIndex == 0)
 			{
 				vSyncIndex++;
-				list[1]->SetText("V-SYNC : " + vSyncSetting[vSyncIndex]);
-				Engine::setVsync(true);
+				txt_cmp[1]->SetText("V-SYNC : OFF");
+				Engine::setVsync(false);
 			}
 			else
 			{
 				vSyncIndex--;
-				list[1]->SetText("V-SYNC : " + vSyncSetting[vSyncIndex]);
-				Engine::setVsync(false);
+				txt_cmp[1]->SetText("V-SYNC : ON ");
+				Engine::setVsync(true);
 			}
 			cout << "vSync pressed" << endl;
+			sound_cmp[0]->getSound().play();
 			selectedItemIndex = 1;
 			std::this_thread::sleep_for(std::chrono::milliseconds(150));
 		}
 
-		if (list[2]->GetText().getGlobalBounds().contains(mousePosF)) {
+		if (txt_cmp[2]->GetText().getGlobalBounds().contains(mousePosF)) {
 
-			int sizeRes = res->max_size();
-			auto convertRes = res[resIndex];
+			sizeRes = res->max_size();
 
 			if (resIndex >= 0)
 			{
-				list[2]->SetText("RESOLUTION : " + res[resIndex]);
+				txt_cmp[2]->SetText("RESOLUTION : " + res[resIndex]);
 				resIndex++;
 
 			}
 			if (resIndex == sizeOfModes)
 			{
 				resIndex = 0;
-				list[2]->SetText("RESOLUTION : " + res[resIndex]);
+				txt_cmp[2]->SetText("RESOLUTION : " + res[resIndex]);
 			}
-
 			cout << "RESOLUTION PRESSED!" << endl;
+			sound_cmp[0]->getSound().play();
 			selectedItemIndex = 2;
 			std::this_thread::sleep_for(std::chrono::milliseconds(150));
 		}
-		if (list[3]->GetText().getGlobalBounds().contains(mousePosF)) {
+		if (txt_cmp[3]->GetText().getGlobalBounds().contains(mousePosF)) {
 			cout << "WINDOW MODE PRESSED!" << endl;
+			if (windowModeIndex == 0)
+			{
+				txt_cmp[3]->SetText("WINDOW MODE : FULLSCREEN ");
+				windowModeIndex++;
+			}
+			else
+			{
+				txt_cmp[3]->SetText("WINDOW MODE : WINDOWED ");
+				windowModeIndex--;
+			}
+			sound_cmp[0]->getSound().play();
 			selectedItemIndex = 3;
 			std::this_thread::sleep_for(std::chrono::milliseconds(150));
 		}
-		if (list[4]->GetText().getGlobalBounds().contains(mousePosF)) {
+		if (txt_cmp[4]->GetText().getGlobalBounds().contains(mousePosF)) {
 			cout << "OPTIONS MENU PRESSED!" << endl;
 			selectedItemIndex = 4;
+			sound_cmp[0]->getSound().play();
 			std::this_thread::sleep_for(std::chrono::milliseconds(150));
-			window.close();
 
 			std::string masterString = res[resIndex];
 			std::stringstream iss(masterString);
@@ -428,8 +441,20 @@ void GraphicScreen::Update(const double & dt)
 					nHeight = atoi(resString.c_str());
 			}
 
-			Engine::Start(nWidth, nHeight, "TD Championship Racer", &menuScreen);
-			/*Engine::ChangeScene(&menuScreen);*/
+			if (windowModeIndex == 1)
+			{
+				settingConfirmed = true;
+				nisFullscreen = true;
+
+				window.close();
+			}
+			else
+			{
+				settingConfirmed = true;
+				nisFullscreen = false;
+
+				window.close();
+			}
 		}
 	}
 
@@ -442,7 +467,7 @@ void GraphicScreen::Update(const double & dt)
 		}
 
 		if (sf::Keyboard::isKeyPressed(Keyboard::Down)) {
-			if (GetPressedItem() != 7)
+			if (GetPressedItem() != 5)
 				MoveDown();
 		}
 
@@ -455,37 +480,88 @@ void GraphicScreen::Update(const double & dt)
 				if (vSyncIndex == 0)
 				{
 					vSyncIndex++;
-					list[1]->SetText("V-SYNC : " + vSyncSetting[vSyncIndex]);
-					Engine::setVsync(true);
+					txt_cmp[1]->SetText("V-SYNC : OFF");
+					Engine::setVsync(false);
 				}
 				else
 				{
 					vSyncIndex--;
-					list[1]->SetText("V-SYNC : " + vSyncSetting[vSyncIndex]);
-					Engine::setVsync(false);
+					txt_cmp[1]->SetText("V-SYNC : ON ");
+					Engine::setVsync(true);
 				}
-
+				sound_cmp[0]->getSound().play();
 				std::this_thread::sleep_for(std::chrono::milliseconds(150));
 				break;
 			case 2:
 				std::cout << "Track 2 Options button has been pressed" << std::endl;
+				sizeRes = res->max_size();
+
+
 				if (resIndex >= 0)
 				{
-					list[2]->SetText("RESOLUTION : " + res[resIndex]);
+					txt_cmp[2]->SetText("RESOLUTION : " + res[resIndex]);
 					resIndex++;
+
 				}
 				if (resIndex == sizeOfModes)
 				{
 					resIndex = 0;
-					list[2]->SetText("RESOLUTION : " + res[resIndex]);
+					txt_cmp[2]->SetText("RESOLUTION : " + res[resIndex]);
 				}
+				sound_cmp[0]->getSound().play();
 				std::this_thread::sleep_for(std::chrono::milliseconds(150));
 				break;
 			case 3:
-				std::cout << "Track 3 button has been pressed" << std::endl;
+				if (windowModeIndex == 0)
+				{
+					txt_cmp[3]->SetText("WINDOW MODE : WINDOWED ");
+					windowModeIndex++;
+				}
+				else
+				{
+					txt_cmp[3]->SetText("WINDOW MODE : FULLSCREEN ");
+					windowModeIndex--;
+				}
+				std::cout << "Window style button has been pressed" << std::endl;
+				sound_cmp[0]->getSound().play();
 				std::this_thread::sleep_for(std::chrono::milliseconds(150));
+				break;
+			case 4:
+				std::cout << "Track 4 button has been pressed" << std::endl;
+				sound_cmp[0]->getSound().play();
+				std::this_thread::sleep_for(std::chrono::milliseconds(150));
+				std::string masterString = res[resIndex];
+				std::stringstream iss(masterString);
+
+				while (iss.good())
+				{
+					stringCount++;
+
+					std::string resString;
+					getline(iss, resString, 'x');
+
+					if (stringCount == 1)
+						nWidth = atoi(resString.c_str());
+					else
+						nHeight = atoi(resString.c_str());
+				}
+				if (windowModeIndex == 1)
+				{
+					settingConfirmed = true;
+					nisFullscreen = true;
+
+					window.close();
+				}
+				else
+				{
+					settingConfirmed = true;
+					nisFullscreen = false;
+
+					window.close();
+				}
 				break;
 			}
 		}
 	}
 }
+

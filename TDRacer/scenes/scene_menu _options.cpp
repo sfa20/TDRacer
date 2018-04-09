@@ -1,23 +1,26 @@
+#include "LevelSystem.h"
+#include "scene_splash_screen.h"
 #include "engine.h"
 #include "ecm.h"
-#include "LevelSystem.h"
-#include <SFML/Graphics/Sprite.hpp>
-#include <system_renderer.h>
-#include <system_resources.h>
-#include "scene_menu _options.h"
-
+#include "../components/cmp_player_physics.h"
+#include "../components/cmp_sound.h"
 #include "../components/cmp_text.h"
 #include "../components/cmp_sprite.h"
 #include "../game.h"
+#include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Window/Keyboard.hpp>
+#include <system_renderer.h>
+#include <system_resources.h>
 #include <iostream>
+#include <thread>
 #include <chrono>
 
 using namespace std;
 using namespace sf;
 using namespace Resources;
 
-static shared_ptr<Entity> _Options;
+static shared_ptr<Entity> options;
+static shared_ptr<Entity> optionsSound;
 
 void OptionScreen::Load() {
 
@@ -223,16 +226,21 @@ void OptionScreen::Load() {
 
 		}
 
-		_Options = makeEntity();
+		options = makeEntity();
 		////creates text entitys
-		_Options->addComponent<TextComponent>("TD Championship Racer");
-		_Options->addComponent<TextComponent>("Controls");
-		_Options->addComponent<TextComponent>("Graphics");
-		_Options->addComponent<TextComponent>("Sound");
-		_Options->addComponent<TextComponent>("Main Menu");
+		options->addComponent<TextComponent>("TD Championship Racer");
+		options->addComponent<TextComponent>("Controls");
+		options->addComponent<TextComponent>("Graphics");
+		options->addComponent<TextComponent>("Sound");
+		options->addComponent<TextComponent>("Main Menu");
+
+		/**************************************************************************************/
+		optionsSound = makeEntity();
+		auto beep = optionsSound->addComponent<SoundComponent>();
+		beep->getSound().setBuffer(*Resources::get<SoundBuffer>("beep.wav"));
 
 		////sets positions and size of menu entitys
-		auto list = _Options->GetCompatibleComponent<TextComponent>();
+		auto list = options->GetCompatibleComponent<TextComponent>();
 
 		list[0]->setCenterPos(Engine::getWindowSize().x / 2.f, 100.f, 50.f);
 		list[1]->setCenterPos(Engine::getWindowSize().x / 2.f, 520.f, 50.f);
@@ -249,7 +257,7 @@ void OptionScreen::Load() {
 }
 
 void OptionScreen::MoveUp() {
-	auto list = _Options->GetCompatibleComponent<TextComponent>();
+	auto list = options->GetCompatibleComponent<TextComponent>();
 
 	//used for keyboard movement in menus
 	if (selectedItemIndex - 1 > 0) {
@@ -261,7 +269,7 @@ void OptionScreen::MoveUp() {
 }
 
 void OptionScreen::MoveDown() {
-	auto list = _Options->GetCompatibleComponent<TextComponent>();
+	auto list = options->GetCompatibleComponent<TextComponent>();
 
 	//used for keyboard movement in menus
 	if (selectedItemIndex + 1 < 5) {
@@ -275,7 +283,8 @@ void OptionScreen::MoveDown() {
 
 void OptionScreen::Update(const double& dt) {
 
-	auto list = _Options->GetCompatibleComponent<TextComponent>();
+	auto list = options->GetCompatibleComponent<TextComponent>();
+	auto sound_cmp = optionsSound->GetCompatibleComponent<SoundComponent>();
 
 	sf::Event newEvent;
 
@@ -320,6 +329,7 @@ void OptionScreen::Update(const double& dt) {
 		if (list[1]->GetText().getGlobalBounds().contains(mousePosF)) {
 			cout << "Controls Pressed!" << endl;
 			selectedItemIndex = 1;
+			sound_cmp[0]->getSound().play();
 			std::this_thread::sleep_for(std::chrono::milliseconds(150));
 			Engine::ChangeScene(&controlScreen);
 		}
@@ -327,6 +337,7 @@ void OptionScreen::Update(const double& dt) {
 		if (list[2]->GetText().getGlobalBounds().contains(mousePosF)) {
 			cout << "Graphics Pressed!" << endl;
 			selectedItemIndex = 2;
+			sound_cmp[0]->getSound().play();
 			std::this_thread::sleep_for(std::chrono::milliseconds(150));
 			Engine::ChangeScene(&graphicScreen);
 		}
@@ -334,12 +345,14 @@ void OptionScreen::Update(const double& dt) {
 		if (list[3]->GetText().getGlobalBounds().contains(mousePosF)) {
 			cout << "Sound Pressed!" << endl;
 			selectedItemIndex = 3;
+			sound_cmp[0]->getSound().play();
 			std::this_thread::sleep_for(std::chrono::milliseconds(150));
 			Engine::ChangeScene(&soundScreen);
 		}
 
 		if (list[4]->GetText().getGlobalBounds().contains(mousePosF)) {
 			cout << "Main menu!" << endl;
+			sound_cmp[0]->getSound().play();
 			std::this_thread::sleep_for(std::chrono::milliseconds(2000));
 			Engine::ChangeScene(&menuScreen);
 		}
@@ -362,21 +375,25 @@ void OptionScreen::Update(const double& dt) {
 
 			case 1:
 				std::cout << "Controls button has been pressed" << std::endl;
+				sound_cmp[0]->getSound().play();
 				std::this_thread::sleep_for(std::chrono::milliseconds(150));
 				Engine::ChangeScene(&controlScreen);
 				break;
 			case 2:
 				std::cout << "Graphics button has been pressed" << std::endl;
+				sound_cmp[0]->getSound().play();
 				std::this_thread::sleep_for(std::chrono::milliseconds(150));
 				Engine::ChangeScene(&graphicScreen);
 				break;
 			case 3:
 				std::cout << "Sound button has been pressed" << std::endl;
+				sound_cmp[0]->getSound().play();
 				std::this_thread::sleep_for(std::chrono::milliseconds(150));
 				Engine::ChangeScene(&soundScreen);
 				break;
 			case 4:
 				std::cout << "Sound button has been pressed" << std::endl;
+				sound_cmp[0]->getSound().play();
 				std::this_thread::sleep_for(std::chrono::milliseconds(150));
 				Engine::ChangeScene(&menuScreen);
 				break;

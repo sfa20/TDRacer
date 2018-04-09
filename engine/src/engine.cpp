@@ -82,9 +82,11 @@ void Engine::Render(RenderWindow& window) {
 	Renderer::render();
 }
 
-void Engine::Start(unsigned int width, unsigned int height,
-	const std::string& gameName, Scene* scn) {
-	RenderWindow window(VideoMode(width, height), gameName);
+void Engine::Start(unsigned int width, unsigned int height, const std::string& gameName, Scene* scn, bool isFullscreen) {
+
+	auto test = isFullscreen ? sf::Style::Fullscreen : sf::Style::Resize;
+
+	RenderWindow window(VideoMode(width, height), gameName, test);
 	_gameName = gameName;
 	_window = &window;
 	Renderer::initialise(window);

@@ -1,20 +1,26 @@
-#include "scene_controls.h"
-#include <iostream>
-#include "SFML\Window\Keyboard.hpp"
-#include "SFML\Audio.hpp"
-#include "../game.h"
+#include "LevelSystem.h"
+#include "scene_splash_screen.h"
+#include "engine.h"
+#include "ecm.h"
+#include "../components/cmp_player_physics.h"
+#include "../components/cmp_sound.h"
 #include "../components/cmp_text.h"
+#include "../components/cmp_sprite.h"
+#include "../game.h"
+#include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Window/Keyboard.hpp>
 #include <system_renderer.h>
 #include <system_resources.h>
-#include "../components/cmp_sprite.h"
-#include <LevelSystem.h>
-
+#include <iostream>
+#include <thread>
+#include <chrono>
 
 using namespace std;
 using namespace sf;
 using namespace Resources;
 
-static std::shared_ptr<Entity> txt;
+static shared_ptr<Entity> control;
+static shared_ptr<Entity> controlSound;
 
 void ControlScreen::Load() {
 
@@ -221,12 +227,16 @@ void ControlScreen::Load() {
 		}
 
 		//creates entitys for splash and adds text components
-		txt = makeEntity();
-		auto title = txt->addComponent<TextComponent>("TD CHAMPIONSHIP RACER");
-		auto selectTrack = txt->addComponent<TextComponent>("placeholder SELECTED TRACK");
-		auto car1 = txt->addComponent<TextComponent>("controller remapping");
-		auto car2 = txt->addComponent<TextComponent>("how the hell");
-		auto car3 = txt->addComponent<TextComponent>("are we gonna");
+		control = makeEntity();
+		auto title = control->addComponent<TextComponent>("TD CHAMPIONSHIP RACER");
+		auto selectTrack = control->addComponent<TextComponent>("placeholder SELECTED TRACK");
+		auto car1 = control->addComponent<TextComponent>("controller remapping");
+		auto car2 = control->addComponent<TextComponent>("how the hell");
+		auto car3 = control->addComponent<TextComponent>("are we gonna");
+
+		controlSound = makeEntity();
+		auto beep = controlSound->addComponent<SoundComponent>();
+		beep->getSound().setBuffer(*Resources::get<SoundBuffer>("beep.wav"));
 
 		//sets text position
 		title->setCenterPos(Engine::getWindowSize().x / 2.f, 100.f, 50);
@@ -241,25 +251,25 @@ void ControlScreen::Load() {
 }
 
 void ControlScreen::MoveUp() {
-	auto list = txt->GetCompatibleComponent<TextComponent>();
+	auto txt_cmp = control->GetCompatibleComponent<TextComponent>();
 
 	//used for keyboard movement in menus
 	if (selectedItemIndex - 1 > 0) {
-		list[selectedItemIndex]->setColor(255, 255, 255, 255);
+		txt_cmp[selectedItemIndex]->setColor(255, 255, 255, 255);
 		selectedItemIndex--;
-		list[selectedItemIndex]->setColor(255, 0, 0, 255);
+		txt_cmp[selectedItemIndex]->setColor(255, 0, 0, 255);
 		std::this_thread::sleep_for(std::chrono::milliseconds(150));
 	}
 }
 
 void ControlScreen::MoveDown() {
-	auto list = txt->GetCompatibleComponent<TextComponent>();
+	auto txt_cmp = control->GetCompatibleComponent<TextComponent>();
 
 	//used for keyboard movement in menus
 	if (selectedItemIndex + 1 < 5) {
-		list[selectedItemIndex]->setColor(255, 255, 255, 255);
+		txt_cmp[selectedItemIndex]->setColor(255, 255, 255, 255);
 		selectedItemIndex++;
-		list[selectedItemIndex]->setColor(255, 0, 0, 255);
+		txt_cmp[selectedItemIndex]->setColor(255, 0, 0, 255);
 		std::this_thread::sleep_for(std::chrono::milliseconds(150));
 	}
 }
@@ -274,51 +284,55 @@ void ControlScreen::Update(const double & dt)
 	sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
 
 	//getting entity components
-	auto list = txt->GetCompatibleComponent<TextComponent>();
+	auto txt_cmp = control->GetCompatibleComponent<TextComponent>();
+	auto sound_cmp = controlSound->GetCompatibleComponent<SoundComponent>();
 
 	window.pollEvent(event);
 
 	//Handles this mouse hovering over the menu options
 	if (sf::Event::MouseMoved) {
 
-		if (list[2]->GetText().getGlobalBounds().contains(mousePosF)) {
-			list[selectedItemIndex]->setColor(255, 255, 255, 255);
+		if (txt_cmp[2]->GetText().getGlobalBounds().contains(mousePosF)) {
+			txt_cmp[selectedItemIndex]->setColor(255, 255, 255, 255);
 			selectedItemIndex = 1;
-			list[selectedItemIndex]->setColor(255, 0, 0, 255);
+			txt_cmp[selectedItemIndex]->setColor(255, 0, 0, 255);
 		}
 
-		if (list[3]->GetText().getGlobalBounds().contains(mousePosF)) {
-			list[selectedItemIndex]->setColor(255, 255, 255, 255);
+		if (txt_cmp[3]->GetText().getGlobalBounds().contains(mousePosF)) {
+			txt_cmp[selectedItemIndex]->setColor(255, 255, 255, 255);
 			selectedItemIndex = 2;
-			list[selectedItemIndex]->setColor(255, 0, 0, 255);
+			txt_cmp[selectedItemIndex]->setColor(255, 0, 0, 255);
 		}
 
-		if (list[4]->GetText().getGlobalBounds().contains(mousePosF)) {
-			list[selectedItemIndex]->setColor(255, 255, 255, 255);
+		if (txt_cmp[4]->GetText().getGlobalBounds().contains(mousePosF)) {
+			txt_cmp[selectedItemIndex]->setColor(255, 255, 255, 255);
 			selectedItemIndex = 3;
-			list[selectedItemIndex]->setColor(255, 0, 0, 255);
+			txt_cmp[selectedItemIndex]->setColor(255, 0, 0, 255);
 		}
 	}
 
 	//Handles the Button controls against the menu options
 	if (Mouse::isButtonPressed(Mouse::Left)) {
 
-		if (list[2]->GetText().getGlobalBounds().contains(mousePosF)) {
+		if (txt_cmp[2]->GetText().getGlobalBounds().contains(mousePosF)) {
 			cout << "Track 1 Pressed!" << endl;
 			selectedItemIndex = 1;
+			sound_cmp[0]->getSound().play();
 			std::this_thread::sleep_for(std::chrono::milliseconds(150));
 			Engine::ChangeScene(&loadScreen);
 		}
 
-		if (list[3]->GetText().getGlobalBounds().contains(mousePosF)) {
+		if (txt_cmp[3]->GetText().getGlobalBounds().contains(mousePosF)) {
 			cout << "Track 2 Pressed!" << endl;
 			selectedItemIndex = 2;
+			sound_cmp[0]->getSound().play();
 			std::this_thread::sleep_for(std::chrono::milliseconds(150));
 			Engine::ChangeScene(&optionScreen);
 		}
 
-		if (list[4]->GetText().getGlobalBounds().contains(mousePosF)) {
+		if (txt_cmp[4]->GetText().getGlobalBounds().contains(mousePosF)) {
 			cout << "Track 3 Pressed!" << endl;
+			sound_cmp[0]->getSound().play();
 			selectedItemIndex = 3;
 			std::this_thread::sleep_for(std::chrono::milliseconds(150));
 		}
@@ -342,16 +356,19 @@ void ControlScreen::Update(const double & dt)
 
 			case 2:
 				std::cout << "Track 1 button has been pressed" << std::endl;
+				sound_cmp[0]->getSound().play();
 				std::this_thread::sleep_for(std::chrono::milliseconds(150));
 				Engine::ChangeScene(&level1);
 				break;
 			case 3:
 				std::cout << "Track 2 Options button has been pressed" << std::endl;
 				std::this_thread::sleep_for(std::chrono::milliseconds(150));
+				sound_cmp[0]->getSound().play();
 				Engine::ChangeScene(&level1);
 				break;
 			case 4:
 				std::cout << "Track 3 button has been pressed" << std::endl;
+				sound_cmp[0]->getSound().play();
 				std::this_thread::sleep_for(std::chrono::milliseconds(150));
 				break;
 			}
