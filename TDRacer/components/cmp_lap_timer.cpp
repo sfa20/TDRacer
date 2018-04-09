@@ -17,26 +17,28 @@ LapTimer::LapTimer(Entity* p) : Timer(p){
 	lap5 = "0:00:00";
 }
 
-
-
 #pragma region Update and Render
 
 void LapTimer::update(double dt) {
 
+	//auto minTimer = this->getClock().getElapsedTime().asMilliseconds();
 
-	if (getClock().getElapsedTime().asMilliseconds() > 60000) {
-		setMins(getMins() + 1);
-		getClock().restart();
+	//cout << this->getClock().getElapsedTime().asMilliseconds() << endl;
+
+	if (this->getClock().getElapsedTime().asMilliseconds() > 12000) {
+
+		this->setMins(this->getMins() + 1);
+		this->reset();
 	}
 
-	setSecs(getClock().getElapsedTime().asSeconds());
+	setSecs(this->getClock().getElapsedTime().asSeconds());
 
-	setMillisecs(getClock().getElapsedTime().asMilliseconds());
+	setMillisecs(this->getClock().getElapsedTime().asMilliseconds());
 
 	if (getMillisecs() > 1000)
 		setMillisecs(getMillisecs() - getSecs() * 1000);
 	else
-		setMillisecs(getClock().getElapsedTime().asMilliseconds());
+		setMillisecs(this->getClock().getElapsedTime().asMilliseconds());
 
 };
 
@@ -48,9 +50,6 @@ void LapTimer::render() {};
 
 
 #pragma endregion
-
-
-
 
 
 void LapTimer::increaseLapCounter() {
@@ -70,9 +69,15 @@ void LapTimer::setLaptime(int lap) {
 	{
 	case 1: 
 		lap1 = "Lap 1: " + to_string(getMins()) + ":" + to_string(getSecs()) + ":" + to_string(getMillisecs());
+		setMins(0);
+		setSecs(0);
+		setMins(0);
 		break;
 	case 2:
 		lap2 = "Lap 2: " + to_string(getMins()) + ":" + to_string(getSecs()) + ":" + to_string(getMillisecs());
+		setMins(0);
+		setSecs(0);
+		setMins(0); 
 		break;
 
 	case 3:
@@ -106,6 +111,7 @@ std::string LapTimer::getLapTimes() {
 void LapTimer::setLapCounter(bool value) {
 	lapCounter = value;
 }
+
 
 bool LapTimer::getLapCounter() {
 	return lapCounter;

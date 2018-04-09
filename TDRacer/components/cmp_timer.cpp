@@ -60,6 +60,7 @@ int Timer::getMins() {
 
 void Timer::setMins(int newMins) {
 	mins = newMins;
+	cout << mins << endl;
 }
 
 int Timer::getSecs() {

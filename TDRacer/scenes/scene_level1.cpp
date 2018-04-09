@@ -373,10 +373,13 @@ void Level1Scene::Update(const double& dt) {
 			auto j = lt->getLapCounter();
 			
 			if (j) {
+				
 				lt->setLapCounter(false);
-				lt->reset();
 				lt->setLaptime(lt->getCurrentLap());
+
+				lt->reset();
 				lt->increaseLapCounter();
+				
 				cout << "Current Lap: " << lt->getCurrentLap() << endl;
 				cout << lt->getLapTimes() << endl;
 			}
@@ -388,7 +391,7 @@ void Level1Scene::Update(const double& dt) {
 		lt->setLapCounter(true);
 	}
 
-	cout << to_string(lt->temp) << endl;
+	//cout << to_string(lt->temp) << endl;
 
 	//auto s11 = ls::getTileAt(playerpos);
 		//cout << p << endl;
