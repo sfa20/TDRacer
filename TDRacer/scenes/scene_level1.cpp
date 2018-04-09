@@ -26,7 +26,7 @@ Vector2f Scale;
 
 void Level1Scene::Load() {
 	//Load Level File
-	ls::loadLevelFile("res/maze.txt", 50.5f);
+	ls::loadLevelFile("res/track_1.txt", 50.f);
 	
 #pragma region Setup Map
 
