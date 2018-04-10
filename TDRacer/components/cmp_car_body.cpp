@@ -10,6 +10,7 @@ using namespace Physics;
 
 
 CarBodyComponent::CarBodyComponent(Entity* const p, const Vector2f& size) : Component(p) {
+	
 	bodySize = sv2_to_bv2(size, true);
 	
 	b2BodyDef bodyDef;

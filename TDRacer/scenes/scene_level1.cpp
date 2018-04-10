@@ -22,15 +22,38 @@ using namespace Resources;
 
 static shared_ptr<Entity> player;
 static shared_ptr<Entity> raceTimer;
-Vector2f Scale;
+sf::Vector2f scale = { 0.400f, 0.400f };
+
 
 void Level1Scene::Load() {
+	
+	float size = 50.f;
+
+	//CheckScreenRes();
+
+	cout << to_string(nWidth) << endl;
+	cout << to_string(nHeight) << endl;
+
+	if (nWidth == 1920 && nHeight == 1080) {
+		scale = { 0.400f, 0.400f };
+		size = 50.f;
+	}
+	else if (nWidth == 1280 && nHeight == 720) {
+		scale = { 0.395f, 0.395f };
+		size = 34.f;
+		cout << scale << endl;
+		cout << size << endl;
+	}
+	else if (nWidth == 1024 && nHeight == 600) {
+		scale = { 0.300f, 0.300f };
+		size = 28.f;
+	}
+
 	//Load Level File
-	ls::loadLevelFile("res/track_1.txt", 50.f);
+	ls::loadLevelFile("res/track_1.txt", size);
 	
 #pragma region Setup Map
 
-	Scale = { 0.400f, 0.400f };
 
 	//////////////Added////////////
 	auto startTilesLeft = ls::findTiles(ls::STARTLEFT);
@@ -40,7 +63,7 @@ void Level1Scene::Load() {
 		//add a new sprite component, set texture and scale
 		auto c = start->addComponent<SpriteComponent>();
 		c->getSprite().setTexture(*Resources::get<Texture>("Straights/startLine_vertical_noBorder_right.png"));
-		c->getSprite().setScale(Scale);
+		c->getSprite().setScale(scale);
 
 		//get tile position - vector 2f
 		auto p = ls::getTilePosition(t);
@@ -54,7 +77,7 @@ void Level1Scene::Load() {
 		//add a new sprite component, set texture and scale
 		auto c = start->addComponent<SpriteComponent>();
 		c->getSprite().setTexture(*Resources::get<Texture>("Straights/startLine_vertical_noBorder_left.png"));
-		c->getSprite().setScale(Scale);
+		c->getSprite().setScale(scale);
 
 		//get tile position - vector 2f
 		auto p = ls::getTilePosition(t);
@@ -68,7 +91,7 @@ void Level1Scene::Load() {
 		//add a new sprite component, set texture and scale
 		auto c = start->addComponent<SpriteComponent>();
 		c->getSprite().setTexture(*Resources::get<Texture>("Straights/startLine_vertical_noBorder.png"));
-		c->getSprite().setScale(Scale);
+		c->getSprite().setScale(scale);
 
 		//get tile position - vector 2f
 		auto p = ls::getTilePosition(t);
@@ -88,7 +111,7 @@ void Level1Scene::Load() {
 			//Add a new sprite component set texture and scale
 			auto t3 = grass->addComponent<SpriteComponent>();
 			t3->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
-			t3->getSprite().setScale(Scale);
+			t3->getSprite().setScale(scale);
 	
 			//get tile position - vector2f
 			auto g = ls::getTilePosition(t);
@@ -104,7 +127,7 @@ void Level1Scene::Load() {
 			//Add a new sprite component set texture and scale
 			auto t3 = wall->addComponent<SpriteComponent>();
 			t3->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
-			t3->getSprite().setScale(Scale);
+			t3->getSprite().setScale(scale);
 	
 			//get tile position - vector2f
 			auto g = ls::getTilePosition(t);
@@ -122,7 +145,7 @@ void Level1Scene::Load() {
 			//Add a new sprite component set texture and scale
 			auto t2 = peak->addComponent<SpriteComponent>();
 			t2->getSprite().setTexture(*Resources::get<Texture>("Straights/straight_horizontal_noBorder_bottom.png"));
-			t2->getSprite().setScale(Scale);
+			t2->getSprite().setScale(scale);
 	
 			//get tile position - vector2f
 			auto g = ls::getTilePosition(t);
@@ -140,7 +163,7 @@ void Level1Scene::Load() {
 			//Add a new sprite component set texture and scale
 			auto t2 = bottom->addComponent<SpriteComponent>();
 			t2->getSprite().setTexture(*Resources::get<Texture>("Straights/straight_horizontal_noBorder_top.png"));
-			t2->getSprite().setScale(Scale);
+			t2->getSprite().setScale(scale);
 	
 			//get tile position - vector2f
 			auto g = ls::getTilePosition(t);
@@ -158,7 +181,7 @@ void Level1Scene::Load() {
 			//Add a new sprite component set texture and scale
 			auto t2 = right->addComponent<SpriteComponent>();
 			t2->getSprite().setTexture(*Resources::get<Texture>("Straights/straight_vertical_noBorder_left.png"));
-			t2->getSprite().setScale(Scale);
+			t2->getSprite().setScale(scale);
 	
 			//get tile position - vector2f
 			auto g = ls::getTilePosition(t);
@@ -174,7 +197,7 @@ void Level1Scene::Load() {
 			//Add a new sprite component set texture and scale
 			auto t2 = left->addComponent<SpriteComponent>();
 			t2->getSprite().setTexture(*Resources::get<Texture>("Straights/straight_vertical_noBorder_right.png"));
-			t2->getSprite().setScale(Scale);
+			t2->getSprite().setScale(scale);
 	
 			//get tile position - vector2f
 			auto g = ls::getTilePosition(t);
@@ -191,7 +214,7 @@ void Level1Scene::Load() {
 			//Add a new sprite component set texture and scale
 			auto t2 = track->addComponent<SpriteComponent>();
 			t2->getSprite().setTexture(*Resources::get<Texture>("Straights/straight_noBorder.png"));
-			t2->getSprite().setScale(Scale);
+			t2->getSprite().setScale(scale);
 	
 			//get tile position - vector2f
 			auto g = ls::getTilePosition(t);
@@ -208,11 +231,11 @@ void Level1Scene::Load() {
 	
 			auto t1 = corn1->addComponent<SpriteComponent>();
 			t1->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
-			t1->getSprite().setScale(Scale);
+			t1->getSprite().setScale(scale);
 			//Add a new sprite component set texture and scale
 			auto t2 = corn1->addComponent<SpriteComponent>();
 			t2->getSprite().setTexture(*Resources::get<Texture>("Corners/90DegreeTopRight.png"));
-			t2->getSprite().setScale(Scale);
+			t2->getSprite().setScale(scale);
 	
 	
 			//get tile position - vector2f
@@ -229,11 +252,11 @@ void Level1Scene::Load() {
 			corn2 = makeEntity();
 			auto t1 = corn2->addComponent<SpriteComponent>();
 			t1->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
-			t1->getSprite().setScale(Scale);
+			t1->getSprite().setScale(scale);
 			//Add a new sprite component set texture and scale
 			auto t2 = corn2->addComponent<SpriteComponent>();
 			t2->getSprite().setTexture(*Resources::get<Texture>("Corners/90DegreeTopLeft.png"));
-			t2->getSprite().setScale(Scale);
+			t2->getSprite().setScale(scale);
 	
 			//get tile position - vector2f
 			auto g = ls::getTilePosition(t);
@@ -249,11 +272,11 @@ void Level1Scene::Load() {
 			corn3 = makeEntity();
 			auto t1 = corn3->addComponent<SpriteComponent>();
 			t1->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
-			t1->getSprite().setScale(Scale);
+			t1->getSprite().setScale(scale);
 			//Add a new sprite component set texture and scale
 			auto t2 = corn3->addComponent<SpriteComponent>();
 			t2->getSprite().setTexture(*Resources::get<Texture>("Corners/90DegreeBottomLeft.png"));
-			t2->getSprite().setScale(Scale);
+			t2->getSprite().setScale(scale);
 	
 			//get tile position - vector2f
 			auto g = ls::getTilePosition(t);
@@ -269,11 +292,11 @@ void Level1Scene::Load() {
 			corn4 = makeEntity();
 			auto t1 = corn4->addComponent<SpriteComponent>();
 			t1->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
-			t1->getSprite().setScale(Scale);
+			t1->getSprite().setScale(scale);
 			//Add a new sprite component set texture and scale
 			auto t2 = corn4->addComponent<SpriteComponent>();
 			t2->getSprite().setTexture(*Resources::get<Texture>("Corners/90DegreeBottomRight.png"));
-			t2->getSprite().setScale(Scale);
+			t2->getSprite().setScale(scale);
 	
 	
 			//get tile position - vector2f

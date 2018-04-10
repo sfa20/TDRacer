@@ -7,6 +7,7 @@
 #include <future>
 #include <iostream>
 #include <stdexcept>
+#include "../TDRacer/game.h"
 
 using namespace sf;
 using namespace std;
@@ -171,6 +172,7 @@ bool Scene::isLoaded() const {
 		return _loaded;
 	}
 }
+
 void Scene::setLoaded(bool b) {
 	{
 		std::lock_guard<std::mutex> lck(_loaded_mtx);
@@ -184,6 +186,23 @@ void Scene::UnLoad() {
 }
 
 void Scene::LoadAsync() { _loaded_future = std::async(&Scene::Load, this); }
+
+//added
+//void Scene::CheckScreenRes() {
+//	if (nWidth == 1920 && nHeight == 1080) {
+//		scale = { 0.400f, 0.400f };
+//		size = 50.f;
+//	}
+//	else if (nWidth == 1280 && nHeight == 720) {
+//		scale = { 0.395f, 0.395f };
+//		size = 34.f;
+//	}
+//	else if (nWidth == 1024 && nHeight == 600) {
+//		scale = { 0.300f, 0.300f };
+//		size = 50.f;
+//	}
+//}
+
 
 sf::Vector2u Engine::getWindowSize() { return _window->getSize(); }
 
