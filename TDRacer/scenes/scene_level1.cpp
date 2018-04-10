@@ -323,7 +323,6 @@ void Level1Scene::Load() {
 #pragma endregion
 
 
-		
 #pragma region CreatePlayer 
 
 	//Create an PlayerCar Entity, add component and set texture
@@ -335,6 +334,8 @@ void Level1Scene::Load() {
 	t->getSprite().setTexture(*Resources::load<Texture>("car_green_small_2.png"));
 	t->getSprite().setScale(0.5f, 0.5);
 	t->getSprite().setColor(Color::Red);
+	 
+	t->getSprite().setOrigin(20,0);
 
 	//Add a Player Physics Component
 	auto p = player->addComponent<PlayerPhysicsComponent>(Vector2f(20.f, 20.f));

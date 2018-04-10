@@ -31,6 +31,10 @@ public:
   void stopTurning();				//added
   void updateFriction();
 
+  b2Vec2 getForwardVelocity();
+  b2Vec2 getLateralVelocity();
+  b2Vec2 getDirection();
+
   void update(double dt) override;
   void render() override;
   void impulse(const sf::Vector2f& i);

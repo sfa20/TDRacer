@@ -2,6 +2,7 @@
 #include "system_physics.h"
 #include "cmp_player_physics.h"
 
+
 using namespace std;
 using namespace sf;
 
@@ -90,6 +91,22 @@ void PhysicsComponent::teleport(const sf::Vector2f& v) {
   _body->SetTransform(sv2_to_bv2(invert_height(v)), 0.0f);
 }
 
+//added
+b2Vec2 PhysicsComponent::getForwardVelocity() {
+	b2Vec2 currentForwardVelocity = _body->GetWorldVector(b2Vec2(0, 1));
+	return b2Dot(currentForwardVelocity, _body->GetLinearVelocity()) * currentForwardVelocity;
+}
+
+b2Vec2 PhysicsComponent::getLateralVelocity() {
+	b2Vec2 currentLateralVelocity = _body->GetWorldVector(b2Vec2(1, 0));
+	return b2Dot(currentLateralVelocity, _body->GetLinearVelocity()) * currentLateralVelocity;
+}
+
+b2Vec2 PhysicsComponent::getDirection() {
+	return _body->GetWorldVector(b2Vec2(0, 1));
+}
+
+////////////////
 
 const sf::Vector2f PhysicsComponent::getVelocity() const {
   return bv2_to_sv2(_body->GetLinearVelocity(), true);
@@ -120,41 +137,89 @@ void PhysicsComponent::render() {}
 
 
 void PhysicsComponent::impulse(const sf::Vector2f& i) {
-	updateFriction();
-	auto a = b2Vec2(i.x, i.y * -1.0f);
-    _body->ApplyLinearImpulseToCenter( a, true);
+	//updateFriction();
+	//auto a = b2Vec2(i.x, i.y * -1.0f);
+	//float currentSpeed;
+
+	//_body->ApplyForceToCenter(a, true);
+	//_body->ApplyLinearImpulseToCenter(a, true);
+
+	////testing
+	float maxForwardSpeed(20.f);
+	float maxBackwardSpeed(-10.f);
+	float desiredSpeed = 20.f;
+
+	b2Vec2 currentForwardSpeed = { i.x,i.y * -1.0f };
+	float currentSpeed = b2Dot(getForwardVelocity(), currentForwardSpeed);
+
+	float force = 20.f;//(desiredSpeed > currentSpeed) ? maxForwardSpeed : -maxForwardSpeed;
+
+	if (desiredSpeed != currentSpeed) {
+		//_body->ApplyForceToCenter(0.1 * force * currentForwardSpeed, true);
+		_body->ApplyLinearImpulseToCenter(0.1 * force * currentForwardSpeed, true);
+	}
 
 }
-
-
 
 //ADDED
 
 
 void PhysicsComponent::updateFriction() {
-	_body->ApplyAngularImpulse(2 * 0.1f *_body->GetInertia() *_body->GetAngularVelocity(),true);
+
+	float maxLateralImpulse = 5.5f;
+	float driftFriction = 0.1;
+	float dragModifier = 0.01;
+	float currentTraction = 0.1f;
+
+	b2Vec2 i = _body->GetMass() * -getLateralVelocity();
+	if (i.Length() > maxLateralImpulse)
+		i *= maxLateralImpulse / i.Length();
+
+	//apply the impulse
+	_body->ApplyLinearImpulse(driftFriction * i, _body->GetWorldCenter(), true);
+
+	//angular velocity
+	_body->ApplyAngularImpulse(8 * 0.1f *_body->GetInertia() *_body->GetAngularVelocity(),true);
+
+	b2Vec2 currentForwardNormal = getForwardVelocity();
+	float currenForwardSpeed = currentForwardNormal.Normalize();
+	float dragForceMagnitude = -2 * currenForwardSpeed * dragModifier;
+
+	_body->ApplyForce(currentTraction * dragForceMagnitude * currentForwardNormal, _body->GetWorldCenter(), true);
 }
 
+
 void PhysicsComponent::turnRight() {
-	auto g = _body->GetWorldVector(b2Vec2(0, 0.1));
+	//auto g = _body->GetWorldVector(b2Vec2(0, 0.1));
+	////_fixture->GetBody()->ApplyTorque(15, true);
 	//_body->ApplyTorque(15,true);
-	_body->SetAngularVelocity(1.4f);
-	
-	//_body->ApplyAngularImpulse(100, true);
+	//
+
+	//////testing
+	//float steerTorque = 0.01;
+	//float steerTorqueOffset = 0.004;
+	//float desiredTorque = 0;
+
+	//float torque = steerTorque + steerTorqueOffset;
+
+	//desiredTorque = -torque;
+	_body->SetAngularVelocity(1.5);
+	//_body->ApplyTorque(desiredTorque, true);
 }
 
 
 void PhysicsComponent::turnLeft() {
 	//sin(_body->GetAngle() * )
-	float turnSpeed = 0.2;
+	/*float turnSpeed = 0.2;
 	auto angle = _body->GetAngle();
 
 	angle += turnSpeed * getVelocity().x / 30.f;
 
 	auto t = sin(angle);
-
+*/
 	//_body->ApplyForce(b2Vec2(4, 4),sd b2Vec2(0, 1), true);
 	_body->SetAngularVelocity(-1.5);
+	
 	//_body->ApplyTorque(15, true);
 	//_body->ApplyAngularImpulse(100, true);
 

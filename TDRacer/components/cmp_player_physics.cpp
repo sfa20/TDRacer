@@ -41,20 +41,24 @@ void PlayerPhysicsComponent::update(double dt) {
 	//This gets the world vector for moving the Entity
 	//Currently controlling the speed of the car - something needs done to control speed somehow
 	//gets the currend speed in forward direction
-	auto worldVector = _body->GetWorldVector(b2Vec2(0, 0.5));
+	auto worldVector = _body->GetWorldVector(b2Vec2(0, 1));
+
+	
 
 	//Handle keyboard input from user
 	if (Keyboard::isKeyPressed(Keyboard::W) || Keyboard::isKeyPressed(Keyboard::S)) {
 
 		if (Keyboard::isKeyPressed(Keyboard::W)) {
 			if (getVelocity().x < _maxVelocity.x) {
+				//updateFriction();
 				impulse({ -worldVector.x, -worldVector.y });
-				stopTurning();
+				//stopTurning();
 			}
 		}
 		else if (Keyboard::isKeyPressed(Keyboard::S)) {
+			//updateFriction();
 			impulse({ worldVector.x, worldVector.y });
-			stopTurning();
+			//stopTurning();
 		}
 		
 	}
@@ -69,6 +73,7 @@ void PlayerPhysicsComponent::update(double dt) {
 		if (Keyboard::isKeyPressed(Keyboard::D)) {
 			dampen({ 0.1f, 0.1f });
 			//impulse({ -worldVector.x, -worldVector.y }); 
+			updateFriction();
 			turnRight();
 
 		}
@@ -76,6 +81,7 @@ void PlayerPhysicsComponent::update(double dt) {
 			//cout << getVelocity() << en5dl;
 			dampen({ 0.1f, 0.1f });
 			//impulse({ -worldVector.x, -worldVector.y });
+			updateFriction(); 
 			turnLeft();
 		}
 	
@@ -91,10 +97,10 @@ void PlayerPhysicsComponent::update(double dt) {
 	//		//impulse({0, -(float)(dt * _groundspeed) });
 	
 	// Clamp velocity.
-	auto v = getVelocity();
-	v.x = copysign(min(abs(v.x), _maxVelocity.x), v.x);
-	v.y = copysign(min(abs(v.y), _maxVelocity.y), v.y);
-	setVelocity(v);
+	//auto v = getVelocity();
+	//v.x = copysign(min(abs(v.x), _maxVelocity.x), v.x);
+	//v.y = copysign(min(abs(v.y), _maxVelocity.y), v.y);
+	//setVelocity(v);
 
 	PhysicsComponent::update(dt);
 }
