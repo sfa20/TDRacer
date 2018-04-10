@@ -25,15 +25,36 @@ public:
   void setFriction(float r);
   void setMass(float m);
 
-  //Added
+  ////////Added
+
   void turnRight();					//added
   void turnLeft();					//added
   void stopTurning();				//added
   void updateFriction();
 
+  //Impulse Variables
+  float maxForwardSpeed;
+  float maxBackwardSpeed;
+  float desiredSpeed;
+  float maxDriveForce;
+
+
+  //Friction variables
+  float maxLateralImpulse;
+  float driftFriction;
+  float dragModifier;
+  float currentTraction;
+
   b2Vec2 getForwardVelocity();
   b2Vec2 getLateralVelocity();
   b2Vec2 getDirection();
+
+  b2Vec2 currentForwardNormal;
+  float currentForwardSpeed;
+
+  /////////////
+
+
 
   void update(double dt) override;
   void render() override;

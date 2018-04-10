@@ -9,6 +9,7 @@ using namespace sf;
 using namespace Physics;
 
 void PhysicsComponent::update(double dt) {
+	currentForwardSpeed = 0;
   _parent->setPosition(invert_height(bv2_to_sv2(_body->GetPosition())));
   _parent->setRotation((180 / b2_pi) * _body->GetAngle());
 }
@@ -16,34 +17,50 @@ void PhysicsComponent::update(double dt) {
 
 PhysicsComponent::PhysicsComponent(Entity* p, bool dyn, const Vector2f& size) : Component(p), _dynamic(dyn) {
 
-  b2BodyDef BodyDef;
-  // Is Dynamic(moving), or static(Stationary)
-  BodyDef.type = _dynamic ? b2_dynamicBody : b2_staticBody;
-  BodyDef.position = sv2_to_bv2(invert_height(p->getPosition()));
-  
-  // Create the body
-  _body = Physics::GetWorld()->CreateBody(&BodyDef);
-  _body->SetActive(true);
-  _body->SetAngularDamping(0.1f);
-  {
-    // Create the fixture shape
-    b2PolygonShape Shape;
-	
-    // SetAsBox box takes HALF-Widths!
-    Shape.SetAsBox(sv2_to_bv2(size).x * 0.5f, sv2_to_bv2(size).y * 0.5f);
-  
-	
-	b2FixtureDef FixtureDef;
-    // Fixture properties
-    FixtureDef.density = _dynamic ? 10.f : 0.f;
-    FixtureDef.friction = _dynamic ? 0.05f : 0.8f;
-    FixtureDef.restitution = .2;
-    FixtureDef.shape = &Shape;
-    // Add to body
-    _fixture = _body->CreateFixture(&FixtureDef);
-    //_fixture->SetRestitution(.9)
+	 b2BodyDef BodyDef;
+	 // Is Dynamic(moving), or static(Stationary)
+	 BodyDef.type = _dynamic ? b2_dynamicBody : b2_staticBody;
+	 BodyDef.position = sv2_to_bv2(invert_height(p->getPosition()));
+	 
+	 // Create the body
+	 _body = Physics::GetWorld()->CreateBody(&BodyDef);
+	 _body->SetActive(true);
+	 _body->SetAngularDamping(0.1f);
+	 {
+	   // Create the fixture shape
+	   b2PolygonShape Shape;
+		
+	   // SetAsBox box takes HALF-Widths!
+	   Shape.SetAsBox(sv2_to_bv2(size).x * 0.5f, sv2_to_bv2(size).y * 0.5f);
+	 
+		
+		b2FixtureDef FixtureDef;
+	   // Fixture properties
+	   FixtureDef.density = _dynamic ? 10.f : 0.f;
+	   FixtureDef.friction = _dynamic ? 0.05f : 0.8f;
+	   FixtureDef.restitution = .2;
+	   FixtureDef.shape = &Shape;
+	   // Add to body
+	   _fixture = _body->CreateFixture(&FixtureDef);
+	   //_fixture->SetRestitution(.9)
 
-  }
+	 }
+
+	 //Impulse Variables
+	 maxForwardSpeed = 20.f;
+	 maxBackwardSpeed = -10.f;
+	 desiredSpeed = 20.f;
+	 maxDriveForce = 5.0f;
+
+	 //Friction Variables
+	 maxLateralImpulse = 5.5f;
+	 driftFriction = 0.1;
+	 dragModifier = 0.01;
+	 currentTraction = 0.1f;
+
+
+
+	 
 
   // An ideal Pod/capusle shape should be used for the player,
   // this isn't built into B2d, but we can combine two shapes to do so.
@@ -138,45 +155,27 @@ void PhysicsComponent::render() {}
 
 void PhysicsComponent::impulse(const sf::Vector2f& i) {
 	//updateFriction();
-	//auto a = b2Vec2(i.x, i.y * -1.0f);
-	//float currentSpeed;
 
-	//_body->ApplyForceToCenter(a, true);
-	//_body->ApplyLinearImpulseToCenter(a, true);
-
-	////testing
-	float maxForwardSpeed(20.f);
-	float maxBackwardSpeed(-10.f);
-	float desiredSpeed = 20.f;
-	float maxDriveForce = 5.0f;
-
-	b2Vec2 currentForwardSpeed = { i.x,i.y * -1.0f };
-	float currentSpeed = b2Dot(getForwardVelocity(), currentForwardSpeed);
-	cout << currentSpeed << endl;
-/*
-	if (controlState)
-		desiredSpeed = maxForwardSpeed;
-	else
-		desiredSpeed = maxBackwardSpeed;*/
+	b2Vec2 curForwardSpeed = { i.x,i.y * -1.0f };
+	float currentSpeed = b2Dot(getForwardVelocity(), curForwardSpeed);
 
 	float force = (desiredSpeed > currentSpeed) ? maxDriveForce : -maxDriveForce;
 
 	if (desiredSpeed != currentSpeed) {
-		//_body->ApplyForceToCenter(0.1 * force * currentForwardSpeed, true);
-		_body->ApplyLinearImpulseToCenter(0.1 * force * currentForwardSpeed, true);
+		_body->ApplyForceToCenter(20 * force * curForwardSpeed, true);
+		currentForwardNormal = getForwardVelocity();
+		currentForwardSpeed = currentForwardNormal.Normalize();
 	}
-
+	else {
+		currentForwardNormal = getForwardVelocity();
+		currentForwardSpeed = currentForwardNormal.Normalize();
+	}
 }
 
 //ADDED
 
 
 void PhysicsComponent::updateFriction() {
-
-	float maxLateralImpulse = 5.5f;
-	float driftFriction = 0.1;
-	float dragModifier = 0.01;
-	float currentTraction = 0.1f;
 
 	b2Vec2 i = _body->GetMass() * -getLateralVelocity();
 	if (i.Length() > maxLateralImpulse)
@@ -188,17 +187,20 @@ void PhysicsComponent::updateFriction() {
 	//angular velocity
 	_body->ApplyAngularImpulse(8 * 0.1f *_body->GetInertia() *_body->GetAngularVelocity(),true);
 
-	b2Vec2 currentForwardNormal = getForwardVelocity();
-	float currentForwardSpeed = currentForwardNormal.Normalize();
+	
 	float dragForceMagnitude = -2 * currentForwardSpeed * dragModifier;
-
+	
+	currentForwardNormal = getForwardVelocity();
+	currentForwardSpeed = currentForwardNormal.Normalize();
 	_body->ApplyForce(currentTraction * dragForceMagnitude * currentForwardNormal, _body->GetWorldCenter(), true);
 }
 
 
 void PhysicsComponent::turnRight() {
 
-	_body->SetAngularVelocity(1.5);
+	if (currentForwardSpeed > .5f)
+		_body->SetAngularVelocity(1.5);
+
 	
 	//////testing
 	//float steerTorque = 0.01;
@@ -213,8 +215,8 @@ void PhysicsComponent::turnRight() {
 
 
 void PhysicsComponent::turnLeft() {
-	
-	_body->SetAngularVelocity(-1.5);		
+	if (currentForwardSpeed > .5f)
+		_body->SetAngularVelocity(-1.5);		
 }
 
 
