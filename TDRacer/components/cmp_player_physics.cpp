@@ -40,7 +40,8 @@ void PlayerPhysicsComponent::update(double dt) {
 
 	//This gets the world vector for moving the Entity
 	//Currently controlling the speed of the car - something needs done to control speed somehow
-	auto worldVector = _body->GetWorldVector(b2Vec2(0, 1));
+	//gets the currend speed in forward direction
+	auto worldVector = _body->GetWorldVector(b2Vec2(0, 0.5));
 
 	//Handle keyboard input from user
 	if (Keyboard::isKeyPressed(Keyboard::W) || Keyboard::isKeyPressed(Keyboard::S)) {

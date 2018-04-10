@@ -29,7 +29,7 @@ public:
   void turnRight();					//added
   void turnLeft();					//added
   void stopTurning();				//added
-  
+  void updateFriction();
 
   void update(double dt) override;
   void render() override;

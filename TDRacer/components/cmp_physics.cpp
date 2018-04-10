@@ -73,6 +73,10 @@ PhysicsComponent::PhysicsComponent(Entity* p, bool dyn, const Vector2f& size) : 
 
 
 void PhysicsComponent::setFriction(float r) { 
+
+
+
+
 	_fixture->SetFriction(r); 
 }
 
@@ -116,17 +120,24 @@ void PhysicsComponent::render() {}
 
 
 void PhysicsComponent::impulse(const sf::Vector2f& i) {
-  auto a = b2Vec2(i.x, i.y * -1.0f);
-  _body->ApplyLinearImpulseToCenter(a, true);
+	updateFriction();
+	auto a = b2Vec2(i.x, i.y * -1.0f);
+    _body->ApplyLinearImpulseToCenter( a, true);
+
 }
 
 
 
 //ADDED
 
+
+void PhysicsComponent::updateFriction() {
+	_body->ApplyAngularImpulse(2 * 0.1f *_body->GetInertia() *_body->GetAngularVelocity(),true);
+}
+
 void PhysicsComponent::turnRight() {
-	
 	auto g = _body->GetWorldVector(b2Vec2(0, 0.1));
+	//_body->ApplyTorque(15,true);
 	_body->SetAngularVelocity(1.4f);
 	
 	//_body->ApplyAngularImpulse(100, true);
@@ -142,8 +153,9 @@ void PhysicsComponent::turnLeft() {
 
 	auto t = sin(angle);
 
-	_body->ApplyForce(b2Vec2(4, 4), b2Vec2(0, 1), true);
+	//_body->ApplyForce(b2Vec2(4, 4),sd b2Vec2(0, 1), true);
 	_body->SetAngularVelocity(-1.5);
+	//_body->ApplyTorque(15, true);
 	//_body->ApplyAngularImpulse(100, true);
 
 	//turn speed
