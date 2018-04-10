@@ -49,16 +49,20 @@ void PlayerPhysicsComponent::update(double dt) {
 	if (Keyboard::isKeyPressed(Keyboard::W) || Keyboard::isKeyPressed(Keyboard::S)) {
 
 		if (Keyboard::isKeyPressed(Keyboard::W)) {
-			if (getVelocity().x < _maxVelocity.x) {
+			/*if (getVelocity().x < _maxVelocity.x) {*/
 				//updateFriction();
 				impulse({ -worldVector.x, -worldVector.y });
 				//stopTurning();
-			}
+				cout << getVelocity().x << endl;
+			//}
 		}
 		else if (Keyboard::isKeyPressed(Keyboard::S)) {
-			//updateFriction();
-			impulse({ worldVector.x, worldVector.y });
-			//stopTurning();
+			//if (getVelocity().x < _maxVelocity.x) {
+				//updateFriction();
+				impulse({ worldVector.x, worldVector.y });
+				//stopTurning();
+			//}
+			
 		}
 		
 	}
@@ -73,16 +77,17 @@ void PlayerPhysicsComponent::update(double dt) {
 		if (Keyboard::isKeyPressed(Keyboard::D)) {
 			dampen({ 0.1f, 0.1f });
 			//impulse({ -worldVector.x, -worldVector.y }); 
-			updateFriction();
 			turnRight();
+			//updateFriction();
 
 		}
 		else if (Keyboard::isKeyPressed(Keyboard::A)) {
 			//cout << getVelocity() << en5dl;
 			dampen({ 0.1f, 0.1f });
 			//impulse({ -worldVector.x, -worldVector.y });
-			updateFriction(); 
 			turnLeft();
+			//updateFriction();
+
 		}
 	
 	}

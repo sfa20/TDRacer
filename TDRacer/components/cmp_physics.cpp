@@ -24,7 +24,7 @@ PhysicsComponent::PhysicsComponent(Entity* p, bool dyn, const Vector2f& size) : 
   // Create the body
   _body = Physics::GetWorld()->CreateBody(&BodyDef);
   _body->SetActive(true);
-  
+  _body->SetAngularDamping(0.1f);
   {
     // Create the fixture shape
     b2PolygonShape Shape;
@@ -148,11 +148,18 @@ void PhysicsComponent::impulse(const sf::Vector2f& i) {
 	float maxForwardSpeed(20.f);
 	float maxBackwardSpeed(-10.f);
 	float desiredSpeed = 20.f;
+	float maxDriveForce = 5.0f;
 
 	b2Vec2 currentForwardSpeed = { i.x,i.y * -1.0f };
 	float currentSpeed = b2Dot(getForwardVelocity(), currentForwardSpeed);
+	cout << currentSpeed << endl;
+/*
+	if (controlState)
+		desiredSpeed = maxForwardSpeed;
+	else
+		desiredSpeed = maxBackwardSpeed;*/
 
-	float force = 20.f;//(desiredSpeed > currentSpeed) ? maxForwardSpeed : -maxForwardSpeed;
+	float force = (desiredSpeed > currentSpeed) ? maxDriveForce : -maxDriveForce;
 
 	if (desiredSpeed != currentSpeed) {
 		//_body->ApplyForceToCenter(0.1 * force * currentForwardSpeed, true);
@@ -182,19 +189,17 @@ void PhysicsComponent::updateFriction() {
 	_body->ApplyAngularImpulse(8 * 0.1f *_body->GetInertia() *_body->GetAngularVelocity(),true);
 
 	b2Vec2 currentForwardNormal = getForwardVelocity();
-	float currenForwardSpeed = currentForwardNormal.Normalize();
-	float dragForceMagnitude = -2 * currenForwardSpeed * dragModifier;
+	float currentForwardSpeed = currentForwardNormal.Normalize();
+	float dragForceMagnitude = -2 * currentForwardSpeed * dragModifier;
 
 	_body->ApplyForce(currentTraction * dragForceMagnitude * currentForwardNormal, _body->GetWorldCenter(), true);
 }
 
 
 void PhysicsComponent::turnRight() {
-	//auto g = _body->GetWorldVector(b2Vec2(0, 0.1));
-	////_fixture->GetBody()->ApplyTorque(15, true);
-	//_body->ApplyTorque(15,true);
-	//
 
+	_body->SetAngularVelocity(1.5);
+	
 	//////testing
 	//float steerTorque = 0.01;
 	//float steerTorqueOffset = 0.004;
@@ -203,30 +208,13 @@ void PhysicsComponent::turnRight() {
 	//float torque = steerTorque + steerTorqueOffset;
 
 	//desiredTorque = -torque;
-	_body->SetAngularVelocity(1.5);
 	//_body->ApplyTorque(desiredTorque, true);
 }
 
 
 void PhysicsComponent::turnLeft() {
-	//sin(_body->GetAngle() * )
-	/*float turnSpeed = 0.2;
-	auto angle = _body->GetAngle();
-
-	angle += turnSpeed * getVelocity().x / 30.f;
-
-	auto t = sin(angle);
-*/
-	//_body->ApplyForce(b2Vec2(4, 4),sd b2Vec2(0, 1), true);
-	_body->SetAngularVelocity(-1.5);
 	
-	//_body->ApplyTorque(15, true);
-	//_body->ApplyAngularImpulse(100, true);
-
-	//turn speed
-	//angle += turnspeed * speed/ maxspeed
-	//angle -= turnspeed * spee5d/ maxspeed
-		
+	_body->SetAngularVelocity(-1.5);		
 }
 
 

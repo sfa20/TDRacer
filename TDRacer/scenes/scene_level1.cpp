@@ -52,6 +52,7 @@ void Level1Scene::Load() {
 	//Load Level File
 	ls::loadLevelFile("res/track_1.txt", size);
 	
+
 #pragma region Setup Map
 
 
@@ -331,15 +332,16 @@ void Level1Scene::Load() {
 	//Adds a Sprite component
 	auto t = player->addComponent<SpriteComponent>(); //Add a sprite component
 
-	t->getSprite().setTexture(*Resources::load<Texture>("car_green_small_2.png"));
-	t->getSprite().setScale(0.5f, 0.5);
+	t->getSprite().setTexture(*Resources::get<Texture>("car_green_small_2.png"));
+	t->getSprite().setScale(.45f, .45f);
 	t->getSprite().setColor(Color::Red);
 	 
 	t->getSprite().setOrigin(20,0);
 
 	//Add a Player Physics Component
 	auto p = player->addComponent<PlayerPhysicsComponent>(Vector2f(20.f, 20.f));
-
+	p->setMass(10);
+	
 	//Find the starting position 
 	auto l = ls::findTiles(ls::START);
 	auto lv = ls::getTilePosition(l[0]);
@@ -348,6 +350,7 @@ void Level1Scene::Load() {
 	player->setPosition(Vector2f(200,200));
 
 #pragma endregion
+
 
 #pragma region Testing
 

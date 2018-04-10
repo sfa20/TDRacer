@@ -36,3 +36,10 @@ void EnemyTurretComponent::fire() const {
 
 EnemyTurretComponent::EnemyTurretComponent(Entity* p)
     : Component(p), _firetime(2.f) {}
+
+
+
+void EnemyTurretComponent::impulse(const sf::Vector2f& i, bool controlState) {
+	
+
+}

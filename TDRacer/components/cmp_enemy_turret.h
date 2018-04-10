@@ -9,6 +9,7 @@ protected:
 
 public:
   void update(double dt) override;
+  void impulse(const sf::Vector2f& i, bool controlState);
   void render() override {}
   explicit EnemyTurretComponent(Entity* p);
   EnemyTurretComponent() = delete;

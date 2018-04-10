@@ -61,6 +61,8 @@ int main() {
 	*Resources::load<Texture>("Straights/startLine_vertical_noBorder_left.png");
 	*Resources::load<Texture>("Straights/startLine_vertical_noBorder.png");
 	*Resources::load<Texture>("Straights/startLine_vertical_noBorder_right.png");
+	*Resources::load<Texture>("car_green_small_2.png");
+	*Resources::load<Texture>("Straights/startGrid_vertical_noBorder.png");
 
 
 	/*****************SOUND EFFECTS*****************/
