@@ -75,17 +75,19 @@ void PlayerPhysicsComponent::update(double dt) {
 	if (Keyboard::isKeyPressed(Keyboard::A) || Keyboard::isKeyPressed(Keyboard::D)) {
 	
 		if (Keyboard::isKeyPressed(Keyboard::D)) {
-			dampen({ 0.1f, 0.1f });
-			//impulse({ -worldVector.x, -worldVector.y }); 
+			
 			turnRight();
+			dampen({ 0.05f, 0.05f });
+			//impulse({ -worldVector.x, -worldVector.y }); 
 			//updateFriction();
 
 		}
 		else if (Keyboard::isKeyPressed(Keyboard::A)) {
 			//cout << getVelocity() << en5dl;
-			dampen({ 0.1f, 0.1f });
 			//impulse({ -worldVector.x, -worldVector.y });
 			turnLeft();
+			dampen({ 0.05f, 0.05f });
+
 			//updateFriction();
 
 		}
@@ -97,6 +99,9 @@ void PlayerPhysicsComponent::update(double dt) {
 		stopTurning(); //Added
 	}
 
+	if (Keyboard::isKeyPressed(Keyboard::Space)) {
+		updateFriction();
+	}
 
 	//Old Impulse
 	//		//impulse({0, -(float)(dt * _groundspeed) });

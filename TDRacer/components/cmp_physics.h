@@ -54,8 +54,6 @@ public:
 
   /////////////
 
-
-
   void update(double dt) override;
   void render() override;
   void impulse(const sf::Vector2f& i);
