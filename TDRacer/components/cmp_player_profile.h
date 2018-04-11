@@ -7,10 +7,15 @@ private:
 	std::string playerName;
 	int selectedAvatar;
 	int selectedCar;
-	
+	//settings
+	int selectedResWidth;
+	int selectedResHeight;
+	int selectedVsync;
+
 	std::string trackOne[5];
 	std::string trackOne[5];
 	std::string trackOne[5];
+
 
 public:
 	PlayerProfile(Entity* p);
@@ -18,9 +23,15 @@ public:
 	std::string getPlayerName();
 	int getSelectedAvatar();
 	int getSelectedCar();
+	int getSelectedResWidth();
+	int getSelectedResHeight();
+	int getSelectedVSync();
 
 	void setSelectedAvatar(int avatar);
 	void setSelectedCar(int car);
+	void setSelectedResWidth(int width);
+	void setSelectedResHeight(int height);
+	void setSelectedVsync(bool isOn);
 
 	void setPlayerName(std::string name);
 

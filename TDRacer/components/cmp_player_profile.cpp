@@ -2,7 +2,7 @@
 #include "ecm.h"
 
 
-PlayerProfile::PlayerProfile(Entity* p) : Component(p){
+PlayerProfile::PlayerProfile(Entity* p) : Component(p) {
 
 }
 
@@ -26,9 +26,45 @@ void PlayerProfile::setSelectedCar(int car) {
 	selectedCar = car;
 }
 
+void PlayerProfile::setSelectedResWidth(int width)
+{
+	selectedResWidth = width;
+}
+
+int PlayerProfile::getSelectedResWidth()
+{
+	return selectedResWidth;
+}
+
+void PlayerProfile::setSelectedResHeight(int height)
+{
+	selectedResHeight = height;
+}
+
+int PlayerProfile::getSelectedResHeight()
+{
+	return selectedResHeight;
+}
+
+void PlayerProfile::setSelectedVsync(bool isOn)
+{
+	selectedVsync = isOn;
+}
+
+int PlayerProfile::getSelectedVSync()
+{
+	return selectedVsync;
+}
+
+
 int PlayerProfile::getSelectedCar() {
 	return selectedCar;
 }
+
+
+
+
+
 
 
 
