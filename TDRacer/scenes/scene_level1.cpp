@@ -50,7 +50,7 @@ void Level1Scene::Load() {
 	}
 
 	//Load Level File
-	ls::loadLevelFile("res/track_1.txt", size);
+	ls::loadLevelFile("res/track_2.txt", size);
 
 
 #pragma region Setup Map
@@ -308,6 +308,8 @@ void Level1Scene::Load() {
 
 
 
+
+
 #pragma endregion
 
 
@@ -334,7 +336,7 @@ void Level1Scene::Load() {
 
 	t->getSprite().setTexture(*Resources::get<Texture>("Black_viper.png"));
 	t->getSprite().setScale(.45f, .45f);
-	t->getSprite().setColor(Color::Red);
+
 
 	t->getSprite().setOrigin(20, 0);
 

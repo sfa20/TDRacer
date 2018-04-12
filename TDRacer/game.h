@@ -42,5 +42,6 @@ extern bool settingConfirmed;
 extern bool nisFullscreen;
 extern int nHeight;
 extern int nWidth;
+extern sf::Vector2f scale;
 
 

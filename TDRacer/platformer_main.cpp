@@ -46,7 +46,7 @@ int nWidth;
 
 int main() {
 
-	Engine::Start(1980, 1080, "TD Championship Racer", &carSelectScreen, nisFullscreen);
+	Engine::Start(1980, 1080, "TD Championship Racer", &level1, nisFullscreen);
 
 	while (!sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
 	{
