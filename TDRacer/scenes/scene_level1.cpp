@@ -117,23 +117,24 @@ void Level1Scene::Load() {
 			//get tile position - vector2f
 			auto g = ls::getTilePosition(t);
 			grass->setPosition(g);
-	
 		}
 	
 		auto wallTiles = ls::findTiles(ls::WALL);
 		for each (auto t in wallTiles)
 		{
+
 			static shared_ptr<Entity> wall;
 			wall = makeEntity();
 			//Add a new sprite component set texture and scale
 			auto t3 = wall->addComponent<SpriteComponent>();
 			t3->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
 			t3->getSprite().setScale(scale);
-	
+			
 			//get tile position - vector2f
 			auto g = ls::getTilePosition(t);
 			wall->setPosition(g);
 	
+			auto barrier = wall->addComponent<PhysicsComponent>(false, Vector2f(51.2f, 51.2f));
 		}
 	
 	
@@ -336,11 +337,14 @@ void Level1Scene::Load() {
 	t->getSprite().setScale(.45f, .45f);
 	t->getSprite().setColor(Color::Red);
 	 
-	t->getSprite().setOrigin(20,0);
+	auto spritesize = t->getSprite().getGlobalBounds();
+	Vector2f spritesize2 = { 27.9f, 18.f };
+
+	t->getSprite().setOrigin(10,0);
 
 	//Add a Player Physics Component
-	auto p = player->addComponent<PlayerPhysicsComponent>(Vector2f(20.f, 20.f));
-	p->setMass(10);
+	auto p = player->addComponent<PlayerPhysicsComponent>(Vector2f(27.9f, 18.f));
+	//p->setMass(10);
 	
 	//Find the starting position 
 	auto l = ls::findTiles(ls::START);
@@ -388,8 +392,7 @@ void Level1Scene::Update(const double& dt) {
 	//End of Race Timer
 
 
-	//testing player going over finish
-	
+	//Player crossing finish triggers new laptime and increments lap counter
 	auto s1 = ls::getTilePosition(ls::findTiles(ls::START)[0]);
 	auto s2 = ls::getTilePosition(ls::findTiles(ls::STARTLEFT)[0]);
 	auto s3 = ls::getTilePosition(ls::findTiles(ls::STARTRIGHT)[0]);
@@ -423,24 +426,6 @@ void Level1Scene::Update(const double& dt) {
 	if (lt->temp > 10000) {
 		lt->setLapCounter(true);
 	}
-
-	//cout << to_string(lt->temp) << endl;
-
-	//auto s11 = ls::getTileAt(playerpos);
-		//cout << p << endl;
-
-	//Lap Incrementer - will be replaced with player going over the line
-	/*if (a->getMins() >= a->getCurrentLap()) {
-		if (a->getSecs() <= 1) {
-			a->setLaptime(a->getCurrentLap());
-			a->setCurrentLap();
-		}
-	}*/
-
-	/*cout << a->getLapTimes() << endl;*/
-
-
-
 
 	Scene::Update(dt);
 }

@@ -52,30 +52,33 @@ void ShapeComponent::render() { Renderer::queue(_shape.get()); }
 
 sf::Shape& ShapeComponent::getShape() const { return *_shape; }
 
+
 ShapeComponent::ShapeComponent(Entity* p) : Component(p), _shape(make_shared<sf::CircleShape>()) {
 	
-	b2Body* body;
-	//Define the body
-	b2BodyDef bodyDef;
-	bodyDef.type = b2_dynamicBody;
-	bodyDef.position = Physics::sv2_to_bv2(Physics::invert_height(p->getPosition()));
+	//b2Body* body;
+	////Define the body
+	//b2BodyDef bodyDef;
+	//bodyDef.type = b2_dynamicBody;
+	//bodyDef.position = Physics::sv2_to_bv2(Physics::invert_height(p->getPosition()));
 
-	//Create the body
-	body = Physics::GetWorld()->CreateBody(&bodyDef);
+	////Create the body
+	//body = Physics::GetWorld()->CreateBody(&bodyDef);
 
-	//Create the shape
-	b2PolygonShape shape;
-	shape.SetAsBox(20, 20);  //This is defined from the center of the object 
+	////Create the shape
+	//b2PolygonShape shape;
+	//shape.SetAsBox(20, 20);  //This is defined from the center of the object 
 
-	//Create the fixture
-	b2FixtureDef fixtureDef;
-	fixtureDef.shape = &shape;
-	fixtureDef.density = 1;
-	fixtureDef.friction = 0.3;
-	fixtureDef.restitution = 0.5;
+	////Create the fixture
+	//b2FixtureDef fixtureDef;
+	//fixtureDef.shape = &shape;
+	//fixtureDef.density = 1;
+	//fixtureDef.friction = 0.3;
+	//fixtureDef.restitution = 0.5;
+	//
+	//body->CreateFixture(&fixtureDef);
+	//body->SetActive(true);
 	
-	body->CreateFixture(&fixtureDef);
-	body->SetActive(true);
+	
 	//// Create the body
 	//_body = Physics::GetWorld()->CreateBody(&BodyDef);
 	//_body->SetActive(true);

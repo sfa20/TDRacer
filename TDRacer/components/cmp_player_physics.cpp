@@ -7,35 +7,13 @@ using namespace std;
 using namespace sf;
 using namespace Physics;
 
-//bool PlayerPhysicsComponent::isGrounded() const {
-//  auto touch = getTouching();
-//  const auto& pos = _body->GetPosition();
-//  const float halfPlrHeigt = _size.y * .5f;
-//  const float halfPlrWidth = _size.x * .52f;
-//  b2WorldManifold manifold;
-//  for (const auto& contact : touch) {
-//    contact->GetWorldManifold(&manifold);
-//    const int numPoints = contact->GetManifold()->pointCount;
-//    bool onTop = numPoints > 0;
-//    // If all contacts are below the player.
-//    for (int j = 0; j < numPoints; j++) {
-//      onTop &= (manifold.points[j].y < pos.y - halfPlrHeigt);
-//    }
-//    if (onTop) {
-//      return true;
-//    }
-//  }
-//
-//  return false;
-//}
-
 void PlayerPhysicsComponent::update(double dt) {
 
 	const auto pos = _parent->getPosition();
 	//
 	//Teleport to start if we fall off map. 
 	if (pos.y > ls::getHeight() * ls::getTileSize() || pos.x > ls::getWidth() * ls::getTileSize() || pos.x < 0 || pos.y < 0) {
-		teleport(ls::getTilePosition(ls::findTiles(ls::CORNER1)[0]));
+		teleport(ls::getTilePosition(ls::findTiles(ls::START)[0]));
 	}
 
 	//This gets the world vector for moving the Entity
@@ -43,28 +21,39 @@ void PlayerPhysicsComponent::update(double dt) {
 	//gets the currend speed in forward direction
 	auto worldVector = _body->GetWorldVector(b2Vec2(0, 1));
 
-	
-
 	//Handle keyboard input from user
 	if (Keyboard::isKeyPressed(Keyboard::W) || Keyboard::isKeyPressed(Keyboard::S)) {
 
+		auto checkGrass = ls::getTileAt(_parent->GetCompatibleComponent<SpriteComponent>()[0]->getSprite().getPosition() + Vector2f(0,1));
+		auto checkGrassReverse = ls::getTileAt(_parent->GetCompatibleComponent<SpriteComponent>()[0]->getSprite().getPosition() + Vector2f(0, -1));
+
+		
 		if (Keyboard::isKeyPressed(Keyboard::W)) {
 			/*if (getVelocity().x < _maxVelocity.x) {*/
 				//updateFriction();
+			if (checkGrass == 'g') {
+				dampen({ 0.5f, 0.5f });
+				impulse({ -worldVector.x , -worldVector.y});
+			}
+			else {
 				impulse({ -worldVector.x, -worldVector.y });
-				//stopTurning();
-				cout << getVelocity().x << endl;
-			//}
+			}
 		}
 		else if (Keyboard::isKeyPressed(Keyboard::S)) {
 			//if (getVelocity().x < _maxVelocity.x) {
 				//updateFriction();
+			if (checkGrassReverse == 'g') {
+				dampen({ 0.5f, 0.5f });
 				impulse({ worldVector.x, worldVector.y });
+			}
+			else {
+				impulse({ worldVector.x, worldVector.y });
+
+			}
 				//stopTurning();
 			//}
 			
 		}
-		
 	}
 	else {
 		// Dampen X axis movement
@@ -72,6 +61,7 @@ void PlayerPhysicsComponent::update(double dt) {
 		stopTurning(); //Added
 	}
 
+	//Turning
 	if (Keyboard::isKeyPressed(Keyboard::A) || Keyboard::isKeyPressed(Keyboard::D)) {
 	
 		if (Keyboard::isKeyPressed(Keyboard::D)) {
@@ -99,8 +89,17 @@ void PlayerPhysicsComponent::update(double dt) {
 		stopTurning(); //Added
 	}
 
+
+	//Handbrake
 	if (Keyboard::isKeyPressed(Keyboard::Space)) {
 		updateFriction();
+	}
+
+
+	//Respawn
+	if (Keyboard::isKeyPressed(Keyboard::R)) {
+		teleport(ls::getTilePosition(ls::findTiles(ls::START)[0]));
+
 	}
 
 	//Old Impulse
@@ -118,7 +117,11 @@ void PlayerPhysicsComponent::update(double dt) {
 
 PlayerPhysicsComponent::PlayerPhysicsComponent(Entity* p, const Vector2f& size) : PhysicsComponent(p, true, size) {
 	_size = sv2_to_bv2(size, true);
-	maxSpeed = 60.f;
+
+	auto svsize = bv2_to_sv2(_size, true);
+	cout << "b2vec size:" << "\nX: " << _size.x << "\nY: " <<_size.y << "\n---------------------------" << endl;
+	cout << "vector2f size: " << "\nX: " << svsize.x << "\nY: " << svsize.y << "\n---------------------------" << endl;
+	maxSpeed = 40.f;
 	_maxVelocity = Vector2f(200.f, 400.f);
 	_groundspeed = 60.f;
 	_body->SetSleepingAllowed(false);

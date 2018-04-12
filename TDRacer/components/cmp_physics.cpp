@@ -1,12 +1,14 @@
 #include "cmp_physics.h"
 #include "system_physics.h"
 #include "cmp_player_physics.h"
+#include "SFML\Graphics.hpp"
+#include "LevelSystem.h"
 
 
 using namespace std;
 using namespace sf;
 
-using namespace Physics;
+using namespace Physics; 
 
 void PhysicsComponent::update(double dt) {
 	currentForwardSpeed = 0;
@@ -21,71 +23,46 @@ PhysicsComponent::PhysicsComponent(Entity* p, bool dyn, const Vector2f& size) : 
 	 // Is Dynamic(moving), or static(Stationary)
 	 BodyDef.type = _dynamic ? b2_dynamicBody : b2_staticBody;
 	 BodyDef.position = sv2_to_bv2(invert_height(p->getPosition()));
-	 
+
 	 // Create the body
 	 _body = Physics::GetWorld()->CreateBody(&BodyDef);
 	 _body->SetActive(true);
 	 _body->SetAngularDamping(0.1f);
+	 auto pos = _body->GetPosition();
 	 {
-	   // Create the fixture shape
-	   b2PolygonShape Shape;
+		// Create the fixture shape
+		b2PolygonShape Shape;
+
+		// SetAsBox box takes HALF-Widths!
+		Shape.SetAsBox(.4f,.4f);
 		
-	   // SetAsBox box takes HALF-Widths!
-	   Shape.SetAsBox(sv2_to_bv2(size).x * 0.5f, sv2_to_bv2(size).y * 0.5f);
-	 
+		//cout << "Physics Comp converted to b2vec: " << "\nX:  " << sv2_to_bv2(size).x * 0.5f << "\nY: " << sv2_to_bv2(size).y * 0.5f << "\n---------------------------" << endl;
+
 		
 		b2FixtureDef FixtureDef;
-	   // Fixture properties
-	   FixtureDef.density = _dynamic ? 10.f : 0.f;
-	   FixtureDef.friction = _dynamic ? 0.05f : 0.8f;
-	   FixtureDef.restitution = .2;
-	   FixtureDef.shape = &Shape;
-	   // Add to body
-	   _fixture = _body->CreateFixture(&FixtureDef);
-	   //_fixture->SetRestitution(.9)
+		// Fixture properties
+		FixtureDef.density = _dynamic ? 10.f : 0.f;
+		FixtureDef.friction = _dynamic ? 0.05f : 0.8f;
+		FixtureDef.restitution = .2;
+		FixtureDef.shape = &Shape;
+		// Add to body
+		_fixture = _body->CreateFixture(&FixtureDef);
+		//_fixture->SetRestitution(.9)
+	   
 
 	 }
 
 	 //Impulse Variables
 	 maxForwardSpeed = 20.f;
 	 maxBackwardSpeed = -10.f;
-	 desiredSpeed = 20.f;
-	 maxDriveForce = 5.0f;
+	 desiredSpeed = 25.f;
+	 maxDriveForce = 3.0f;
 
 	 //Friction Variables
 	 maxLateralImpulse = 5.5f;
 	 driftFriction = 0.1;
 	 dragModifier = 0.01;
 	 currentTraction = 0.1f;
-
-
-
-	 
-
-  // An ideal Pod/capusle shape should be used for the player,
-  // this isn't built into B2d, but we can combine two shapes to do so.
-  // This would allow the player to go up steps
-  
-    BodyDef.bullet = true;
-    b2PolygonShape shape1;
-    shape1.SetAsBox(sv2_to_bv2(size).x * 0.5f, sv2_to_bv2(size).y * 0.5f);
-    {
-      b2PolygonShape poly ;
-      poly.SetAsBox(0.45f, 1.4f);
-      b2FixtureDef FixtureDefPoly;
-
-      FixtureDefPoly.shape = &poly;
-      _body->CreateFixture(&FixtureDefPoly);
-
-    }
-    {
-      b2CircleShape circle;
-      circle.m_radius = 0.45f;
-      circle.m_p.Set(0, -1.4f);
-      b2FixtureDef FixtureDefCircle;
-      FixtureDefCircle.shape = &circle;
-      _body->CreateFixture(&FixtureDefCircle);
-    }
   
 }
 
@@ -162,7 +139,7 @@ void PhysicsComponent::impulse(const sf::Vector2f& i) {
 	float force = (desiredSpeed > currentSpeed) ? maxDriveForce : -maxDriveForce;
 
 	if (desiredSpeed != currentSpeed) {
-		_body->ApplyForceToCenter(20 * force * curForwardSpeed, true);
+		_body->ApplyForceToCenter(15 * force * curForwardSpeed, true);
 		currentForwardNormal = getForwardVelocity();
 		currentForwardSpeed = currentForwardNormal.Normalize();
 	}
@@ -198,7 +175,7 @@ void PhysicsComponent::updateFriction() {
 
 void PhysicsComponent::turnRight() {
 
-	if (currentForwardSpeed > .5f)
+	if (currentForwardSpeed != 0.f)
 		_body->SetAngularVelocity(1.5);
 
 	
@@ -215,7 +192,7 @@ void PhysicsComponent::turnRight() {
 
 
 void PhysicsComponent::turnLeft() {
-	if (currentForwardSpeed > .5f)
+	if (currentForwardSpeed != 0.f)
 		_body->SetAngularVelocity(-1.5);		
 }
 
