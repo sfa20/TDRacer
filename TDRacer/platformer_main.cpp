@@ -46,35 +46,7 @@ int nWidth;
 
 int main() {
 
-	/*****************TEXTURES*****************/
-	*Resources::load<Texture>("grass.png");
-	*Resources::load<Texture>("Straights/straight_noBorder.png");
-	*Resources::load<Texture>("Straights/straight_horizontal_noBorder_bottom.png");
-	*Resources::load<Texture>("Straights/straight_horizontal_noBorder_top.png");
-	*Resources::load<Texture>("Corners/90DegreeTopRight.png");
-	*Resources::load<Texture>("Corners/90DegreeTopLeft.png");
-	*Resources::load<Texture>("Corners/90DegreeBottomLeft.png");
-	*Resources::load<Texture>("Corners/90DegreeBottomRight.png");
-	*Resources::load<Texture>("Straights/straight_vertical_noBorder_right.png");
-	*Resources::load<Texture>("Straights/straight_vertical_noBorder_left.png");
-	*Resources::load<Texture>("sfml.png");
-	*Resources::load<Texture>("box2d.png");
-	*Resources::load<Texture>("Straights/startLine_vertical_noBorder_left.png");
-	*Resources::load<Texture>("Straights/startLine_vertical_noBorder.png");
-	*Resources::load<Texture>("Straights/startLine_vertical_noBorder_right.png");
-	*Resources::load<Texture>("car_green_small_2.png");
-	*Resources::load<Texture>("Straights/startGrid_vertical_noBorder.png");
-	*Resources::load<Texture>("Ninja.png");
-	*Resources::load<Texture>("Clown.png");
-	*Resources::load<Texture>("Guy.png");
-	*Resources::load<Texture>("Vamp.png");
-
-
-	/*****************SOUND EFFECTS*****************/
-	*Resources::load<SoundBuffer>("opening.wav");
-	*Resources::load<SoundBuffer>("beep.wav");
-
-	Engine::Start(1980, 1080, "TD Championship Racer", &avatarScreen, nisFullscreen);
+	Engine::Start(1980, 1080, "TD Championship Racer", &carSelectScreen, nisFullscreen);
 
 	while (!sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
 	{

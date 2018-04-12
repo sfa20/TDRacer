@@ -22,6 +22,7 @@ void AvatarScreen::Load()
 	std::cout << "Menu Load \n";
 	{
 		ls::loadLevelFile("res/opening.txt", 50.f);
+
 		//Get position of grass tiles and set sprites to each position
 		auto grassTiles = ls::findTiles(ls::GRASS);
 		for each (auto t in grassTiles)
@@ -249,33 +250,30 @@ void AvatarScreen::Update(const double & dt)
 	if (Mouse::isButtonPressed(Mouse::Left)) {
 
 		if (txt_cmp[1]->GetText().getGlobalBounds().contains(mousePosF)) {
-			cout << "Play game Pressed!" << endl;
+			cout << "Ninja selected!" << endl;
 			selectedItemIndex = 1;
 			sound_cmp[0]->getSound().play();
 			std::this_thread::sleep_for(std::chrono::milliseconds(150));
-			Engine::ChangeScene(&loadScreen);
 		}
 
 		if (txt_cmp[2]->GetText().getGlobalBounds().contains(mousePosF)) {
-			cout << "Options Pressed!" << endl;
+			cout << "Guy Selected!" << endl;
 			selectedItemIndex = 2;
 			sound_cmp[0]->getSound().play();
 			std::this_thread::sleep_for(std::chrono::milliseconds(150));
-			Engine::ChangeScene(&optionScreen);
 		}
 
 		if (txt_cmp[3]->GetText().getGlobalBounds().contains(mousePosF)) {
-			cout << "Credits Pressed!" << endl;
+			cout << "Clown Selected!" << endl;
 			selectedItemIndex = 3;
 			sound_cmp[0]->getSound().play();
 			std::this_thread::sleep_for(std::chrono::milliseconds(150));
 		}
 
 		if (txt_cmp[4]->GetText().getGlobalBounds().contains(mousePosF)) {
-			cout << "Exit!" << endl;
+			cout << "Vamp Selected!" << endl;
 			sound_cmp[0]->getSound().play();
 			std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-			avatarWindow.close();
 		}
 	}
 
@@ -296,25 +294,26 @@ void AvatarScreen::Update(const double & dt)
 			switch (GetPressedItem()) {
 
 			case 1:
-				std::cout << "Play game button has been pressed" << std::endl;
+				std::cout << "Ninja selected" << std::endl;
 				sound_cmp[0]->getSound().play();
 				std::this_thread::sleep_for(std::chrono::milliseconds(150));
 				Engine::ChangeScene(&loadScreen);
 				break;
 			case 2:
-				std::cout << "Options button has been pressed" << std::endl;
+				std::cout << "Guy Selected" << std::endl;
 				sound_cmp[0]->getSound().play();
 				std::this_thread::sleep_for(std::chrono::milliseconds(150));
 				Engine::ChangeScene(&optionScreen);
 				break;
 			case 3:
-				std::cout << "Credits button has been pressed" << std::endl;
+				std::cout << "Clown Selected" << std::endl;
 				sound_cmp[0]->getSound().play();
 				std::this_thread::sleep_for(std::chrono::milliseconds(150));
 				break;
 			case 4:
+				cout << "Vamp Selected!" << endl;
 				sound_cmp[0]->getSound().play();
-				avatarWindow.close();
+				std::this_thread::sleep_for(std::chrono::milliseconds(150));
 				break;
 			}
 		}
