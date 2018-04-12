@@ -78,7 +78,7 @@ void Level1Scene::Load() {
 #pragma endregion
 
 
-#pragma region CreatePlayer 
+#pragma region CreatePlayers
 
 	//Create an PlayerCar Entity, add component and set texture
 	player = makeEntity();
@@ -92,10 +92,6 @@ void Level1Scene::Load() {
 	t->getSprite().setTexture(*Resources::get<Texture>("car_green_small_2.png"));
 	t->getSprite().setScale(.45f, .45f);
 	t->getSprite().setColor(Color::Red);
-	 
-	auto spritesize = t->getSprite().getGlobalBounds();
-	Vector2f spritesize2 = { 27.9f, 18.f };
-
 	t->getSprite().setOrigin(10,0);
 
 	//Add a Player Physics Component
@@ -114,27 +110,25 @@ void Level1Scene::Load() {
 
 #pragma region Testing
 
-	
 	auto winnerText = raceTimer->addComponent<TextComponent>(" ");
 	winnerText->setCenterPos(Engine::getWindowSize().x / 2.f, Engine::getWindowSize().y / 2, 60.f);
 
-
-
-
 #pragma endregion
 
-
+	setLoaded(true);
 }
 
 
 void Level1Scene::UnLoad() {
 	cout << "Scene 1 Unload" << endl;
-
+	player.reset();
+	ls::unload();
 	Scene::UnLoad();
 }
 
 
 void Level1Scene::Update(const double& dt) {
+
 
 #pragma region Handle RaceTimer
 
@@ -220,7 +214,8 @@ void Level1Scene::Update(const double& dt) {
 		}
 		
 		if (counter > 6) {
-			Engine::ChangeScene(&menuScreen);
+			UnLoad();
+			Engine::ChangeScene(&level2);
 		}
 		counter++;
 
