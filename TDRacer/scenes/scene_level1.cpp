@@ -50,7 +50,7 @@ void Level1Scene::Load() {
 	}
 
 	//Load Level File
-	ls::loadLevelFile("res/track_2.txt", size);
+	ls::loadLevelFile("res/track_3.txt", size);
 
 
 #pragma region Setup Map
@@ -328,28 +328,28 @@ void Level1Scene::Load() {
 
 #pragma region CreatePlayer 
 
-	//Create an PlayerCar Entity, add component and set texture
-	player = makeEntity();
+	////Create an PlayerCar Entity, add component and set texture
+	//player = makeEntity();
 
-	//Adds a Sprite component
-	auto t = player->addComponent<SpriteComponent>(); //Add a sprite component
+	////Adds a Sprite component
+	//auto t = player->addComponent<SpriteComponent>(); //Add a sprite component
 
-	t->getSprite().setTexture(*Resources::get<Texture>("Black_viper.png"));
-	t->getSprite().setScale(.45f, .45f);
+	//t->getSprite().setTexture(*Resources::get<Texture>("Black_viper.png"));
+	//t->getSprite().setScale(.45f, .45f);
 
 
-	t->getSprite().setOrigin(20, 0);
+	//t->getSprite().setOrigin(20, 0);
 
-	//Add a Player Physics Component
-	auto p = player->addComponent<PlayerPhysicsComponent>(Vector2f(20.f, 20.f));
-	p->setMass(10);
+	////Add a Player Physics Component
+	//auto p = player->addComponent<PlayerPhysicsComponent>(Vector2f(20.f, 20.f));
+	//p->setMass(10);
 
-	//Find the starting position 
-	auto l = ls::findTiles(ls::START);
-	auto lv = ls::getTilePosition(l[0]);
+	////Find the starting position 
+	//auto l = ls::findTiles(ls::START);
+	//auto lv = ls::getTilePosition(l[0]);
 
-	//Set the players starting position
-	player->setPosition(Vector2f(200, 200));
+	////Set the players starting position
+	//player->setPosition(Vector2f(200, 200));
 
 #pragma endregion
 
@@ -374,18 +374,18 @@ void Level1Scene::UnLoad() {
 
 void Level1Scene::Update(const double& dt) {
 
-	//Update the RaceTimer
-	raceTimer->update(dt);
+	////Update the RaceTimer
+	//raceTimer->update(dt);
 
-	//Get the race timer
-	auto a = raceTimer->GetCompatibleComponent<Timer>()[0];
+	////Get the race timer
+	//auto a = raceTimer->GetCompatibleComponent<Timer>()[0];
 
-	//Get the current time
-	string time = a->getTime();
+	////Get the current time
+	//string time = a->getTime();
 
-	//Get the text component and set this to the time string created above
-	auto b = raceTimer->GetCompatibleComponent<TextComponent>()[0];
-	b->SetText(time);
+	////Get the text component and set this to the time string created above
+	//auto b = raceTimer->GetCompatibleComponent<TextComponent>()[0];
+	//b->SetText(time);
 
 	//End of Race Timer
 
@@ -399,32 +399,32 @@ void Level1Scene::Update(const double& dt) {
 	auto tileSize = ls::getTileSize();
 
 	//get the second race timer added to entity
-	auto lt = raceTimer->GetCompatibleComponent<LapTimer>()[0];
+	/*auto lt = raceTimer->GetCompatibleComponent<LapTimer>()[0];*/
 
-	//New Lap Incrementor - will increment when player goes over the finsih
-	if (player->getPosition().y > s2.y - tileSize / 2 && player->getPosition().y < s3.y + tileSize / 2) {
-		if (player->getPosition().x > s2.x - tileSize / 2 && player->getPosition().x < s3.x + tileSize / 2) {
+	////New Lap Incrementor - will increment when player goes over the finsih
+	//if (player->getPosition().y > s2.y - tileSize / 2 && player->getPosition().y < s3.y + tileSize / 2) {
+	//	if (player->getPosition().x > s2.x - tileSize / 2 && player->getPosition().x < s3.x + tileSize / 2) {
 
-			auto j = lt->getLapCounter();
+	//		auto j = lt->getLapCounter();
 
-			if (j) {
+	//		if (j) {
 
-				lt->setLapCounter(false);
-				lt->setLaptime(lt->getCurrentLap());
+	//			lt->setLapCounter(false);
+	//			lt->setLaptime(lt->getCurrentLap());
 
-				lt->reset();
-				lt->increaseLapCounter();
+	//			lt->reset();
+	//			lt->increaseLapCounter();
 
-				cout << "Current Lap: " << lt->getCurrentLap() << endl;
-				cout << lt->getLapTimes() << endl;
-			}
-		}
-	}
+	//			cout << "Current Lap: " << lt->getCurrentLap() << endl;
+	//			cout << lt->getLapTimes() << endl;
+	//		}
+	//	}
+	//}
 
-	lt->temp = lt->getClock().getElapsedTime().asMilliseconds();
-	if (lt->temp > 10000) {
-		lt->setLapCounter(true);
-	}
+	//lt->temp = lt->getClock().getElapsedTime().asMilliseconds();
+	//if (lt->temp > 10000) {
+	//	lt->setLapCounter(true);
+	//}
 
 	//cout << to_string(lt->temp) << endl;
 

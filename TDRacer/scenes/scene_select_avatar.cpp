@@ -128,33 +128,125 @@ void AvatarScreen::Load()
 
 		}
 
+		auto blueTiles = ls::findTiles(ls::BLUETENT);
+		for each (auto t in blueTiles)
+		{
+			static shared_ptr<Entity> blue;
+			blue = makeEntity();
+
+			auto t1 = blue->addComponent<SpriteComponent>();
+			t1->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
+			t1->getSprite().setScale(0.400f, 0.400f);
+			//Add a new sprite component set texture and scale
+			auto t2 = blue->addComponent<SpriteComponent>();
+			t2->getSprite().setTexture(*Resources::get<Texture>("blue_tent.png"));
+			t2->getSprite().setScale(0.400f, 0.400f);
+
+
+			//get tile position - vector2f
+			auto g = ls::getTilePosition(t);
+			/*	blue->setPosition(g);*/
+			t1->getSprite().setPosition(g);
+			t2->getSprite().setPosition(g);
+
+		}
+
+		auto redTiles = ls::findTiles(ls::REDTENT);
+		for each (auto t in redTiles)
+		{
+			static shared_ptr<Entity> red;
+			red = makeEntity();
+
+			auto t1 = red->addComponent<SpriteComponent>();
+			t1->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
+			t1->getSprite().setScale(0.400f, 0.400f);
+			//Add a new sprite component set texture and scale
+			auto t2 = red->addComponent<SpriteComponent>();
+			t2->getSprite().setTexture(*Resources::get<Texture>("red_tent.png"));
+			t2->getSprite().setScale(0.400f, 0.400f);
+
+
+			//get tile position - vector2f
+			auto g = ls::getTilePosition(t);
+			/*red->setPosition(g);*/
+			t1->getSprite().setPosition(g);
+			t2->getSprite().setPosition(g);
+
+		}
+
+		auto standTiles = ls::findTiles(ls::STAND);
+		for each (auto t in standTiles)
+		{
+			static shared_ptr<Entity> stand;
+			stand = makeEntity();
+
+			auto t1 = stand->addComponent<SpriteComponent>();
+			t1->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
+			t1->getSprite().setScale(0.400f, 0.400f);
+			//Add a new sprite component set texture and scale
+			auto t2 = stand->addComponent<SpriteComponent>();
+			t2->getSprite().setTexture(*Resources::get<Texture>("stand.png"));
+			t2->getSprite().setScale(0.400f, 0.400f);
+
+
+			//get tile position - vector2f
+			auto g = ls::getTilePosition(t);
+			/*stand->setPosition(g);*/
+			t1->getSprite().setPosition(g);
+			t2->getSprite().setPosition(g);
+
+		}
+
+		auto treeTiles = ls::findTiles(ls::TREEL);
+		for each (auto t in treeTiles)
+		{
+			static shared_ptr<Entity> tree;
+			tree = makeEntity();
+
+			auto t1 = tree->addComponent<SpriteComponent>();
+			t1->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
+			t1->getSprite().setScale(0.400f, 0.400f);
+			//Add a new sprite component set texture and scale
+			auto t2 = tree->addComponent<SpriteComponent>();
+			t2->getSprite().setTexture(*Resources::get<Texture>("tree_large.png"));
+			t2->getSprite().setScale(0.400f, 0.400f);
+
+
+			//get tile position - vector2f
+			auto g = ls::getTilePosition(t);
+			/*tree->setPosition(g);*/
+			t1->getSprite().setPosition(g);
+			t2->getSprite().setPosition(g);
+
+		}
+
 		/*********AVATAR ONE****************************/
 		auto ninjaEnt = makeEntity();
 		auto nSprite = ninjaEnt->addComponent<SpriteComponent>();
 
 		nSprite->getSprite().setTexture(*Resources::get<Texture>("Ninja.png"));
-		nSprite->getSprite().setPosition(Engine::getWindowSize().x / 3.7, 230);
+		nSprite->getSprite().setPosition(Engine::getWindowSize().x / 3.7, 280);
 
 		/*********AVATAR TWO****************************/
 		auto guyEnt = makeEntity();
 		auto gSprite = guyEnt->addComponent<SpriteComponent>();
 
 		gSprite->getSprite().setTexture(*Resources::get<Texture>("Guy.png"));
-		gSprite->getSprite().setPosition(Engine::getWindowSize().x / 2.6, 230);
+		gSprite->getSprite().setPosition(Engine::getWindowSize().x / 2.6, 280);
 
 		/*********AVATAR THREE****************************/
 		auto clownEnt = makeEntity();
 		auto cSprite = clownEnt->addComponent<SpriteComponent>();
 
 		cSprite->getSprite().setTexture(*Resources::get<Texture>("Clown.png"));
-		cSprite->getSprite().setPosition(Engine::getWindowSize().x / 2, 230);
+		cSprite->getSprite().setPosition(Engine::getWindowSize().x / 2, 280);
 
 		/*********AVATAR FOUR****************************/
 		auto vampEnt = makeEntity();
 		auto vSprite = vampEnt->addComponent<SpriteComponent>();
 
 		vSprite->getSprite().setTexture(*Resources::get<Texture>("Vamp.png"));
-		vSprite->getSprite().setPosition(Engine::getWindowSize().x / 1.6, 230);
+		vSprite->getSprite().setPosition(Engine::getWindowSize().x / 1.6, 280);
 
 
 		/***********************TEXT*****************************************/
@@ -163,16 +255,16 @@ void AvatarScreen::Load()
 		title->setCenterPos(Engine::getWindowSize().x / 2.f, 100.f, 50.f);
 
 		auto nTxt = txt->addComponent<TextComponent>("Ninja");
-		nTxt->setCenterPos(Engine::getWindowSize().x / 3.15, 435, 25);
+		nTxt->setCenterPos(Engine::getWindowSize().x / 3.15, 500, 25);
 
 		auto gTxt = txt->addComponent<TextComponent>("Guy");
-		gTxt->setCenterPos(Engine::getWindowSize().x / 2.3, 435, 25);
+		gTxt->setCenterPos(Engine::getWindowSize().x / 2.3, 500, 25);
 
 		auto cTxt = txt->addComponent<TextComponent>("Clown");
-		cTxt->setCenterPos(Engine::getWindowSize().x / 1.83, 435, 25);
+		cTxt->setCenterPos(Engine::getWindowSize().x / 1.83, 500, 25);
 
 		auto vTxt = txt->addComponent<TextComponent>("Vamp");
-		vTxt->setCenterPos(Engine::getWindowSize().x / 1.49, 435, 25);
+		vTxt->setCenterPos(Engine::getWindowSize().x / 1.49, 500, 25);
 
 
 		selectAvatarSound = makeEntity();

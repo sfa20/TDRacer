@@ -7,6 +7,7 @@
 #include <system_renderer.h>
 #include <system_resources.h>
 #include "../components/cmp_sprite.h"
+#include "../components/cmp_sound.h"
 #include <LevelSystem.h>
 
 
@@ -15,13 +16,15 @@ using namespace sf;
 using namespace Resources;
 
 static std::shared_ptr<Entity> txt;
+static std::shared_ptr<Entity> selectTrackSound;
+
 
 void TrackSelectScreen::Load() {
 
 
 	std::cout << "Menu Load \n";
 	{
-		ls::loadLevelFile("res/menu.txt", 50.f);
+		ls::loadLevelFile("res/opening.txt", 50.f);
 
 		//Get position of grass tiles and set sprites to each position
 		auto grassTiles = ls::findTiles(ls::GRASS);
@@ -91,98 +94,6 @@ void TrackSelectScreen::Load() {
 			t2->getSprite().setPosition(g);
 
 		}
-		////Get position of Corner tiles and set sprites to each postition
-		auto corner1Tiles = ls::findTiles(ls::CORNER1);
-		for each (auto t in corner1Tiles)
-		{
-			static shared_ptr<Entity> corn1;
-			corn1 = makeEntity();
-
-			auto t1 = corn1->addComponent<SpriteComponent>();
-			t1->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
-			t1->getSprite().setScale(0.400f, 0.400f);
-			//Add a new sprite component set texture and scale
-			auto t2 = corn1->addComponent<SpriteComponent>();
-			t2->getSprite().setTexture(*Resources::get<Texture>("Corners/90DegreeTopRight.png"));
-			t2->getSprite().setScale(0.400f, 0.400f);
-
-
-			//get tile position - vector2f
-			auto g = ls::getTilePosition(t);
-			/*corn1->setPosition(g);*/
-			t1->getSprite().setPosition(g);
-			t2->getSprite().setPosition(g);
-
-		}
-
-		////Get position of track tiles and set sprites to each postition
-		auto corner2Tiles = ls::findTiles(ls::CORNER2);
-		for each (auto t in corner2Tiles)
-		{
-			static shared_ptr<Entity> corn2;
-			corn2 = makeEntity();
-			auto t1 = corn2->addComponent<SpriteComponent>();
-			t1->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
-			t1->getSprite().setScale(0.400f, 0.400f);
-			//Add a new sprite component set texture and scale
-			auto t2 = corn2->addComponent<SpriteComponent>();
-			t2->getSprite().setTexture(*Resources::get<Texture>("Corners/90DegreeTopLeft.png"));
-			t2->getSprite().setScale(0.400f, 0.400f);
-
-
-			//get tile position - vector2f
-			auto g = ls::getTilePosition(t);
-			/*corn2->setPosition(g);*/
-			t1->getSprite().setPosition(g);
-			t2->getSprite().setPosition(g);
-
-		}
-
-		////Get position of track tiles and set sprites to each postition
-		auto corner3Tiles = ls::findTiles(ls::CORNER3);
-		for each (auto t in corner3Tiles)
-		{
-			static shared_ptr<Entity> corn3;
-			corn3 = makeEntity();
-			auto t1 = corn3->addComponent<SpriteComponent>();
-			t1->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
-			t1->getSprite().setScale(0.400f, 0.400f);
-			//Add a new sprite component set texture and scale
-			auto t2 = corn3->addComponent<SpriteComponent>();
-			t2->getSprite().setTexture(*Resources::get<Texture>("Corners/90DegreeBottomLeft.png"));
-			t2->getSprite().setScale(0.400f, 0.400f);
-
-
-			//get tile position - vector2f
-			auto g = ls::getTilePosition(t);
-			/*corn3->setPosition(g);*/
-			t1->getSprite().setPosition(g);
-			t2->getSprite().setPosition(g);
-
-		}
-
-		////Get position of track tiles and set sprites to each postition
-		auto corner4Tiles = ls::findTiles(ls::CORNER4);
-		for each (auto t in corner4Tiles)
-		{
-			static shared_ptr<Entity> corn4;
-			corn4 = makeEntity();
-			auto t1 = corn4->addComponent<SpriteComponent>();
-			t1->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
-			t1->getSprite().setScale(0.400f, 0.400f);
-			//Add a new sprite component set texture and scale
-			auto t2 = corn4->addComponent<SpriteComponent>();
-			t2->getSprite().setTexture(*Resources::get<Texture>("Corners/90DegreeBottomRight.png"));
-			t2->getSprite().setScale(0.400f, 0.400f);
-
-
-			//get tile position - vector2f
-			auto g = ls::getTilePosition(t);
-			/*corn4->setPosition(g);*/
-			t1->getSprite().setPosition(g);
-			t2->getSprite().setPosition(g);
-
-		}
 		//Get position of RightTrack tiles and set sprites to each postition
 		auto rightTiles = ls::findTiles(ls::RIGHT);
 		for each (auto t in rightTiles)
@@ -219,46 +130,169 @@ void TrackSelectScreen::Load() {
 			t2->getSprite().setPosition(g);
 
 		}
-		//creates entitys for splash and adds text components
+
+		auto blueTiles = ls::findTiles(ls::BLUETENT);
+		for each (auto t in blueTiles)
+		{
+			static shared_ptr<Entity> blue;
+			blue = makeEntity();
+
+			auto t1 = blue->addComponent<SpriteComponent>();
+			t1->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
+			t1->getSprite().setScale(0.400f, 0.400f);
+			//Add a new sprite component set texture and scale
+			auto t2 = blue->addComponent<SpriteComponent>();
+			t2->getSprite().setTexture(*Resources::get<Texture>("blue_tent.png"));
+			t2->getSprite().setScale(0.400f, 0.400f);
+
+
+			//get tile position - vector2f
+			auto g = ls::getTilePosition(t);
+			/*blue->setPosition(g);*/
+			t1->getSprite().setPosition(g);
+			t2->getSprite().setPosition(g);
+
+		}
+
+		auto redTiles = ls::findTiles(ls::REDTENT);
+		for each (auto t in redTiles)
+		{
+			static shared_ptr<Entity> red;
+			red = makeEntity();
+
+			auto t1 = red->addComponent<SpriteComponent>();
+			t1->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
+			t1->getSprite().setScale(0.400f, 0.400f);
+			//Add a new sprite component set texture and scale
+			auto t2 = red->addComponent<SpriteComponent>();
+			t2->getSprite().setTexture(*Resources::get<Texture>("red_tent.png"));
+			t2->getSprite().setScale(0.400f, 0.400f);
+
+
+			//get tile position - vector2f
+			auto g = ls::getTilePosition(t);
+			/*red->setPosition(g);*/
+			t1->getSprite().setPosition(g);
+			t2->getSprite().setPosition(g);
+
+		}
+
+		auto standTiles = ls::findTiles(ls::STAND);
+		for each (auto t in standTiles)
+		{
+			static shared_ptr<Entity> stand;
+			stand = makeEntity();
+
+			auto t1 = stand->addComponent<SpriteComponent>();
+			t1->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
+			t1->getSprite().setScale(0.400f, 0.400f);
+			//Add a new sprite component set texture and scale
+			auto t2 = stand->addComponent<SpriteComponent>();
+			t2->getSprite().setTexture(*Resources::get<Texture>("stand.png"));
+			t2->getSprite().setScale(0.400f, 0.400f);
+
+
+			//get tile position - vector2f
+			auto g = ls::getTilePosition(t);
+			/*stand->setPosition(g);*/
+			t1->getSprite().setPosition(g);
+			t2->getSprite().setPosition(g);
+
+		}
+
+		auto treeTiles = ls::findTiles(ls::TREEL);
+		for each (auto t in treeTiles)
+		{
+			static shared_ptr<Entity> tree;
+			tree = makeEntity();
+
+			auto t1 = tree->addComponent<SpriteComponent>();
+			t1->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
+			t1->getSprite().setScale(0.400f, 0.400f);
+			//Add a new sprite component set texture and scale
+			auto t2 = tree->addComponent<SpriteComponent>();
+			t2->getSprite().setTexture(*Resources::get<Texture>("tree_large.png"));
+			t2->getSprite().setScale(0.400f, 0.400f);
+
+
+			//get tile position - vector2f
+			auto g = ls::getTilePosition(t);
+			/*	tree->setPosition(g);*/
+			t1->getSprite().setPosition(g);
+			t2->getSprite().setPosition(g);
+
+		}
+
+		/*********TRACK ONE****************************/
+		auto trackOneEnt = makeEntity();
+		auto t1Sprite = trackOneEnt->addComponent<SpriteComponent>();
+
+		t1Sprite->getSprite().setTexture(*Resources::get<Texture>("trackOne.png"));
+		t1Sprite->getSprite().setPosition(Engine::getWindowSize().x / 4.5, 300);
+
+		/*********TRACK TWO****************************/
+		auto trackTwoEnt = makeEntity();
+		auto t2Sprite = trackTwoEnt->addComponent<SpriteComponent>();
+
+		t2Sprite->getSprite().setTexture(*Resources::get<Texture>("trackTwo.png"));
+		t2Sprite->getSprite().setPosition(Engine::getWindowSize().x / 2.3, 300);
+
+		/*********TRACK THREE****************************/
+		auto trackThreeEnt = makeEntity();
+		auto t3Sprite = trackThreeEnt->addComponent<SpriteComponent>();
+
+		t3Sprite->getSprite().setTexture(*Resources::get<Texture>("TrackThree.png"));
+		t3Sprite->getSprite().setPosition(Engine::getWindowSize().x / 1.5, 300);
+
+
+
+		/***********************TEXT*****************************************/
 		txt = makeEntity();
 		auto title = txt->addComponent<TextComponent>("TD CHAMPIONSHIP RACER");
-		auto track1 = txt->addComponent<TextComponent>("TRACK 1");
-		auto track2 = txt->addComponent<TextComponent>("TRACK 2");
-		auto track3 = txt->addComponent<TextComponent>("TRACK 3");
+		title->setCenterPos(Engine::getWindowSize().x / 2.f, 100.f, 50.f);
 
-		//sets text position
-		title->setCenterPos(Engine::getWindowSize().x / 2.f, 100.f, 50);
-		track1->setCenterPos(Engine::getWindowSize().x / 2.f, 520.f, 50);
-		track2->setCenterPos(Engine::getWindowSize().x / 2.f, 570.f, 50);
-		track3->setCenterPos(Engine::getWindowSize().x / 2.f, 620.f, 50);
+		auto t1Txt = txt->addComponent<TextComponent>("Crazy Turns Raceway");
+		t1Txt->setCenterPos(Engine::getWindowSize().x / 3.4, 500, 25);
 
-		track1->setColor(255, 0, 0, 255);
+		auto t2Txt = txt->addComponent<TextComponent>("C-137 Testing Grounds");
+		t2Txt->setCenterPos(Engine::getWindowSize().x / 1.95, 500, 25);
 
+		auto t3Txt = txt->addComponent<TextComponent>("Stelvto Circuit");
+		t3Txt->setCenterPos(Engine::getWindowSize().x / 1.35, 500, 25);
+
+		auto lapTxt = txt->addComponent<TextComponent>("LAP/S : 1");
+		lapTxt->setCenterPos(Engine::getWindowSize().x / 2, 600, 40);
+
+		selectTrackSound = makeEntity();
+		auto beep = selectTrackSound->addComponent<SoundComponent>();
+		beep->getSound().setBuffer(*Resources::get<SoundBuffer>("beep.wav"));
 	}
 	setLoaded(true);
 	selectedItemIndex = 1;
 }
 
+
+
 void TrackSelectScreen::MoveUp() {
-	auto list = txt->GetCompatibleComponent<TextComponent>();
+	auto txt_cmp = txt->GetCompatibleComponent<TextComponent>();
 
 	//used for keyboard movement in menus
 	if (selectedItemIndex - 1 > 0) {
-		list[selectedItemIndex]->setColor(255, 255, 255, 255);
+		txt_cmp[selectedItemIndex]->setColor(255, 255, 255, 255);
 		selectedItemIndex--;
-		list[selectedItemIndex]->setColor(255, 0, 0, 255);
+		txt_cmp[selectedItemIndex]->setColor(255, 0, 0, 255);
 		std::this_thread::sleep_for(std::chrono::milliseconds(150));
 	}
 }
 
 void TrackSelectScreen::MoveDown() {
-	auto list = txt->GetCompatibleComponent<TextComponent>();
+	auto txt_cmp = txt->GetCompatibleComponent<TextComponent>();
 
 	//used for keyboard movement in menus
 	if (selectedItemIndex + 1 < 5) {
-		list[selectedItemIndex]->setColor(255, 255, 255, 255);
+		txt_cmp[selectedItemIndex]->setColor(255, 255, 255, 255);
 		selectedItemIndex++;
-		list[selectedItemIndex]->setColor(255, 0, 0, 255);
+		txt_cmp[selectedItemIndex]->setColor(255, 0, 0, 255);
 		std::this_thread::sleep_for(std::chrono::milliseconds(150));
 	}
 }
@@ -266,59 +300,65 @@ void TrackSelectScreen::MoveDown() {
 
 void TrackSelectScreen::Update(const double & dt)
 {
+	//getting entity components
+	auto txt_cmp = txt->GetCompatibleComponent<TextComponent>();
+	auto sound_cmp = selectTrackSound->GetCompatibleComponent<SoundComponent>();
+
 	sf::Event event;
 
 	sf::RenderWindow& window = Engine::GetWindow();
 	sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 	sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
 
-	//getting entity components
-	auto list = txt->GetCompatibleComponent<TextComponent>();
+
 
 	window.pollEvent(event);
 
 	//Handles this mouse hovering over the menu options
 	if (sf::Event::MouseMoved) {
 
-		if (list[1]->GetText().getGlobalBounds().contains(mousePosF)) {
-			list[selectedItemIndex]->setColor(255, 255, 255, 255);
+		if (txt_cmp[1]->GetText().getGlobalBounds().contains(mousePosF)) {
+			txt_cmp[selectedItemIndex]->setColor(255, 255, 255, 255);
 			selectedItemIndex = 1;
-			list[selectedItemIndex]->setColor(255, 0, 0, 255);
+			txt_cmp[selectedItemIndex]->setColor(255, 0, 0, 255);
 		}
 
-		if (list[2]->GetText().getGlobalBounds().contains(mousePosF)) {
-			list[selectedItemIndex]->setColor(255, 255, 255, 255);
+		if (txt_cmp[2]->GetText().getGlobalBounds().contains(mousePosF)) {
+			txt_cmp[selectedItemIndex]->setColor(255, 255, 255, 255);
 			selectedItemIndex = 2;
-			list[selectedItemIndex]->setColor(255, 0, 0, 255);
+			txt_cmp[selectedItemIndex]->setColor(255, 0, 0, 255);
 		}
 
-		if (list[3]->GetText().getGlobalBounds().contains(mousePosF)) {
-			list[selectedItemIndex]->setColor(255, 255, 255, 255);
+		if (txt_cmp[3]->GetText().getGlobalBounds().contains(mousePosF)) {
+			txt_cmp[selectedItemIndex]->setColor(255, 255, 255, 255);
 			selectedItemIndex = 3;
-			list[selectedItemIndex]->setColor(255, 0, 0, 255);
+			txt_cmp[selectedItemIndex]->setColor(255, 0, 0, 255);
 		}
 	}
 
 	//Handles the Button controls against the menu options
 	if (Mouse::isButtonPressed(Mouse::Left)) {
 
-		if (list[1]->GetText().getGlobalBounds().contains(mousePosF)) {
+		if (txt_cmp[1]->GetText().getGlobalBounds().contains(mousePosF)) {
 			cout << "Track 1 Pressed!" << endl;
 			selectedItemIndex = 1;
+			sound_cmp[0]->getSound().play();
 			std::this_thread::sleep_for(std::chrono::milliseconds(150));
 			Engine::ChangeScene(&carSelectScreen);
 		}
 
-		if (list[2]->GetText().getGlobalBounds().contains(mousePosF)) {
+		if (txt_cmp[2]->GetText().getGlobalBounds().contains(mousePosF)) {
 			cout << "Track 2 Pressed!" << endl;
 			selectedItemIndex = 2;
+			sound_cmp[0]->getSound().play();
 			std::this_thread::sleep_for(std::chrono::milliseconds(150));
 			Engine::ChangeScene(&carSelectScreen);
 		}
 
-		if (list[3]->GetText().getGlobalBounds().contains(mousePosF)) {
+		if (txt_cmp[3]->GetText().getGlobalBounds().contains(mousePosF)) {
 			cout << "Track 3 Pressed!" << endl;
 			selectedItemIndex = 3;
+			sound_cmp[0]->getSound().play();
 			std::this_thread::sleep_for(std::chrono::milliseconds(150));
 		}
 
@@ -343,15 +383,16 @@ void TrackSelectScreen::Update(const double & dt)
 			case 1:
 				std::cout << "Track 1 button has been pressed" << std::endl;
 				std::this_thread::sleep_for(std::chrono::milliseconds(150));
-				Engine::ChangeScene(&carSelectScreen);
+				sound_cmp[0]->getSound().play();
 				break;
 			case 2:
 				std::cout << "Track 2 Options button has been pressed" << std::endl;
 				std::this_thread::sleep_for(std::chrono::milliseconds(150));
-				Engine::ChangeScene(&carSelectScreen);
+				sound_cmp[0]->getSound().play();
 				break;
 			case 3:
 				std::cout << "Track 3 button has been pressed" << std::endl;
+				sound_cmp[0]->getSound().play();
 				std::this_thread::sleep_for(std::chrono::milliseconds(150));
 				break;
 			}

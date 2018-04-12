@@ -218,6 +218,98 @@ void LoadProfileScreen::Load()
 
 		}
 
+		auto blueTiles = ls::findTiles(ls::BLUETENT);
+		for each (auto t in blueTiles)
+		{
+			static shared_ptr<Entity> blue;
+			blue = makeEntity();
+
+			auto t1 = blue->addComponent<SpriteComponent>();
+			t1->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
+			t1->getSprite().setScale(0.400f, 0.400f);
+			//Add a new sprite component set texture and scale
+			auto t2 = blue->addComponent<SpriteComponent>();
+			t2->getSprite().setTexture(*Resources::get<Texture>("blue_tent.png"));
+			t2->getSprite().setScale(0.400f, 0.400f);
+
+
+			//get tile position - vector2f
+			auto g = ls::getTilePosition(t);
+			blue->setPosition(g);
+			/*t1->getSprite().setPosition(g);
+			t2->getSprite().setPosition(g);*/
+
+		}
+
+		auto redTiles = ls::findTiles(ls::REDTENT);
+		for each (auto t in redTiles)
+		{
+			static shared_ptr<Entity> red;
+			red = makeEntity();
+
+			auto t1 = red->addComponent<SpriteComponent>();
+			t1->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
+			t1->getSprite().setScale(0.400f, 0.400f);
+			//Add a new sprite component set texture and scale
+			auto t2 = red->addComponent<SpriteComponent>();
+			t2->getSprite().setTexture(*Resources::get<Texture>("red_tent.png"));
+			t2->getSprite().setScale(0.400f, 0.400f);
+
+
+			//get tile position - vector2f
+			auto g = ls::getTilePosition(t);
+			red->setPosition(g);
+			/*t1->getSprite().setPosition(g);
+			t2->getSprite().setPosition(g);*/
+
+		}
+
+		auto standTiles = ls::findTiles(ls::STAND);
+		for each (auto t in standTiles)
+		{
+			static shared_ptr<Entity> stand;
+			stand = makeEntity();
+
+			auto t1 = stand->addComponent<SpriteComponent>();
+			t1->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
+			t1->getSprite().setScale(0.400f, 0.400f);
+			//Add a new sprite component set texture and scale
+			auto t2 = stand->addComponent<SpriteComponent>();
+			t2->getSprite().setTexture(*Resources::get<Texture>("stand.png"));
+			t2->getSprite().setScale(0.400f, 0.400f);
+
+
+			//get tile position - vector2f
+			auto g = ls::getTilePosition(t);
+			stand->setPosition(g);
+			/*t1->getSprite().setPosition(g);
+			t2->getSprite().setPosition(g);*/
+
+		}
+
+		auto treeTiles = ls::findTiles(ls::TREEL);
+		for each (auto t in treeTiles)
+		{
+			static shared_ptr<Entity> tree;
+			tree = makeEntity();
+
+			auto t1 = tree->addComponent<SpriteComponent>();
+			t1->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
+			t1->getSprite().setScale(0.400f, 0.400f);
+			//Add a new sprite component set texture and scale
+			auto t2 = tree->addComponent<SpriteComponent>();
+			t2->getSprite().setTexture(*Resources::get<Texture>("tree_large.png"));
+			t2->getSprite().setScale(0.400f, 0.400f);
+
+
+			//get tile position - vector2f
+			auto g = ls::getTilePosition(t);
+			tree->setPosition(g);
+			/*t1->getSprite().setPosition(g);
+			t2->getSprite().setPosition(g);*/
+
+		}
+
 		txt = makeEntity();
 		auto title = txt->addComponent<TextComponent>("TD CHAMPIONSHIP RACER");
 		auto start = txt->addComponent<TextComponent>("LOAD PROFILE COMING SOON");
