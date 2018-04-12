@@ -55,8 +55,6 @@ void LevelSystem::loadLevelFile(const std::string& path, float tileSize) {
 	}
 
 
-
-
 	std::vector<Tile> temp_tiles;
 	int widthCheck = 0;
 	for (int i = 0; i < buffer.size(); ++i) {

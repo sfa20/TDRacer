@@ -12,8 +12,8 @@ using namespace Physics;
 
 void PhysicsComponent::update(double dt) {
 	currentForwardSpeed = 0;
-  _parent->setPosition(invert_height(bv2_to_sv2(_body->GetPosition())));
-  _parent->setRotation((180 / b2_pi) * _body->GetAngle());
+	_parent->setPosition(invert_height(bv2_to_sv2(_body->GetPosition())));
+	_parent->setRotation((180 / b2_pi) * _body->GetAngle());
 }
 
 
@@ -63,7 +63,6 @@ PhysicsComponent::PhysicsComponent(Entity* p, bool dyn, const Vector2f& size) : 
 	 driftFriction = 0.1;
 	 dragModifier = 0.01;
 	 currentTraction = 0.1f;
-  
 }
 
 

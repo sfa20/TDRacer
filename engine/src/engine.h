@@ -21,8 +21,9 @@ public:
 	////added
 	/*mutable sf::Vector2f scale = { 0.f,0.f };
 	mutable float size = 0.f;
-
-	void CheckScreenRes();*/
+	*/
+	void MapSetup();
+	//void CheckScreenRes();*/
 	//////
 
 	EntityManager ents;
