@@ -243,9 +243,9 @@ void LoadScreen::Load()
 
 			//get tile position - vector2f
 			auto g = ls::getTilePosition(t);
-			blue->setPosition(g);
-			/*t1->getSprite().setPosition(g);
-			t2->getSprite().setPosition(g);*/
+			/*blue->setPosition(g);*/
+			t1->getSprite().setPosition(g);
+			t2->getSprite().setPosition(g);
 
 		}
 
@@ -266,32 +266,55 @@ void LoadScreen::Load()
 
 			//get tile position - vector2f
 			auto g = ls::getTilePosition(t);
-			red->setPosition(g);
-			/*t1->getSprite().setPosition(g);
-			t2->getSprite().setPosition(g);*/
+			/*	red->setPosition(g);*/
+			t1->getSprite().setPosition(g);
+			t2->getSprite().setPosition(g);
 
 		}
 
-		auto standTiles = ls::findTiles(ls::STAND);
-		for each (auto t in standTiles)
+		auto standPTiles = ls::findTiles(ls::STANDUP);
+		for each (auto t in standPTiles)
 		{
-			static shared_ptr<Entity> stand;
-			stand = makeEntity();
+			static shared_ptr<Entity> standP;
+			standP = makeEntity();
 
-			auto t1 = stand->addComponent<SpriteComponent>();
+			auto t1 = standP->addComponent<SpriteComponent>();
 			t1->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
 			t1->getSprite().setScale(0.400f, 0.400f);
 			//Add a new sprite component set texture and scale
-			auto t2 = stand->addComponent<SpriteComponent>();
-			t2->getSprite().setTexture(*Resources::get<Texture>("stand.png"));
+			auto t2 = standP->addComponent<SpriteComponent>();
+			t2->getSprite().setTexture(*Resources::get<Texture>("standP.png"));
 			t2->getSprite().setScale(0.400f, 0.400f);
 
 
 			//get tile position - vector2f
 			auto g = ls::getTilePosition(t);
-			stand->setPosition(g);
-			/*t1->getSprite().setPosition(g);
-			t2->getSprite().setPosition(g);*/
+			/*stand->setPosition(g);*/
+			t1->getSprite().setPosition(g);
+			t2->getSprite().setPosition(g);
+
+		}
+
+		auto standDTiles = ls::findTiles(ls::STANDDWN);
+		for each (auto t in standDTiles)
+		{
+			static shared_ptr<Entity> standD;
+			standD = makeEntity();
+
+			auto t1 = standD->addComponent<SpriteComponent>();
+			t1->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
+			t1->getSprite().setScale(0.400f, 0.400f);
+			//Add a new sprite component set texture and scale
+			auto t2 = standD->addComponent<SpriteComponent>();
+			t2->getSprite().setTexture(*Resources::get<Texture>("standD.png"));
+			t2->getSprite().setScale(0.400f, 0.400f);
+
+
+			//get tile position - vector2f
+			auto g = ls::getTilePosition(t);
+			/*stand->setPosition(g);*/
+			t1->getSprite().setPosition(g);
+			t2->getSprite().setPosition(g);
 
 		}
 
@@ -312,9 +335,9 @@ void LoadScreen::Load()
 
 			//get tile position - vector2f
 			auto g = ls::getTilePosition(t);
-			tree->setPosition(g);
-			/*t1->getSprite().setPosition(g);
-			t2->getSprite().setPosition(g);*/
+			/*tree->setPosition(g);*/
+			t1->getSprite().setPosition(g);
+			t2->getSprite().setPosition(g);
 
 		}
 

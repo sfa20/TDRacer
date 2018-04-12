@@ -178,7 +178,7 @@ void CarSelectScreen::Load()
 
 		}
 
-		auto standTiles = ls::findTiles(ls::STAND);
+		auto standTiles = ls::findTiles(ls::STANDUP);
 		for each (auto t in standTiles)
 		{
 			static shared_ptr<Entity> stand;

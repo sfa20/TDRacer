@@ -49,7 +49,8 @@ public:
 		REDTENT = 'v',
 		BLUETENT = 'z',
 		TREEL = 'x',
-		STAND = 'i'
+		STANDUP = 'i',
+		STANDDWN = 'o'
 	};
 
 	static Tile getTile(sf::Vector2ul);
