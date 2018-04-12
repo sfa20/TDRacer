@@ -53,8 +53,8 @@ void Level1Scene::Load() {
 	}
 
 	//Load Level File
-	ls::loadLevelFile("res/track_1.txt", size);
-	
+	ls::loadLevelFile("res/track_3.txt", size);
+
 
 #pragma region Setup Map
 
@@ -311,30 +311,32 @@ void Level1Scene::Load() {
 		}
 
 
-
 #pragma endregion
 
 
 #pragma region Setup Timer
 
-		raceTimer = makeEntity();
-		auto c = raceTimer->addComponent<TextComponent>("Timer: ");
-		c->setCenterPos(Engine::getWindowSize().x - 400.f, 20.f, 40.f);
-		auto c2 = raceTimer->addComponent<Timer>();
-		c2->start();
-		auto c3 = raceTimer->addComponent<LapTimer>();
-		c3->start();
+	raceTimer = makeEntity();
+	auto c = raceTimer->addComponent<TextComponent>("Timer: ");
+	c->setCenterPos(Engine::getWindowSize().x - 400.f, 20.f, 40.f);
+	auto c2 = raceTimer->addComponent<Timer>();
+	c2->start();
+	auto c3 = raceTimer->addComponent<LapTimer>();
+	c3->start();
 
 #pragma endregion
 
 
 #pragma region CreatePlayer 
 
-	//Create an PlayerCar Entity, add component and set texture
-	player = makeEntity();
+	////Create an PlayerCar Entity, add component and set texture
+	//player = makeEntity();
 
-	//Adds a Sprite component
-	auto t = player->addComponent<SpriteComponent>(); //Add a sprite component
+	////Adds a Sprite component
+	//auto t = player->addComponent<SpriteComponent>(); //Add a sprite component
+
+	//t->getSprite().setTexture(*Resources::get<Texture>("Black_viper.png"));
+	//t->getSprite().setScale(.45f, .45f);
 
 	t->getSprite().setTexture(*Resources::get<Texture>("car_green_small_2.png"));
 	t->getSprite().setScale(.45f, .45f);
@@ -398,6 +400,7 @@ void Level1Scene::Update(const double& dt) {
 	//Get the text component and set this to the time string created above
 	auto textBox = raceTimer->GetCompatibleComponent<TextComponent>()[0];
 	textBox->SetText(time);
+
 	//End of Race Timer
 
 #pragma endregion
@@ -405,6 +408,7 @@ void Level1Scene::Update(const double& dt) {
 #pragma region CheckRaceStatus
 
 	//Player crossing finish triggers new laptime and increments lap counter
+
 	auto s1 = ls::getTilePosition(ls::findTiles(ls::START)[0]);
 	auto s2 = ls::getTilePosition(ls::findTiles(ls::STARTLEFT)[0]);
 	auto s3 = ls::getTilePosition(ls::findTiles(ls::STARTRIGHT)[0]);
@@ -412,6 +416,7 @@ void Level1Scene::Update(const double& dt) {
 	auto tileSize = ls::getTileSize();
 
 	//get the second race timer added to entity
+
 	auto lt = raceTimer->GetCompatibleComponent<LapTimer>()[0];
 
 	//New Lap Incrementor - will increment when player goes over the finsih

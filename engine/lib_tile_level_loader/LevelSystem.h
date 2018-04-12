@@ -45,7 +45,12 @@ public:
 		END = 'q',
 		GRASS = 'g',
 		WALL = 'w',
-		WAYPOINT = '+'
+		WAYPOINT = '+',
+		REDTENT = 'v',
+		BLUETENT = 'z',
+		TREEL = 'x',
+		STANDUP = 'i',
+		STANDDWN = 'o'
 	};
 
 	static Tile getTile(sf::Vector2ul);
