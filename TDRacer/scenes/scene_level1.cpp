@@ -376,21 +376,25 @@ void Level1Scene::UnLoad() {
 
 void Level1Scene::Update(const double& dt) {
 
+#pragma region Handle RaceTimer
+
 	//Update the RaceTimer
 	raceTimer->update(dt);
-	
+
 	//Get the race timer
-	auto a = raceTimer->GetCompatibleComponent<Timer>()[0];
+	auto timer = raceTimer->GetCompatibleComponent<Timer>()[0];
 
 	//Get the current time
-	string time = a->getTime();
+	string time = timer->getTime();
 
 	//Get the text component and set this to the time string created above
-	auto b = raceTimer->GetCompatibleComponent<TextComponent>()[0];
-	b->SetText(time);
-
+	auto textBox = raceTimer->GetCompatibleComponent<TextComponent>()[0];
+	textBox->SetText(time);
 	//End of Race Timer
 
+#pragma endregion
+
+#pragma region CheckRaceStatus
 
 	//Player crossing finish triggers new laptime and increments lap counter
 	auto s1 = ls::getTilePosition(ls::findTiles(ls::START)[0]);
@@ -401,31 +405,46 @@ void Level1Scene::Update(const double& dt) {
 
 	//get the second race timer added to entity
 	auto lt = raceTimer->GetCompatibleComponent<LapTimer>()[0];
-	
+
 	//New Lap Incrementor - will increment when player goes over the finsih
 	if (player->getPosition().y > s2.y - tileSize / 2 && player->getPosition().y < s3.y + tileSize / 2) {
 		if (player->getPosition().x > s2.x - tileSize / 2 && player->getPosition().x < s3.x + tileSize / 2) {
-			
-			auto j = lt->getLapCounter();
-			
-			if (j) {
-				
+
+			auto lapCounter = lt->getLapCounter();
+
+			if (lapCounter) {
+
 				lt->setLapCounter(false);
 				lt->setLaptime(lt->getCurrentLap());
 
 				lt->reset();
 				lt->increaseLapCounter();
-				
+
+				//Displays current lap times
 				cout << "Current Lap: " << lt->getCurrentLap() << endl;
 				cout << lt->getLapTimes() << endl;
 			}
 		}
 	}
 
+	//Prevents a player going back and forward over the line  //Need a better way to handle this
 	lt->temp = lt->getClock().getElapsedTime().asMilliseconds();
 	if (lt->temp > 10000) {
 		lt->setLapCounter(true);
 	}
+
+	//Checks if game is over - will be changed for a variable depending on what player selects when
+	//selecting the track - Either 3 or 5
+	if (lt->getCurrentLap()== 5) {
+		cout << "Race Over" << endl;
+		Engine::ChangeScene(&menuScreen);
+	}
+
+
+#pragma endregion
+
+
+	
 
 	Scene::Update(dt);
 }
