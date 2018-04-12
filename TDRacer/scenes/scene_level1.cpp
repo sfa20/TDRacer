@@ -22,11 +22,14 @@ using namespace Resources;
 
 static shared_ptr<Entity> player;
 static shared_ptr<Entity> raceTimer;
+static shared_ptr<Entity> WinnerMessage;
+
 sf::Vector2f scale = { 0.400f, 0.400f };
+int counter = 0;
 
 
 void Level1Scene::Load() {
-	
+
 	float size = 50.f;
 
 	//CheckScreenRes();
@@ -351,13 +354,17 @@ void Level1Scene::Load() {
 	auto lv = ls::getTilePosition(l[0]);
 
 	//Set the players starting position
-	player->setPosition(Vector2f(200,200));
+	player->setPosition(Vector2f(lv));
 
 #pragma endregion
 
 
+
 #pragma region Testing
 
+	
+	auto winnerText = raceTimer->addComponent<TextComponent>(" ");
+	winnerText->setCenterPos(Engine::getWindowSize().x / 2.f, Engine::getWindowSize().y / 2, 60.f);
 
 
 
@@ -366,6 +373,7 @@ void Level1Scene::Load() {
 
 
 }
+
 
 void Level1Scene::UnLoad() {
 	cout << "Scene 1 Unload" << endl;
@@ -433,11 +441,35 @@ void Level1Scene::Update(const double& dt) {
 		lt->setLapCounter(true);
 	}
 
+
 	//Checks if game is over - will be changed for a variable depending on what player selects when
 	//selecting the track - Either 3 or 5
-	if (lt->getCurrentLap()== 5) {
+	if (lt->getCurrentLap() == 3) {
 		cout << "Race Over" << endl;
-		Engine::ChangeScene(&menuScreen);
+		player->setForDelete();
+		auto text = raceTimer->GetCompatibleComponent<TextComponent>()[1];
+		text->SetText("WINNER!");
+
+		if (counter <= 10) {
+			if (counter == 2 || counter == 4 || counter == 6 ) {
+				text->SetText("WINNER!");
+				std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+
+			}
+			else {
+				text->SetText("");
+				std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+
+			}
+		}
+		
+		if (counter > 6) {
+			Engine::ChangeScene(&menuScreen);
+		}
+		counter++;
+
+
+		//std::this_thread::sleep_for(std::chrono::milliseconds(3000));
 	}
 
 

@@ -45,6 +45,7 @@ void RaceMenuScreen::Load()
 			t3->getSprite().setPosition(g);
 
 		}
+		
 		auto peakTiles = ls::findTiles(ls::TOP);
 		for each (auto t in peakTiles)
 		{
@@ -62,6 +63,7 @@ void RaceMenuScreen::Load()
 
 
 		}
+		
 		auto bottomTiles = ls::findTiles(ls::BOTTOM);
 		for each (auto t in bottomTiles)
 		{
@@ -80,6 +82,7 @@ void RaceMenuScreen::Load()
 			t2->getSprite().setPosition(g);
 
 		}
+		
 		auto trackTiles = ls::findTiles(ls::TRACK);
 		for each (auto t in trackTiles)
 		{
@@ -96,6 +99,7 @@ void RaceMenuScreen::Load()
 			t2->getSprite().setPosition(g);
 
 		}
+		
 		////Get position of Corner tiles and set sprites to each postition
 		auto corner1Tiles = ls::findTiles(ls::CORNER1);
 		for each (auto t in corner1Tiles)
@@ -188,6 +192,7 @@ void RaceMenuScreen::Load()
 			t2->getSprite().setPosition(g);
 
 		}
+		
 		//Get position of RightTrack tiles and set sprites to each postition
 		auto rightTiles = ls::findTiles(ls::RIGHT);
 		for each (auto t in rightTiles)

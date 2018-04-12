@@ -56,7 +56,7 @@ PhysicsComponent::PhysicsComponent(Entity* p, bool dyn, const Vector2f& size) : 
 	 maxForwardSpeed = 20.f;
 	 maxBackwardSpeed = -10.f;
 	 desiredSpeed = 25.f;
-	 maxDriveForce = 3.0f;
+	 maxDriveForce = 5.0f;
 
 	 //Friction Variables
 	 maxLateralImpulse = 5.5f;
