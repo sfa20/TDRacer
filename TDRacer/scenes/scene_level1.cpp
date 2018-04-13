@@ -3,6 +3,7 @@
 #include "../components/cmp_sprite.h"
 #include "../components/cmp_text.h"
 #include "../components/cmp_race_timer.h"
+#include "../components/cmp_sound.h"
 #include "../game.h"
 #include <LevelSystem.h>
 #include <iostream>
@@ -92,12 +93,15 @@ void Level1Scene::Load() {
 	t->getSprite().setTexture(*Resources::get<Texture>("car_green_small_2.png"));
 	t->getSprite().setScale(.45f, .45f);
 	t->getSprite().setColor(Color::Red);
-	t->getSprite().setOrigin(10,0);
+	t->getSprite().setOrigin(10, 0);
 
 	//Add a Player Physics Component
 	auto p = player->addComponent<PlayerPhysicsComponent>(Vector2f(27.9f, 18.f));
 	//p->setMass(10);
-	
+
+	auto sp = player->addComponent<SoundComponent>();
+	sp->getSound().setBuffer(*Resources::get<SoundBuffer>("AudiAcc.wav"));
+
 	//Find the starting position 
 	auto l = ls::findTiles(ls::START);
 	auto lv = ls::getTilePosition(l[0]);
@@ -201,7 +205,7 @@ void Level1Scene::Update(const double& dt) {
 		text->SetText("WINNER!");
 
 		if (counter <= 10) {
-			if (counter == 2 || counter == 4 || counter == 6 ) {
+			if (counter == 2 || counter == 4 || counter == 6) {
 				text->SetText("WINNER!");
 				std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 
@@ -212,7 +216,7 @@ void Level1Scene::Update(const double& dt) {
 
 			}
 		}
-		
+
 		if (counter > 6) {
 			UnLoad();
 			Engine::ChangeScene(&level2);

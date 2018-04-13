@@ -20,6 +20,7 @@ static bool loading = false;
 static float loadingspinner = 0.f;
 static float loadingTime;
 static RenderWindow* _window;
+static Event* _event;
 
 void Loading_update(float dt, const Scene* const scn) {
 	//  cout << "Eng: Loading Screen\n";
@@ -90,15 +91,16 @@ void Engine::Start(unsigned int width, unsigned int height, const std::string& g
 	auto screenType = isFullscreen ? sf::Style::Fullscreen : sf::Style::Resize;
 
 	RenderWindow window(VideoMode(width, height), gameName, screenType);
+	Event events;
 	_gameName = gameName;
 	_window = &window;
+	_event = &events;
 	Renderer::initialise(window);
 	Physics::initialise();
 	ChangeScene(scn);
 	while (window.isOpen()) {
-		Event event;
-		while (window.pollEvent(event)) {
-			if (event.type == Event::Closed) {
+		while (window.pollEvent(events)) {
+			if (events.type == Event::Closed) {
 				window.close();
 			}
 		}
@@ -457,6 +459,8 @@ void Scene::MapSetup() {
 sf::Vector2u Engine::getWindowSize() { return _window->getSize(); }
 
 sf::RenderWindow& Engine::GetWindow() { return *_window; }
+
+sf::Event& Engine::GetEvent() { return *_event; }
 
 namespace timing {
 	// Return time since Epoc
