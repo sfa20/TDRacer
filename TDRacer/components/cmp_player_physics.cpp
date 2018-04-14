@@ -116,27 +116,40 @@ void PlayerPhysicsComponent::update(double dt) {
 	const auto pos = _parent->getPosition();
 	/*const auto snd = _parent->GetCompatibleComponent<SoundComponent>()[0];*/
 
+	auto worldVector = _body->GetWorldVector(b2Vec2(0, 1));
 
 	auto test = Engine::GetEvent();
-	cout << "Before: " << Keys["Forward"].myKeyCode << endl;
+	
+	//if (test.type == Event::KeyPressed) {
+	//	//cout << "Event Type: " << to_string(test.type) << endl;
+	//	cout << "Before: " << Keys["Forward"].myKeyCode << endl;
+	//	
+	//	auto a = test.key.code;
+		Keys["Forward"].myKeyCode = Keyboard::W;
+		//Keys["Forward"].myKeyCode = a;
 
-	if (test.type == Event::KeyReleased) {
-		//cout << "Event Type: " << to_string(test.type) << endl;
+		//std::this_thread::sleep_for(std::chrono::milliseconds(300));
 
-		auto a = test.key.code;
-		Keys["Forward"].myKeyCode = a;
-
-		cout << "After" << Keys["Forward"].myKeyCode << endl;
-	};
+	//	cout << "After" << Keys["Forward"].myKeyCode << endl;
+	//	test.type = Event::KeyPressed;
+	//};
 
 	/*cout << a << endl;*/
-
-	if (test.key.code == Keys["Forward"].myKeyCode)
-	{
-		// You can use a function
+	
+	if (sf::Keyboard::isKeyPressed(Keys["Forward"].myKeyCode)) {
+		cout << test.key.code << endl;
 		Forward();
-		cout << "we are in " << Keys["Forward"].myKeyCode << endl;
 	}
+	else {
+		dampen({ 0.015f, 0.015f });
+	}
+
+	//if (test.key.code == Keys["Forward"].myKeyCode)
+	//{
+	//	// You can use a function
+	//	//cout << "we are in " << Keys["Forward"].myKeyCode << endl;
+	//}
+
 
 	//if (KeyEvent(Keys["Forward"], test))
 	//{
