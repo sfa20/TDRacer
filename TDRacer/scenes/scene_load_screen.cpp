@@ -29,6 +29,9 @@ void LoadScreen::Load()
 	{
 		ls::loadLevelFile("res/menu.txt", 50.f);
 
+#pragma region Background Setup
+
+
 		//Get position of grass tiles and set sprites to each position
 		auto grassTiles = ls::findTiles(ls::GRASS);
 		for each (auto t in grassTiles)
@@ -46,6 +49,7 @@ void LoadScreen::Load()
 			t3->getSprite().setPosition(g);
 
 		}
+		
 		auto peakTiles = ls::findTiles(ls::TOP);
 		for each (auto t in peakTiles)
 		{
@@ -63,6 +67,7 @@ void LoadScreen::Load()
 
 
 		}
+		
 		auto bottomTiles = ls::findTiles(ls::BOTTOM);
 		for each (auto t in bottomTiles)
 		{
@@ -81,6 +86,7 @@ void LoadScreen::Load()
 			t2->getSprite().setPosition(g);
 
 		}
+		
 		auto trackTiles = ls::findTiles(ls::TRACK);
 		for each (auto t in trackTiles)
 		{
@@ -97,6 +103,7 @@ void LoadScreen::Load()
 			t2->getSprite().setPosition(g);
 
 		}
+		
 		////Get position of Corner tiles and set sprites to each postition
 		auto corner1Tiles = ls::findTiles(ls::CORNER1);
 		for each (auto t in corner1Tiles)
@@ -189,6 +196,7 @@ void LoadScreen::Load()
 			t2->getSprite().setPosition(g);
 
 		}
+		
 		//Get position of RightTrack tiles and set sprites to each postition
 		auto rightTiles = ls::findTiles(ls::RIGHT);
 		for each (auto t in rightTiles)
@@ -341,6 +349,10 @@ void LoadScreen::Load()
 
 		}
 
+
+#pragma endregion
+
+
 		loadS = makeEntity();
 		auto title = loadS->addComponent<TextComponent>("TD CHAMPIONSHIP RACER");
 		auto control = loadS->addComponent<TextComponent>("New game");
@@ -359,6 +371,7 @@ void LoadScreen::Load()
 	setLoaded(true);
 	selectedItemIndex = 1;
 }
+
 void LoadScreen::MoveUp() {
 	auto txt_cmp = loadS->GetCompatibleComponent<TextComponent>();
 
@@ -398,6 +411,10 @@ void LoadScreen::Update(const double & dt)
 
 	startWindow.pollEvent(startEvent);
 
+#pragma region MouseControls
+
+
+
 	//Handles this mouse hovering over the menu options
 	if (sf::Event::MouseMoved) {
 
@@ -413,6 +430,7 @@ void LoadScreen::Update(const double & dt)
 			txt_cmp[selectedItemIndex]->setColor(255, 0, 0, 255);
 		}
 	}
+	
 	if (Mouse::isButtonPressed(Mouse::Left)) {
 
 		if (txt_cmp[1]->GetText().getGlobalBounds().contains(mousePosF)) {
@@ -420,7 +438,7 @@ void LoadScreen::Update(const double & dt)
 			sound_cmp[0]->getSound().play();
 			selectedItemIndex = 1;
 			std::this_thread::sleep_for(std::chrono::milliseconds(150));
-			Engine::ChangeScene(&loadPScreen);
+			Engine::ChangeScene(&avatarScreen);
 
 		}
 
@@ -429,11 +447,17 @@ void LoadScreen::Update(const double & dt)
 			sound_cmp[0]->getSound().play();
 			selectedItemIndex = 2;
 			std::this_thread::sleep_for(std::chrono::milliseconds(150));
+			Engine::ChangeScene(&loadPScreen);
 
 
 		}
 
 	}
+#pragma endregion
+
+
+#pragma region KeyboardControls
+
 	//Handles Keyboard input and checks against the Menu Options
 	if (sf::Event::KeyPressed) {
 
@@ -466,6 +490,10 @@ void LoadScreen::Update(const double & dt)
 		}
 
 	}
+
+#pragma endregion
+
+
 }
 
 

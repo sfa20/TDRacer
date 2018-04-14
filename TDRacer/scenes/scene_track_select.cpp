@@ -21,9 +21,12 @@ static std::shared_ptr<Entity> selectTrackSound;
 
 void TrackSelectScreen::Load() {
 
+#pragma region Background Setup
+
+
 
 	std::cout << "Menu Load \n";
-	{
+	
 		ls::loadLevelFile("res/opening.txt", 50.f);
 
 		//Get position of grass tiles and set sprites to each position
@@ -43,6 +46,7 @@ void TrackSelectScreen::Load() {
 			t3->getSprite().setPosition(g);
 
 		}
+		
 		auto peakTiles = ls::findTiles(ls::TOP);
 		for each (auto t in peakTiles)
 		{
@@ -60,6 +64,7 @@ void TrackSelectScreen::Load() {
 
 
 		}
+		
 		auto bottomTiles = ls::findTiles(ls::BOTTOM);
 		for each (auto t in bottomTiles)
 		{
@@ -78,6 +83,7 @@ void TrackSelectScreen::Load() {
 			t2->getSprite().setPosition(g);
 
 		}
+	
 		auto trackTiles = ls::findTiles(ls::TRACK);
 		for each (auto t in trackTiles)
 		{
@@ -94,6 +100,7 @@ void TrackSelectScreen::Load() {
 			t2->getSprite().setPosition(g);
 
 		}
+	
 		//Get position of RightTrack tiles and set sprites to each postition
 		auto rightTiles = ls::findTiles(ls::RIGHT);
 		for each (auto t in rightTiles)
@@ -223,6 +230,14 @@ void TrackSelectScreen::Load() {
 
 		}
 
+#pragma endregion
+
+#pragma region Display Tracks
+
+
+
+
+
 		/*********TRACK ONE****************************/
 		auto trackOneEnt = makeEntity();
 		auto t1Sprite = trackOneEnt->addComponent<SpriteComponent>();
@@ -244,8 +259,9 @@ void TrackSelectScreen::Load() {
 		t3Sprite->getSprite().setTexture(*Resources::get<Texture>("TrackThree.png"));
 		t3Sprite->getSprite().setPosition(Engine::getWindowSize().x / 1.5, 300);
 
-
-
+#pragma endregion
+	
+	{
 		/***********************TEXT*****************************************/
 		txt = makeEntity();
 		auto title = txt->addComponent<TextComponent>("TD CHAMPIONSHIP RACER");
@@ -314,6 +330,9 @@ void TrackSelectScreen::Update(const double & dt)
 
 	window.pollEvent(event);
 
+#pragma region MouseControls
+
+
 	//Handles this mouse hovering over the menu options
 	if (sf::Event::MouseMoved) {
 
@@ -364,6 +383,11 @@ void TrackSelectScreen::Update(const double & dt)
 
 	}
 
+#pragma endregion
+
+#pragma region KeyboardControls
+
+
 	//Handles Keyboard input and checks against the Menu Options
 	if (sf::Event::KeyPressed) {
 
@@ -398,5 +422,8 @@ void TrackSelectScreen::Update(const double & dt)
 			}
 		}
 	}
+#pragma endregion
+
+
 }
 

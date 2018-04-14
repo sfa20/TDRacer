@@ -21,6 +21,9 @@ void AvatarScreen::Load()
 {
 	std::cout << "Menu Load \n";
 	{
+
+#pragma region Background Setup
+
 		ls::loadLevelFile("res/opening.txt", 50.f);
 
 		//Get position of grass tiles and set sprites to each position
@@ -40,6 +43,7 @@ void AvatarScreen::Load()
 			t3->getSprite().setPosition(g);
 
 		}
+		
 		auto peakTiles = ls::findTiles(ls::TOP);
 		for each (auto t in peakTiles)
 		{
@@ -57,6 +61,7 @@ void AvatarScreen::Load()
 
 
 		}
+		
 		auto bottomTiles = ls::findTiles(ls::BOTTOM);
 		for each (auto t in bottomTiles)
 		{
@@ -75,6 +80,7 @@ void AvatarScreen::Load()
 			t2->getSprite().setPosition(g);
 
 		}
+		
 		auto trackTiles = ls::findTiles(ls::TRACK);
 		for each (auto t in trackTiles)
 		{
@@ -91,6 +97,7 @@ void AvatarScreen::Load()
 			t2->getSprite().setPosition(g);
 
 		}
+		
 		//Get position of RightTrack tiles and set sprites to each postition
 		auto rightTiles = ls::findTiles(ls::RIGHT);
 		for each (auto t in rightTiles)
@@ -220,6 +227,12 @@ void AvatarScreen::Load()
 
 		}
 
+#pragma endregion
+
+
+#pragma region Create Avatars
+
+
 		/*********AVATAR ONE****************************/
 		auto ninjaEnt = makeEntity();
 		auto nSprite = ninjaEnt->addComponent<SpriteComponent>();
@@ -247,6 +260,8 @@ void AvatarScreen::Load()
 
 		vSprite->getSprite().setTexture(*Resources::get<Texture>("Vamp.png"));
 		vSprite->getSprite().setPosition(Engine::getWindowSize().x / 1.6, 280);
+
+#pragma endregion
 
 
 		/***********************TEXT*****************************************/
@@ -313,6 +328,9 @@ void AvatarScreen::Update(const double & dt)
 
 	avatarWindow.pollEvent(AvatarEvent);
 
+#pragma region MouseControls
+
+
 	////Handles this mouse hovering over the menu options
 	if (sf::Event::MouseMoved) {
 
@@ -369,6 +387,12 @@ void AvatarScreen::Update(const double & dt)
 		}
 	}
 
+#pragma endregion
+
+
+#pragma region KeyboardControls
+
+
 	////Handles Keyboard input and checks against the Menu Options
 	if (sf::Event::KeyPressed) {
 
@@ -410,5 +434,8 @@ void AvatarScreen::Update(const double & dt)
 			}
 		}
 	}
+
+#pragma endregion
+
 }
 

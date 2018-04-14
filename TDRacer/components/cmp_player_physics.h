@@ -5,20 +5,20 @@
 
 using namespace sf;
 
-enum InputType
-{
-	KeyboardInput,
-	MouseInput,
-	JoystickInput
-};
-
-struct MyKeys
-{
-	InputType myInputType;
-	sf::Event::EventType myEventType;
-	sf::Keyboard::Key myKeyCode;
-	sf::Mouse::Button myMouseButton;
-};
+//enum InputType
+//{
+//	KeyboardInput,
+//	MouseInput,
+//	JoystickInput
+//};
+//
+//struct MyKeys
+//{
+//	InputType myInputType;
+//	sf::Event::EventType myEventType;
+//	sf::Keyboard::Key myKeyCode;
+//	sf::Mouse::Button myMouseButton;
+//};
 
 class PlayerPhysicsComponent : public PhysicsComponent {
 private:
@@ -30,8 +30,8 @@ private:
 public:
 	void update(double dt) override;
 	explicit PlayerPhysicsComponent(Entity* p, const sf::Vector2f& size);
-	bool KeyEvent(MyKeys k, sf::Event e);
-	void DefineControls();
+	//bool KeyEvent(MyKeys k, sf::Event e);
+	//void DefineControls();
 	void Forward();
 	void Back();
 	void Left();

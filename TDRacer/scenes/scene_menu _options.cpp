@@ -24,7 +24,9 @@ static shared_ptr<Entity> optionsSound;
 
 void OptionScreen::Load() {
 
-	cout << "Menu Load \n"; {
+	cout << "Menu Load \n"; 
+
+#pragma region Load Background
 
 		ls::loadLevelFile("res/menu.txt", 50.f);
 
@@ -46,6 +48,7 @@ void OptionScreen::Load() {
 			t3->getSprite().setPosition(g);
 
 		}
+	
 		auto peakTiles = ls::findTiles(ls::TOP);
 		for each (auto t in peakTiles)
 		{
@@ -63,6 +66,7 @@ void OptionScreen::Load() {
 
 
 		}
+		
 		auto bottomTiles = ls::findTiles(ls::BOTTOM);
 		for each (auto t in bottomTiles)
 		{
@@ -81,6 +85,7 @@ void OptionScreen::Load() {
 			t2->getSprite().setPosition(g);
 
 		}
+	
 		auto trackTiles = ls::findTiles(ls::TRACK);
 		for each (auto t in trackTiles)
 		{
@@ -97,6 +102,7 @@ void OptionScreen::Load() {
 			t2->getSprite().setPosition(g);
 
 		}
+	
 		////Get position of Corner tiles and set sprites to each postition
 		auto corner1Tiles = ls::findTiles(ls::CORNER1);
 		for each (auto t in corner1Tiles)
@@ -226,6 +232,9 @@ void OptionScreen::Load() {
 
 		}
 
+#pragma endregion
+	
+	{
 		options = makeEntity();
 		////creates text entitys
 		options->addComponent<TextComponent>("TD Championship Racer");
@@ -295,6 +304,9 @@ void OptionScreen::Update(const double& dt) {
 
 	newWindow.pollEvent(newEvent);
 
+#pragma region MouseControls
+
+
 	//Handles this mouse hovering over the menu options
 	if (sf::Event::MouseMoved) {
 
@@ -357,6 +369,12 @@ void OptionScreen::Update(const double& dt) {
 			Engine::ChangeScene(&menuScreen);
 		}
 	}
+
+#pragma endregion
+
+#pragma region KeyboardControls
+
+
 	//Handles Keyboard input and checks against the Menu Options
 	if (sf::Event::KeyPressed) {
 
@@ -400,6 +418,7 @@ void OptionScreen::Update(const double& dt) {
 			}
 		}
 	}
+#pragma endregion
 
 }
 

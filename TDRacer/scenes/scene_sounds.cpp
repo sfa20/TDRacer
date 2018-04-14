@@ -18,9 +18,12 @@ static std::shared_ptr<Entity> txt;
 
 void SoundScreen::Load() {
 
+#pragma region Background Setup
+
+
 
 	std::cout << "Menu Load \n";
-	{
+	
 		ls::loadLevelFile("res/menu.txt", 50.f);
 
 		//Get position of grass tiles and set sprites to each position
@@ -40,6 +43,7 @@ void SoundScreen::Load() {
 			t3->getSprite().setPosition(g);
 
 		}
+		
 		auto peakTiles = ls::findTiles(ls::TOP);
 		for each (auto t in peakTiles)
 		{
@@ -57,6 +61,7 @@ void SoundScreen::Load() {
 
 
 		}
+	
 		auto bottomTiles = ls::findTiles(ls::BOTTOM);
 		for each (auto t in bottomTiles)
 		{
@@ -75,6 +80,7 @@ void SoundScreen::Load() {
 			t2->getSprite().setPosition(g);
 
 		}
+		
 		auto trackTiles = ls::findTiles(ls::TRACK);
 		for each (auto t in trackTiles)
 		{
@@ -91,6 +97,7 @@ void SoundScreen::Load() {
 			t2->getSprite().setPosition(g);
 
 		}
+	
 		////Get position of Corner tiles and set sprites to each postition
 		auto corner1Tiles = ls::findTiles(ls::CORNER1);
 		for each (auto t in corner1Tiles)
@@ -220,6 +227,9 @@ void SoundScreen::Load() {
 
 		}
 
+#pragma endregion
+
+	{
 		//creates entitys for splash and adds text components
 		txt = makeEntity();
 		auto title = txt->addComponent<TextComponent>("TD CHAMPIONSHIP RACER");
@@ -277,6 +287,9 @@ void SoundScreen::Update(const double & dt)
 
 	window.pollEvent(event);
 
+#pragma region MouseControls
+
+
 	//Handles this mouse hovering over the menu options
 	if (sf::Event::MouseMoved) {
 
@@ -317,6 +330,12 @@ void SoundScreen::Update(const double & dt)
 		}
 	}
 
+#pragma endregion
+
+
+#pragma region KeyboardControls
+
+
 	//Handles Keyboard input and checks against the Menu Options
 	if (sf::Event::KeyPressed) {
 
@@ -350,4 +369,7 @@ void SoundScreen::Update(const double & dt)
 			}
 		}
 	}
+
+#pragma endregion
+
 }

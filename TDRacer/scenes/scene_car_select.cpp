@@ -21,10 +21,13 @@ static std::shared_ptr<Entity> selectCarSound;
 
 void CarSelectScreen::Load()
 {
+#pragma region Background Setup
+
+
 
 
 	std::cout << "Menu Load \n";
-	{
+	
 		ls::loadLevelFile("res/opening.txt", 50.f);
 
 		//Get position of grass tiles and set sprites to each position
@@ -44,6 +47,7 @@ void CarSelectScreen::Load()
 			t3->getSprite().setPosition(g);
 
 		}
+	
 		auto peakTiles = ls::findTiles(ls::TOP);
 		for each (auto t in peakTiles)
 		{
@@ -61,6 +65,7 @@ void CarSelectScreen::Load()
 
 
 		}
+	
 		auto bottomTiles = ls::findTiles(ls::BOTTOM);
 		for each (auto t in bottomTiles)
 		{
@@ -79,6 +84,7 @@ void CarSelectScreen::Load()
 			t2->getSprite().setPosition(g);
 
 		}
+	
 		auto trackTiles = ls::findTiles(ls::TRACK);
 		for each (auto t in trackTiles)
 		{
@@ -95,6 +101,7 @@ void CarSelectScreen::Load()
 			t2->getSprite().setPosition(g);
 
 		}
+	
 		//Get position of RightTrack tiles and set sprites to each postition
 		auto rightTiles = ls::findTiles(ls::RIGHT);
 		for each (auto t in rightTiles)
@@ -224,6 +231,14 @@ void CarSelectScreen::Load()
 
 		}
 
+#pragma endregion
+	
+	{
+
+#pragma region DisplayCars
+
+		
+
 		/*********CAR ONE****************************/
 		auto car1Ent = makeEntity();
 		auto c1Sprite = car1Ent->addComponent<SpriteComponent>();
@@ -251,6 +266,8 @@ void CarSelectScreen::Load()
 
 		c4Sprite->getSprite().setTexture(*Resources::get<Texture>("Mini_truck.png"));
 		c4Sprite->getSprite().setPosition(Engine::getWindowSize().x / 1.7, 300);
+
+#pragma endregion
 
 
 		/***********************TEXT*****************************************/
@@ -317,6 +334,9 @@ void CarSelectScreen::Update(const double & dt)
 
 	window.pollEvent(event);
 
+#pragma region MouseControls
+
+
 	//Handles this mouse hovering over the menu options
 	if (sf::Event::MouseMoved) {
 
@@ -379,6 +399,11 @@ void CarSelectScreen::Update(const double & dt)
 		}
 	}
 
+#pragma endregion
+
+#pragma region KeyboardControls
+
+
 	//Handles Keyboard input and checks against the Menu Options
 	if (sf::Event::KeyPressed) {
 
@@ -418,4 +443,7 @@ void CarSelectScreen::Update(const double & dt)
 			}
 		}
 	}
+
+#pragma endregion
+
 }

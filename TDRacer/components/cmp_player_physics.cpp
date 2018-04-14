@@ -5,48 +5,49 @@
 #include <SFML/Window/Keyboard.hpp>
 #include "system_resources.h"
 #include "engine.h"
+#include "../components/cmp_player_controls.h"
 
 using namespace std;
 using namespace sf;
 using namespace Physics;
 
-std::map<std::string, MyKeys> Keys;
-MyKeys key;
+//std::map<std::string, MyKeys> Keys;
+//MyKeys key;
 
-int count1 = 0;
+//int count1 = 0;
 
-void PlayerPhysicsComponent::DefineControls() {
+/*void PlayerPhysicsComponent::DefineControls()*/// {
 
 	// bind forward key
-	key.myInputType = KeyboardInput;
-	key.myEventType = sf::Event::KeyPressed;
-	key.myKeyCode = sf::Keyboard::Up;
-	Keys["Forward"] = key;
+	//key.myInputType = KeyboardInput;
+	//key.myEventType = sf::Event::KeyPressed;
+	//key.myKeyCode = sf::Keyboard::Up;
+	//Keys["Forward"] = key;
 
-	// bind back key
-	key.myInputType = KeyboardInput;
-	key.myEventType = sf::Event::KeyPressed;
-	key.myKeyCode = sf::Keyboard::Down;
-	Keys["Back"] = key;
+	//// bind back key
+	//key.myInputType = KeyboardInput;
+	//key.myEventType = sf::Event::KeyPressed;
+	//key.myKeyCode = sf::Keyboard::Down;
+	//Keys["Back"] = key;
 
-	// bind left key
-	key.myInputType = KeyboardInput;
-	key.myEventType = sf::Event::KeyPressed;
-	key.myKeyCode = sf::Keyboard::Left;
-	Keys["Left"] = key;
+	//// bind left key
+	//key.myInputType = KeyboardInput;
+	//key.myEventType = sf::Event::KeyPressed;
+	//key.myKeyCode = sf::Keyboard::Left;
+	//Keys["Left"] = key;
 
-	// bind right key
-	key.myInputType = KeyboardInput;
-	key.myEventType = sf::Event::KeyPressed;
-	key.myKeyCode = sf::Keyboard::Right;
-	Keys["Right"] = key;
+	//// bind right key
+	//key.myInputType = KeyboardInput;
+	//key.myEventType = sf::Event::KeyPressed;
+	//key.myKeyCode = sf::Keyboard::Right;
+	//Keys["Right"] = key;
 
-	// bind handbrake key
-	key.myInputType = KeyboardInput;
-	key.myEventType = sf::Event::KeyPressed;
-	key.myKeyCode = sf::Keyboard::Space;
-	Keys["Handbrake"] = key;
-}
+	//// bind handbrake key
+	//key.myInputType = KeyboardInput;
+	//key.myEventType = sf::Event::KeyPressed;
+	//key.myKeyCode = sf::Keyboard::Space;
+	//Keys["Handbrake"] = key;
+//}
 
 void PlayerPhysicsComponent::Forward() {
 
@@ -84,34 +85,34 @@ void PlayerPhysicsComponent::Back() {
 }
 
 
-bool PlayerPhysicsComponent::KeyEvent(MyKeys k, sf::Event e)
-{
-	// Mouse event
-	if (k.myInputType == MouseInput &&
-		k.myEventType == e.type &&
-		k.myMouseButton == e.mouseButton.button)
-	{
-		return (true);
-	}
-	// Keyboard event
-	if (k.myInputType == KeyboardInput &&
-		k.myEventType == e.type &&
-		k.myKeyCode == e.key.code)
-	{
-		return (true);
-	}
-	return (false);
-}
+//bool PlayerPhysicsComponent::KeyEvent(MyKeys k, sf::Event e)
+//{
+//	// Mouse event
+//	if (k.myInputType == MouseInput &&
+//		k.myEventType == e.type &&
+//		k.myMouseButton == e.mouseButton.button)
+//	{
+//		return (true);
+//	}
+//	// Keyboard event
+//	if (k.myInputType == KeyboardInput &&
+//		k.myEventType == e.type &&
+//		k.myKeyCode == e.key.code)
+//	{
+//		return (true);
+//	}
+//	return (false);
+//}
 
 
 void PlayerPhysicsComponent::update(double dt) {
 
 	//stops keys being redefined when update called 
-	if (count1 == 1)
+	/*if (count1 == 1)
 	{
 		DefineControls();
 		count1++;
-	}
+	}*/
 
 	const auto pos = _parent->getPosition();
 	/*const auto snd = _parent->GetCompatibleComponent<SoundComponent>()[0];*/
@@ -120,12 +121,15 @@ void PlayerPhysicsComponent::update(double dt) {
 
 	auto test = Engine::GetEvent();
 	
+	/*auto t = _parent->GetCompatibleComponent<PlayerControls>()[0];
+	t->ChangeControls("Forward", test);*/
+
 	//if (test.type == Event::KeyPressed) {
 	//	//cout << "Event Type: " << to_string(test.type) << endl;
 	//	cout << "Before: " << Keys["Forward"].myKeyCode << endl;
 	//	
 	//	auto a = test.key.code;
-		Keys["Forward"].myKeyCode = Keyboard::W;
+		//Keys["Forward"].myKeyCode = Keyboard::W;
 		//Keys["Forward"].myKeyCode = a;
 
 		//std::this_thread::sleep_for(std::chrono::milliseconds(300));
@@ -135,14 +139,14 @@ void PlayerPhysicsComponent::update(double dt) {
 	//};
 
 	/*cout << a << endl;*/
-	
-	if (sf::Keyboard::isKeyPressed(Keys["Forward"].myKeyCode)) {
-		cout << test.key.code << endl;
-		Forward();
-	}
-	else {
-		dampen({ 0.015f, 0.015f });
-	}
+	//
+	//if (sf::Keyboard::isKeyPressed(Keys["Forward"].myKeyCode)) {
+	//	cout << test.key.code << endl;
+	//	Forward();
+	//}
+	//else {
+	//	dampen({ 0.015f, 0.015f });
+	//}
 
 	//if (test.key.code == Keys["Forward"].myKeyCode)
 	//{
@@ -251,10 +255,10 @@ void PlayerPhysicsComponent::update(double dt) {
 
 
 	//Respawn
-	if (Keyboard::isKeyPressed(Keyboard::R)) {
-		teleport(ls::getTilePosition(ls::findTiles(ls::START)[0]));
+	//if (Keyboard::isKeyPressed(Keyboard::R)) {
+	//	teleport(ls::getTilePosition(ls::findTiles(ls::START)[0]));
 
-	}
+	//}
 
 	//Old Impulse
 	//		//impulse({0, -(float)(dt * _groundspeed) });

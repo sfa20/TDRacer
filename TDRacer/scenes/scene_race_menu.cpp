@@ -24,8 +24,12 @@ static shared_ptr<Entity> raceMenuSound;
 
 void RaceMenuScreen::Load()
 {
+
+#pragma region Background Setup
+
+
 	std::cout << "Menu Load \n";
-	{
+	
 		ls::loadLevelFile("res/menu.txt", 50.f);
 
 		//Get position of grass tiles and set sprites to each position
@@ -229,7 +233,9 @@ void RaceMenuScreen::Load()
 			t2->getSprite().setPosition(g);
 
 		}
+#pragma endregion
 
+	{
 		raceMenu = makeEntity();
 		auto c1 = raceMenu->addComponent<TextComponent>("TD CHAMPIONSHIP RACER");
 		auto c2 = raceMenu->addComponent<TextComponent>("HEAD 2 HEAD");
@@ -291,6 +297,8 @@ void RaceMenuScreen::Update(const double& dt) {
 
 	newWindow.pollEvent(newEvent);
 
+#pragma region MouseControls
+
 	//Handles this mouse hovering over the menu options
 	if (sf::Event::MouseMoved) {
 
@@ -311,66 +319,76 @@ void RaceMenuScreen::Update(const double& dt) {
 			selectedItemIndex = 3;
 			txt_cmp[selectedItemIndex]->setColor(255, 0, 0, 255);
 		}
+	}
 
 
-		//Handles the Button controls against the menu options
-		if (Mouse::isButtonPressed(Mouse::Left)) {
+	//Handles the Button controls against the menu options
+	if (Mouse::isButtonPressed(Mouse::Left)) {
 
-			if (txt_cmp[1]->GetText().getGlobalBounds().contains(mousePosF)) {
-				cout << "HEAD 2 HEAD Pressed!" << endl;
-				sound_cmp[0]->getSound().play();
-				selectedItemIndex = 1;
-				std::this_thread::sleep_for(std::chrono::milliseconds(150));
-				Engine::ChangeScene(&trackSelectScreen);
-			}
-			if (txt_cmp[2]->GetText().getGlobalBounds().contains(mousePosF)) {
-				cout << "TIME TRIALS Pressed!" << endl;
-				sound_cmp[0]->getSound().play();
-				selectedItemIndex = 2;
-				std::this_thread::sleep_for(std::chrono::milliseconds(150));
-				Engine::ChangeScene(&trackSelectScreen);
-			}
-			if (txt_cmp[3]->GetText().getGlobalBounds().contains(mousePosF)) {
-				cout << "LEADERBOARD Pressed!" << endl;
-				sound_cmp[0]->getSound().play();
-				selectedItemIndex = 3;
-				std::this_thread::sleep_for(std::chrono::milliseconds(150));
-			}
+		if (txt_cmp[1]->GetText().getGlobalBounds().contains(mousePosF)) {
+			cout << "HEAD 2 HEAD Pressed!" << endl;
+			sound_cmp[0]->getSound().play();
+			selectedItemIndex = 1;
+			std::this_thread::sleep_for(std::chrono::milliseconds(150));
+			Engine::ChangeScene(&trackSelectScreen);
 		}
-		////Handles Keyboard input and checks against the Menu Options
-		if (sf::Event::KeyPressed) {
+		if (txt_cmp[2]->GetText().getGlobalBounds().contains(mousePosF)) {
+			cout << "TIME TRIALS Pressed!" << endl;
+			sound_cmp[0]->getSound().play();
+			selectedItemIndex = 2;
+			std::this_thread::sleep_for(std::chrono::milliseconds(150));
+			Engine::ChangeScene(&trackSelectScreen);
+		}
+		if (txt_cmp[3]->GetText().getGlobalBounds().contains(mousePosF)) {
+			cout << "LEADERBOARD Pressed!" << endl;
+			sound_cmp[0]->getSound().play();
+			selectedItemIndex = 3;
+			std::this_thread::sleep_for(std::chrono::milliseconds(150));
+		}
+	}
 
-			if (sf::Keyboard::isKeyPressed(Keyboard::Up)) {
-				if (GetPressedItem() != 0)
-					MoveUp();
-			}
-			if (sf::Keyboard::isKeyPressed(Keyboard::Down)) {
-				if (GetPressedItem() != 3)
-					MoveDown();
-			}
-			if (sf::Keyboard::isKeyPressed(Keyboard::Return)) {
-				switch (GetPressedItem()) {
+#pragma endregion
 
-				case 1:
-					std::cout << "HEAD 2 HEAD button has been pressed" << std::endl;
-					sound_cmp[0]->getSound().play();
-					std::this_thread::sleep_for(std::chrono::milliseconds(150));
-					Engine::ChangeScene(&trackSelectScreen);
-					break;
-				case 2:
-					std::cout << "TIME TRIALS button has been pressed" << std::endl;
-					sound_cmp[0]->getSound().play();
-					std::this_thread::sleep_for(std::chrono::milliseconds(150));
-					Engine::ChangeScene(&trackSelectScreen);
-					break;
-				case 3:
-					std::cout << "LEADERBOARD  button has been pressed" << std::endl;
-					sound_cmp[0]->getSound().play();
-					std::this_thread::sleep_for(std::chrono::milliseconds(150));
-					break;
-				}
+	
+#pragma region KeyboardControls
+
+
+	////Handles Keyboard input and checks against the Menu Options
+	if (sf::Event::KeyPressed) {
+
+		if (sf::Keyboard::isKeyPressed(Keyboard::Up)) {
+			if (GetPressedItem() != 0)
+				MoveUp();
+		}
+		if (sf::Keyboard::isKeyPressed(Keyboard::Down)) {
+			if (GetPressedItem() != 3)
+				MoveDown();
+		}
+		if (sf::Keyboard::isKeyPressed(Keyboard::Return)) {
+			switch (GetPressedItem()) {
+
+			case 1:
+				std::cout << "HEAD 2 HEAD button has been pressed" << std::endl;
+				sound_cmp[0]->getSound().play();
+				std::this_thread::sleep_for(std::chrono::milliseconds(150));
+				Engine::ChangeScene(&trackSelectScreen);
+				break;
+			case 2:
+				std::cout << "TIME TRIALS button has been pressed" << std::endl;
+				sound_cmp[0]->getSound().play();
+				std::this_thread::sleep_for(std::chrono::milliseconds(150));
+				Engine::ChangeScene(&trackSelectScreen);
+				break;
+			case 3:
+				std::cout << "LEADERBOARD  button has been pressed" << std::endl;
+				sound_cmp[0]->getSound().play();
+				std::this_thread::sleep_for(std::chrono::milliseconds(150));
+				break;
 			}
 		}
 	}
+	
+#pragma endregion
+
 }
 

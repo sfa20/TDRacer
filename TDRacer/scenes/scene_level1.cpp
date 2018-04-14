@@ -16,6 +16,8 @@
 #include "../components/cmp_timer.h"
 #include "../components/cmp_lap_timer.h"
 #include "../components/cmp_car_body.h"
+#include "../components/cmp_player_controls.h"
+
 
 using namespace std;
 using namespace sf;
@@ -99,6 +101,9 @@ void Level1Scene::Load() {
 	auto p = player->addComponent<PlayerPhysicsComponent>(Vector2f(27.9f, 18.f));
 	//p->setMass(10);
 
+	////Testing Controls component
+	auto c1 = player->addComponent<PlayerControls>();
+
 	//auto sp = player->addComponent<SoundComponent>();
 	//sp->getSound().setBuffer(*Resources::get<SoundBuffer>("AudiAcc.wav"));
 
@@ -155,6 +160,10 @@ void Level1Scene::Update(const double& dt) {
 
 
 #pragma region CheckRaceStatus
+	auto test = Engine::GetEvent();
+
+	auto t = player->GetCompatibleComponent<PlayerControls>()[0];
+	t->ChangeControls("Forward", test);
 
 	//Player crossing finish triggers new laptime and increments lap counter
 

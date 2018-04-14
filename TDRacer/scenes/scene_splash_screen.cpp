@@ -28,6 +28,9 @@ void SplashScreen::Load() {
 	openingSound->getSound().setBuffer(*Resources::get<SoundBuffer>("opening.wav"));
 	openingSound->getSound().play();
 
+#pragma region MapSetup
+
+
 	//Get position of grass tiles and set sprites to each position
 	auto grassTiles = ls::findTiles(ls::GRASS);
 	for each (auto t in grassTiles)
@@ -190,6 +193,7 @@ void SplashScreen::Load() {
 
 	}
 
+#pragma endregion
 
 	std::cout << "Menu Load \n";
 	{
@@ -218,6 +222,7 @@ void SplashScreen::Load() {
 		start->setCenterPos(Engine::getWindowSize().x / 2.f, 600.f, 50);
 
 	}
+	
 	setLoaded(true);
 }
 

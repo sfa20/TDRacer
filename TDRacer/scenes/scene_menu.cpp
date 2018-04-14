@@ -28,6 +28,9 @@ void MenuScreen::Load() {
 
 	ls::loadLevelFile("res/menu.txt", 50.f);
 
+#pragma region Background Setup
+
+
 	//Get position of grass tiles and set sprites to each position
 	auto grassTiles = ls::findTiles(ls::GRASS);
 	for each (auto t in grassTiles)
@@ -45,6 +48,7 @@ void MenuScreen::Load() {
 		t3->getSprite().setPosition(g);
 
 	}
+	
 	auto peakTiles = ls::findTiles(ls::TOP);
 	for each (auto t in peakTiles)
 	{
@@ -62,6 +66,7 @@ void MenuScreen::Load() {
 
 
 	}
+	
 	auto bottomTiles = ls::findTiles(ls::BOTTOM);
 	for each (auto t in bottomTiles)
 	{
@@ -80,6 +85,7 @@ void MenuScreen::Load() {
 		t2->getSprite().setPosition(g);
 
 	}
+	
 	auto trackTiles = ls::findTiles(ls::TRACK);
 	for each (auto t in trackTiles)
 	{
@@ -96,6 +102,7 @@ void MenuScreen::Load() {
 		t2->getSprite().setPosition(g);
 
 	}
+	
 	////Get position of Corner tiles and set sprites to each postition
 	auto corner1Tiles = ls::findTiles(ls::CORNER1);
 	for each (auto t in corner1Tiles)
@@ -225,7 +232,12 @@ void MenuScreen::Load() {
 
 	}
 
-	cout << "Menu Load \n"; {
+#pragma endregion
+
+
+
+	cout << "Menu Load \n"; 
+	{
 
 		//entitys are created in layer order
 		//cretes entity for background image
@@ -297,6 +309,9 @@ void MenuScreen::Update(const double& dt) {
 
 	window.pollEvent(event);
 
+#pragma region MouseControls
+
+
 	//Handles this mouse hovering over the menu options
 	if (sf::Event::MouseMoved) {
 
@@ -356,6 +371,12 @@ void MenuScreen::Update(const double& dt) {
 		}
 	}
 
+
+#pragma endregion
+
+#pragma region KeyboardControls
+
+
 	////Handles Keyboard input and checks against the Menu Options
 	if (sf::Event::KeyPressed) {
 
@@ -396,6 +417,9 @@ void MenuScreen::Update(const double& dt) {
 			}
 		}
 	}
+
+#pragma endregion
+
 }
 
 

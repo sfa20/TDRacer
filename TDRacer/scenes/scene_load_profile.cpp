@@ -15,10 +15,13 @@ using namespace Resources;
 
 static std::shared_ptr<Entity> txt;
 
-void LoadProfileScreen::Load()
-{
+void LoadProfileScreen::Load() {
+
+#pragma region Background Setup
+
+
 	std::cout << "Menu Load \n";
-	{
+	
 		ls::loadLevelFile("res/menu.txt", 50.f);
 
 		//Get position of grass tiles and set sprites to each position
@@ -38,6 +41,7 @@ void LoadProfileScreen::Load()
 			t3->getSprite().setPosition(g);
 
 		}
+		
 		auto peakTiles = ls::findTiles(ls::TOP);
 		for each (auto t in peakTiles)
 		{
@@ -55,6 +59,7 @@ void LoadProfileScreen::Load()
 
 
 		}
+		
 		auto bottomTiles = ls::findTiles(ls::BOTTOM);
 		for each (auto t in bottomTiles)
 		{
@@ -73,6 +78,7 @@ void LoadProfileScreen::Load()
 			t2->getSprite().setPosition(g);
 
 		}
+		
 		auto trackTiles = ls::findTiles(ls::TRACK);
 		for each (auto t in trackTiles)
 		{
@@ -89,6 +95,7 @@ void LoadProfileScreen::Load()
 			t2->getSprite().setPosition(g);
 
 		}
+		
 		////Get position of Corner tiles and set sprites to each postition
 		auto corner1Tiles = ls::findTiles(ls::CORNER1);
 		for each (auto t in corner1Tiles)
@@ -310,6 +317,9 @@ void LoadProfileScreen::Load()
 
 		}
 
+#pragma endregion
+	
+	{
 		txt = makeEntity();
 		auto title = txt->addComponent<TextComponent>("TD CHAMPIONSHIP RACER");
 		auto start = txt->addComponent<TextComponent>("LOAD PROFILE COMING SOON");
