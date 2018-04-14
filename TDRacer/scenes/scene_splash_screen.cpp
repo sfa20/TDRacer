@@ -230,7 +230,7 @@ void SplashScreen::Update(const double & dt)
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) || sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 		std::this_thread::sleep_for(std::chrono::milliseconds(500));
-		Engine::ChangeScene(&menuScreen);
+		Engine::ChangeScene(&loadScreen);
 	}
 
 	Scene::Update(dt);

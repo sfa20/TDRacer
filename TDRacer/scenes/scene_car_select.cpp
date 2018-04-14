@@ -424,26 +424,48 @@ void CarSelectScreen::Update(const double & dt)
 				cout << "Car 1 Selected!" << endl;
 				sound_cmp[0]->getSound().play();
 				std::this_thread::sleep_for(std::chrono::milliseconds(150));
+				PlayGame();
 				break;
 			case 2:
 				cout << "Car 2 Selected!" << endl;
 				sound_cmp[0]->getSound().play();
 				std::this_thread::sleep_for(std::chrono::milliseconds(150));
+				PlayGame();
 				break;
 			case 3:
 				cout << "Car 3 Selected!" << endl;
 				sound_cmp[0]->getSound().play();
 				std::this_thread::sleep_for(std::chrono::milliseconds(150));
+				PlayGame();
 				break;
 			case 4:
 				cout << "Car 4 Selected!" << endl;
 				sound_cmp[0]->getSound().play();
 				std::this_thread::sleep_for(std::chrono::milliseconds(150));
+				PlayGame();
 				break;
 			}
 		}
 	}
 
 #pragma endregion
+
+}
+
+void CarSelectScreen::PlayGame() {
+	switch (trackSelection)
+	{
+	case 1:
+		Engine::ChangeScene(&level1);
+		break;
+	case 2:
+		Engine::ChangeScene(&level2);
+		break;
+	case 3:
+		Engine::ChangeScene(&level3);
+		break;
+	default:
+		break;
+	}//End of inner switch
 
 }

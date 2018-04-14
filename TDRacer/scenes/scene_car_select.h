@@ -13,6 +13,7 @@ public:
 	void MoveDown();  // added - sfa20
 	void Update(const double& dt) override;
 
+	void PlayGame();
 private:
 	int selectedItemIndex;
 };

@@ -15,9 +15,10 @@ using namespace std;
 using namespace sf;
 using namespace Resources;
 
+int trackSelection = 0;
+
 static std::shared_ptr<Entity> txt;
 static std::shared_ptr<Entity> selectTrackSound;
-
 
 void TrackSelectScreen::Load() {
 
@@ -408,16 +409,22 @@ void TrackSelectScreen::Update(const double & dt)
 				std::cout << "Track 1 button has been pressed" << std::endl;
 				std::this_thread::sleep_for(std::chrono::milliseconds(150));
 				sound_cmp[0]->getSound().play();
+				trackSelection = 1;
+				Engine::ChangeScene(&carSelectScreen);
 				break;
 			case 2:
 				std::cout << "Track 2 Options button has been pressed" << std::endl;
 				std::this_thread::sleep_for(std::chrono::milliseconds(150));
 				sound_cmp[0]->getSound().play();
+				trackSelection = 2;
+				Engine::ChangeScene(&carSelectScreen);
 				break;
 			case 3:
 				std::cout << "Track 3 button has been pressed" << std::endl;
 				sound_cmp[0]->getSound().play();
 				std::this_thread::sleep_for(std::chrono::milliseconds(150));
+				trackSelection = 3;
+				Engine::ChangeScene(&carSelectScreen);
 				break;
 			}
 		}

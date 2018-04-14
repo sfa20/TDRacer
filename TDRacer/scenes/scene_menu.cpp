@@ -397,7 +397,7 @@ void MenuScreen::Update(const double& dt) {
 				std::cout << "Play game button has been pressed" << std::endl;
 				sound_cmp[0]->getSound().play();
 				std::this_thread::sleep_for(std::chrono::milliseconds(150));
-				Engine::ChangeScene(&loadScreen);
+				Engine::ChangeScene(&raceMenuScreen);
 				break;
 			case 2:
 				std::cout << "Options button has been pressed" << std::endl;

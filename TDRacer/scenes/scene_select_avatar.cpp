@@ -413,23 +413,25 @@ void AvatarScreen::Update(const double & dt)
 				std::cout << "Ninja selected" << std::endl;
 				sound_cmp[0]->getSound().play();
 				std::this_thread::sleep_for(std::chrono::milliseconds(150));
-				Engine::ChangeScene(&loadScreen);
+				Engine::ChangeScene(&menuScreen);
 				break;
 			case 2:
 				std::cout << "Guy Selected" << std::endl;
 				sound_cmp[0]->getSound().play();
 				std::this_thread::sleep_for(std::chrono::milliseconds(150));
-				Engine::ChangeScene(&optionScreen);
+				Engine::ChangeScene(&menuScreen);
 				break;
 			case 3:
 				std::cout << "Clown Selected" << std::endl;
 				sound_cmp[0]->getSound().play();
 				std::this_thread::sleep_for(std::chrono::milliseconds(150));
+				Engine::ChangeScene(&menuScreen);
 				break;
 			case 4:
 				cout << "Vamp Selected!" << endl;
 				sound_cmp[0]->getSound().play();
 				std::this_thread::sleep_for(std::chrono::milliseconds(150));
+				Engine::ChangeScene(&menuScreen);
 				break;
 			}
 		}
