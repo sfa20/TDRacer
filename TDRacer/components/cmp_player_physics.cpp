@@ -48,6 +48,13 @@ void PlayerPhysicsComponent::DefineControls() {
 
 void PlayerPhysicsComponent::Forward() {
 
+
+//Keys["Back"].myKeyCode = sf::Keyboard::Space;
+	/*if (Keyboard::isKeyPressed(Keyboard::Key::k)) {
+		Keys["Forward"] = 
+	}*/
+	
+
 	auto checkGrass = ls::getTileAt(_parent->GetCompatibleComponent<SpriteComponent>()[0]->getSprite().getPosition() + Vector2f(0, 1));
 	auto worldVector = _body->GetWorldVector(b2Vec2(0, 1));
 
@@ -74,6 +81,7 @@ void PlayerPhysicsComponent::Back() {
 	}
 }
 
+
 bool PlayerPhysicsComponent::KeyEvent(MyKeys k, sf::Event e)
 {
 	// Mouse event
@@ -98,11 +106,23 @@ void PlayerPhysicsComponent::update(double dt) {
 
 	DefineControls();
 	const auto pos = _parent->getPosition();
-	const auto snd = _parent->GetCompatibleComponent<SoundComponent>()[0];
+	/*const auto snd = _parent->GetCompatibleComponent<SoundComponent>()[0];*/
 
+	
 	auto test = Engine::GetEvent();
+	cout << "Before: " << Keys["Forward"].myKeyCode << endl;
 
-	cout << test.KeyReleased << "banger" << endl;
+	if (test.type == Event::KeyReleased) {
+		//cout << "Event Type: " << to_string(test.type) << endl;
+
+		auto a = test.key.code;
+		Keys["Forward"].myKeyCode = a;
+
+		cout << "After" << Keys["Forward"].myKeyCode << endl;
+	};
+
+	/*cout << a << endl;*/
+	
 
 	if (KeyEvent(Keys["Forward"], test))
 	{

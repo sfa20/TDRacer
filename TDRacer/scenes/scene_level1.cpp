@@ -99,8 +99,8 @@ void Level1Scene::Load() {
 	auto p = player->addComponent<PlayerPhysicsComponent>(Vector2f(27.9f, 18.f));
 	//p->setMass(10);
 
-	auto sp = player->addComponent<SoundComponent>();
-	sp->getSound().setBuffer(*Resources::get<SoundBuffer>("AudiAcc.wav"));
+	//auto sp = player->addComponent<SoundComponent>();
+	//sp->getSound().setBuffer(*Resources::get<SoundBuffer>("AudiAcc.wav"));
 
 	//Find the starting position 
 	auto l = ls::findTiles(ls::START);
