@@ -13,6 +13,8 @@ using namespace Physics;
 std::map<std::string, MyKeys> Keys;
 MyKeys key;
 
+int count1 = 0;
+
 void PlayerPhysicsComponent::DefineControls() {
 
 	// bind forward key
@@ -49,11 +51,11 @@ void PlayerPhysicsComponent::DefineControls() {
 void PlayerPhysicsComponent::Forward() {
 
 
-//Keys["Back"].myKeyCode = sf::Keyboard::Space;
-	/*if (Keyboard::isKeyPressed(Keyboard::Key::k)) {
-		Keys["Forward"] = 
-	}*/
-	
+	//Keys["Back"].myKeyCode = sf::Keyboard::Space;
+		/*if (Keyboard::isKeyPressed(Keyboard::Key::k)) {
+			Keys["Forward"] =
+		}*/
+
 
 	auto checkGrass = ls::getTileAt(_parent->GetCompatibleComponent<SpriteComponent>()[0]->getSprite().getPosition() + Vector2f(0, 1));
 	auto worldVector = _body->GetWorldVector(b2Vec2(0, 1));
@@ -104,11 +106,17 @@ bool PlayerPhysicsComponent::KeyEvent(MyKeys k, sf::Event e)
 
 void PlayerPhysicsComponent::update(double dt) {
 
-	DefineControls();
+	//stops keys being redefined when update called 
+	if (count1 == 1)
+	{
+		DefineControls();
+		count1++;
+	}
+
 	const auto pos = _parent->getPosition();
 	/*const auto snd = _parent->GetCompatibleComponent<SoundComponent>()[0];*/
 
-	
+
 	auto test = Engine::GetEvent();
 	cout << "Before: " << Keys["Forward"].myKeyCode << endl;
 
@@ -122,17 +130,24 @@ void PlayerPhysicsComponent::update(double dt) {
 	};
 
 	/*cout << a << endl;*/
-	
 
-	if (KeyEvent(Keys["Forward"], test))
+	if (test.key.code == Keys["Forward"].myKeyCode)
 	{
 		// You can use a function
 		Forward();
+		cout << "we are in " << Keys["Forward"].myKeyCode << endl;
 	}
-	if (KeyEvent(Keys["Back"], test))
-	{
-		Back();
-	}
+
+	//if (KeyEvent(Keys["Forward"], test))
+	//{
+	//	// You can use a function
+	//	Forward();
+	//	cout << "we are in " << Keys["Forward"].myKeyCode << endl;
+	//}
+	//if (KeyEvent(Keys["Back"], test))
+	//{
+	//	Back();
+	//}
 
 
 	//
