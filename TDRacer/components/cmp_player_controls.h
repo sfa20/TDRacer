@@ -36,7 +36,13 @@ public:
 	void Left();
 	void Right();
 	void Handbrake();
-	
+
+	std::string getAccelerateControl();
+	std::string getReverseControl();
+	std::string getHandBrakeControl();
+	std::string getTurnRightControl();
+	std::string getTurnLeftControl();
+
 	~PlayerControls();
 };
 

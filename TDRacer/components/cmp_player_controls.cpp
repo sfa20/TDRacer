@@ -1,3 +1,4 @@
+#pragma once
 #include "cmp_physics.h"
 #include "cmp_sound.h"
 #include "system_physics.h"
@@ -22,13 +23,13 @@ void PlayerControls::DefineControls() {
 	key.myInputType = KeyboardInput;
 	key.myEventType = sf::Event::KeyPressed;
 	key.myKeyCode = sf::Keyboard::Up;
-	Keys["Forward"] = key;
+	Keys["Accelerate"] = key;
 
 	// bind back key
 	key.myInputType = KeyboardInput;
 	key.myEventType = sf::Event::KeyPressed;
 	key.myKeyCode = sf::Keyboard::Down;
-	Keys["Back"] = key;
+	Keys["Reverse"] = key;
 
 	// bind left key
 	key.myInputType = KeyboardInput;
@@ -52,6 +53,8 @@ void PlayerControls::DefineControls() {
 
 PlayerControls::PlayerControls(Entity* p) : Component(p ) {
 	DefineControls();
+
+	
 }
 
 
@@ -290,6 +293,31 @@ void PlayerControls::update(double dt) {
 }
 
 void PlayerControls::render(){}
+
+
+std::string PlayerControls::getAccelerateControl() {
+	return to_string(Keys["Accelerate"].myKeyCode);
+}
+
+std::string PlayerControls::getReverseControl() {
+	return to_string(Keys["Reverse"].myKeyCode);
+}
+
+std::string PlayerControls::getHandBrakeControl() {
+	return to_string(Keys["Handbrake"].myKeyCode);
+}
+
+std::string PlayerControls::getTurnLeftControl() {
+	return to_string(Keys["Left"].myKeyCode);
+}
+
+std::string PlayerControls::getTurnRightControl(){
+	return to_string(Keys["Right"].myKeyCode);
+}
+
+
+
+
 
 PlayerControls::~PlayerControls() {
 

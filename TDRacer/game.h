@@ -46,3 +46,6 @@ extern int nWidth;
 extern sf::Vector2f scale;
 
 
+/****************Players****************************/
+
+extern std::shared_ptr<Entity> testPlayer;

@@ -6,6 +6,7 @@
 #include "../components/cmp_sound.h"
 #include "../components/cmp_text.h"
 #include "../components/cmp_sprite.h"
+#include "../components/cmp_player_controls.h"
 #include "../game.h"
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Window/Keyboard.hpp>
@@ -21,6 +22,7 @@ using namespace Resources;
 
 static shared_ptr<Entity> loadS;
 static shared_ptr<Entity> loadSound;
+shared_ptr<Entity> testPlayer;
 
 void LoadScreen::Load()
 {
@@ -478,6 +480,8 @@ void LoadScreen::Update(const double & dt)
 				std::cout << "New game has been pressed" << std::endl;
 				sound_cmp[0]->getSound().play();
 				std::this_thread::sleep_for(std::chrono::milliseconds(150));
+				testPlayer = makeEntity();
+				AddControls();
 				Engine::ChangeScene(&avatarScreen);
 				break;
 			case 2:
@@ -496,6 +500,9 @@ void LoadScreen::Update(const double & dt)
 
 }
 
+void LoadScreen::AddControls() {
+	auto c1 = testPlayer->addComponent<PlayerControls>();
+}
 
 
 

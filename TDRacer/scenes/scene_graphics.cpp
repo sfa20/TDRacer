@@ -56,10 +56,12 @@ void GraphicScreen::Load() {
 	}
 
 
-
-
 	std::cout << "Menu Load \n";
 	{
+
+#pragma region MyRegion
+
+
 		ls::loadLevelFile("res/menu.txt", 50.f);
 
 		//Get position of grass tiles and set sprites to each position
@@ -79,6 +81,7 @@ void GraphicScreen::Load() {
 			t3->getSprite().setPosition(g);
 
 		}
+		
 		auto peakTiles = ls::findTiles(ls::TOP);
 		for each (auto t in peakTiles)
 		{
@@ -96,6 +99,7 @@ void GraphicScreen::Load() {
 
 
 		}
+		
 		auto bottomTiles = ls::findTiles(ls::BOTTOM);
 		for each (auto t in bottomTiles)
 		{
@@ -114,6 +118,7 @@ void GraphicScreen::Load() {
 			t2->getSprite().setPosition(g);
 
 		}
+		
 		auto trackTiles = ls::findTiles(ls::TRACK);
 		for each (auto t in trackTiles)
 		{
@@ -130,6 +135,7 @@ void GraphicScreen::Load() {
 			t2->getSprite().setPosition(g);
 
 		}
+		
 		////Get position of Corner tiles and set sprites to each postition
 		auto corner1Tiles = ls::findTiles(ls::CORNER1);
 		for each (auto t in corner1Tiles)
@@ -222,6 +228,7 @@ void GraphicScreen::Load() {
 			t2->getSprite().setPosition(g);
 
 		}
+		
 		//Get position of RightTrack tiles and set sprites to each postition
 		auto rightTiles = ls::findTiles(ls::RIGHT);
 		for each (auto t in rightTiles)
@@ -258,6 +265,8 @@ void GraphicScreen::Load() {
 			t2->getSprite().setPosition(g);
 
 		}
+
+#pragma endregion
 
 		//converts current desktop mode to display in control3 
 		auto a = VideoMode::getDesktopMode().width;

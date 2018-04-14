@@ -9,8 +9,11 @@ private:
 	int selectedCar;
 	
 	std::string trackOne[5];
-	std::string trackOne[5];
-	std::string trackOne[5];
+	std::string trackTwo[5];
+	std::string trackThree[5];
+
+	sf::Sprite playerAvatar;
+
 
 public:
 	PlayerProfile(Entity* p);

@@ -6,6 +6,7 @@
 #include "../components/cmp_sound.h"
 #include "../components/cmp_text.h"
 #include "../components/cmp_sprite.h"
+#include "../components/cmp_player_controls.h"
 #include "../game.h"
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Window/Keyboard.hpp>
@@ -25,6 +26,9 @@ static shared_ptr<Entity> menuSound;
 
 
 void MenuScreen::Load() {
+
+	
+
 
 	ls::loadLevelFile("res/menu.txt", 50.f);
 
@@ -233,8 +237,6 @@ void MenuScreen::Load() {
 	}
 
 #pragma endregion
-
-
 
 	cout << "Menu Load \n"; 
 	{

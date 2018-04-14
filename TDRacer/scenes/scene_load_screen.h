@@ -12,6 +12,8 @@ public:
 	void MoveUp();
 	void MoveDown();
 	void Update(const double& dt) override;
+
+	void AddControls();
 private:
 	int selectedItemIndex;
 
