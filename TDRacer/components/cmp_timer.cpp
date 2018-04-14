@@ -84,7 +84,9 @@ std::string Timer::getTime() {
 	return "Timer: " + to_string(mins) + ":" + to_string(secs) + ":" + to_string(millisecs);
 }
 
-
+void Timer::setRunning(bool Running) {
+	running = Running;
+}
 
 
 #pragma endregion
@@ -93,21 +95,28 @@ std::string Timer::getTime() {
 
 #pragma region Update and Render
 
-void Timer::update(double dt) {
+void Timer::update(double dt) { 
+	updateClock(); 
 
-	if (timer.getElapsedTime().asMilliseconds() > 60000) {
-		mins += 1;
-		timer.restart();
+}
+
+
+void Timer::updateClock() {
+
+	if (this->getClock().getElapsedTime().asMilliseconds() > 60000) {
+
+		this->setMins(this->getMins() + 1);
+		this->reset();
 	}
 
-	secs = timer.getElapsedTime().asSeconds();
+	setSecs(this->getClock().getElapsedTime().asSeconds());
 
-	millisecs = timer.getElapsedTime().asMilliseconds();
+	setMillisecs(this->getClock().getElapsedTime().asMilliseconds());
 
-	if (millisecs > 1000)
-		millisecs = millisecs - secs * 1000;
+	if (getMillisecs() > 1000)
+		setMillisecs(getMillisecs() - getSecs() * 1000);
 	else
-		millisecs = timer.getElapsedTime().asMilliseconds();
+		setMillisecs(this->getClock().getElapsedTime().asMilliseconds());
 
 };
 

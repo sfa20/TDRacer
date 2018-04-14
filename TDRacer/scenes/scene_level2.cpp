@@ -21,7 +21,7 @@ using namespace sf;
 using namespace Resources;
 
 static shared_ptr<Entity> player;
-static shared_ptr<Entity> raceTimer;
+static shared_ptr<Entity> timers;
 static shared_ptr<Entity> WinnerMessage;
 int counter2 = 0;
 
@@ -65,12 +65,12 @@ void Level2Scene::Load() {
 	
 	#pragma region Setup Timer
 	
-		raceTimer = makeEntity();
-		auto c = raceTimer->addComponent<TextComponent>("Timer: ");
+		timers = makeEntity();
+		auto c = timers->addComponent<TextComponent>("Timer: ");
 		c->setCenterPos(Engine::getWindowSize().x - 400.f, 20.f, 40.f);
-		auto c2 = raceTimer->addComponent<Timer>();
+		auto c2 = timers->addComponent<Timer>();
 		c2->start();
-		auto c3 = raceTimer->addComponent<LapTimer>();
+		auto c3 = timers->addComponent<LapTimer>();
 		c3->start();
 	
 	#pragma endregion
@@ -106,7 +106,7 @@ void Level2Scene::Load() {
 #pragma region Testing
 
 
-		auto winnerText = raceTimer->addComponent<TextComponent>(" ");
+		auto winnerText = timers->addComponent<TextComponent>(" ");
 		winnerText->setCenterPos(Engine::getWindowSize().x / 2.f, Engine::getWindowSize().y / 2, 60.f);
 
 
@@ -131,16 +131,16 @@ void Level2Scene::Update(const double& dt) {
 #pragma region Handle RaceTimer
 
 	//Update the RaceTimer
-	raceTimer->update(dt);
+	timers->update(dt);
 
 	//Get the race timer
-	auto timer = raceTimer->GetCompatibleComponent<Timer>()[0];
+	auto timer = timers->GetCompatibleComponent<Timer>()[0];
 
 	//Get the current time
 	string time = timer->getTime();
 
 	//Get the text component and set this to the time string created above
-	auto textBox = raceTimer->GetCompatibleComponent<TextComponent>()[0];
+	auto textBox = timers->GetCompatibleComponent<TextComponent>()[0];
 	textBox->SetText(time);
 
 	//End of Race Timer
@@ -161,7 +161,7 @@ void Level2Scene::Update(const double& dt) {
 
 	//get the second race timer added to entity
 
-	auto lt = raceTimer->GetCompatibleComponent<LapTimer>()[0];
+	auto lt = timers->GetCompatibleComponent<LapTimer>()[0];
 
 	//New Lap Incrementor - will increment when player goes over the finsih
 	if (player->getPosition().y > s2.y - tileSize / 2 && player->getPosition().y < s3.y + tileSize / 2) {
@@ -196,7 +196,7 @@ void Level2Scene::Update(const double& dt) {
 	if (lt->getCurrentLap() == 3) {
 		cout << "Race Over" << endl;
 		player->setForDelete();
-		auto text = raceTimer->GetCompatibleComponent<TextComponent>()[1];
+		auto text = timers->GetCompatibleComponent<TextComponent>()[1];
 		text->SetText("WINNER!");
 
 		if (counter2 <= 10) {

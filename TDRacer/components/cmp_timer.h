@@ -22,7 +22,7 @@ public:
 	void stop();
 	void reset(); //true for race timer false for lap timer
 
-	void update(double dt) override;
+	void update(double dt);
 	void render() override;
 	
 	bool isRunning();
@@ -37,5 +37,8 @@ public:
 	void setMillisecs(int newMillisecs);
 
 	std::string getTime();
+	
+	void updateClock();
 
+	void setRunning(bool);
 };

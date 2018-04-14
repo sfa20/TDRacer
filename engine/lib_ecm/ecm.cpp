@@ -6,8 +6,9 @@ using namespace std;
 
 ////////		ENTITY CLASS		///////////////
 
+
 Entity::Entity(Scene* const s) : _position({ 0, 0 }), _rotation(0), _alive(true), _visible(true),
-scene(s), _fordeletion(false) {}
+scene(s), _fordeletion(false), isEnabled(false) {}
 
 void Entity::addTag(const std::string& t) { _tags.insert(t); }
 const std::set<std::string>& Entity::getTags() const { return _tags; }
@@ -82,6 +83,8 @@ Entity::~Entity() {
 
 	_components.clear();
 }
+
+
 
 
 ////////		COMPONENT CLASS			////////

@@ -9,108 +9,110 @@ using namespace Physics;
 
 void PlayerPhysicsComponent::update(double dt) {
 
-	const auto pos = _parent->getPosition();
-	//
-	//Teleport to start if we fall off map. 
-	if (pos.y > ls::getHeight() * ls::getTileSize() || pos.x > ls::getWidth() * ls::getTileSize() || pos.x < 0 || pos.y < 0) {
-		teleport(ls::getTilePosition(ls::findTiles(ls::START)[0]));
-	}
+	if (_parent->isEnabled) {
 
-	//This gets the world vector for moving the Entity
-	//Currently controlling the speed of the car - something needs done to control speed somehow
-	//gets the currend speed in forward direction
-	auto worldVector = _body->GetWorldVector(b2Vec2(0, 1));
-
-	//Handle keyboard input from user
-	if (Keyboard::isKeyPressed(Keyboard::W) || Keyboard::isKeyPressed(Keyboard::S)) {
-
-		auto checkGrass = ls::getTileAt(_parent->GetCompatibleComponent<SpriteComponent>()[0]->getSprite().getPosition() + Vector2f(0,1));
-		auto checkGrassReverse = ls::getTileAt(_parent->GetCompatibleComponent<SpriteComponent>()[0]->getSprite().getPosition() + Vector2f(0, -1));
-
-		
-		if (Keyboard::isKeyPressed(Keyboard::W)) {
-			/*if (getVelocity().x < _maxVelocity.x) {*/
-				//updateFriction();
-			if (checkGrass == 'g') {
-				dampen({ 0.5f, 0.5f });
-				impulse({ -worldVector.x , -worldVector.y});
-			}
-			else {
-				impulse({ -worldVector.x, -worldVector.y });
-			}
+		const auto pos = _parent->getPosition();
+		//
+		//Teleport to start if we fall off map. 
+		if (pos.y > ls::getHeight() * ls::getTileSize() || pos.x > ls::getWidth() * ls::getTileSize() || pos.x < 0 || pos.y < 0) {
+			teleport(ls::getTilePosition(ls::findTiles(ls::START)[0]));
 		}
-		else if (Keyboard::isKeyPressed(Keyboard::S)) {
-			//if (getVelocity().x < _maxVelocity.x) {
-				//updateFriction();
-			if (checkGrassReverse == 'g') {
-				dampen({ 0.5f, 0.5f });
-				impulse({ worldVector.x, worldVector.y });
-			}
-			else {
-				impulse({ worldVector.x, worldVector.y });
 
+		//This gets the world vector for moving the Entity
+		//Currently controlling the speed of the car - something needs done to control speed somehow
+		//gets the currend speed in forward direction
+		auto worldVector = _body->GetWorldVector(b2Vec2(0, 1));
+
+		//Handle keyboard input from user
+		if (Keyboard::isKeyPressed(Keyboard::W) || Keyboard::isKeyPressed(Keyboard::S)) {
+
+			auto checkGrass = ls::getTileAt(_parent->GetCompatibleComponent<SpriteComponent>()[0]->getSprite().getPosition() + Vector2f(0, 1));
+			auto checkGrassReverse = ls::getTileAt(_parent->GetCompatibleComponent<SpriteComponent>()[0]->getSprite().getPosition() + Vector2f(0, -1));
+
+
+			if (Keyboard::isKeyPressed(Keyboard::W)) {
+				/*if (getVelocity().x < _maxVelocity.x) {*/
+					//updateFriction();
+				if (checkGrass == 'g') {
+					dampen({ 0.5f, 0.5f });
+					impulse({ -worldVector.x , -worldVector.y });
+				}
+				else {
+					impulse({ -worldVector.x, -worldVector.y });
+				}
 			}
+			else if (Keyboard::isKeyPressed(Keyboard::S)) {
+				//if (getVelocity().x < _maxVelocity.x) {
+					//updateFriction();
+				if (checkGrassReverse == 'g') {
+					dampen({ 0.5f, 0.5f });
+					impulse({ worldVector.x, worldVector.y });
+				}
+				else {
+					impulse({ worldVector.x, worldVector.y });
+
+				}
 				//stopTurning();
 			//}
-			
+
+			}
 		}
-	}
-	else {
-		// Dampen X axis movement
-		dampen({ 0.015f, 0.015f });
-		stopTurning(); //Added
-	}
+		else {
+			// Dampen X axis movement
+			dampen({ 0.015f, 0.015f });
+			stopTurning(); //Added
+		}
 
-	//Turning
-	if (Keyboard::isKeyPressed(Keyboard::A) || Keyboard::isKeyPressed(Keyboard::D)) {
-	
-		if (Keyboard::isKeyPressed(Keyboard::D)) {
-			
-			turnRight();
-			dampen({ 0.05f, 0.05f });
-			//impulse({ -worldVector.x, -worldVector.y }); 
-			//updateFriction();
+		//Turning
+		if (Keyboard::isKeyPressed(Keyboard::A) || Keyboard::isKeyPressed(Keyboard::D)) {
+
+			if (Keyboard::isKeyPressed(Keyboard::D)) {
+
+				turnRight();
+				dampen({ 0.05f, 0.05f });
+				//impulse({ -worldVector.x, -worldVector.y }); 
+				//updateFriction();
+
+			}
+			else if (Keyboard::isKeyPressed(Keyboard::A)) {
+				//cout << getVelocity() << en5dl;
+				//impulse({ -worldVector.x, -worldVector.y });
+				turnLeft();
+				dampen({ 0.05f, 0.05f });
+
+				//updateFriction();
+
+			}
 
 		}
-		else if (Keyboard::isKeyPressed(Keyboard::A)) {
-			//cout << getVelocity() << en5dl;
-			//impulse({ -worldVector.x, -worldVector.y });
-			turnLeft();
-			dampen({ 0.05f, 0.05f });
+		else {
+			// Dampen X axis movement
+			dampen({ 0.015f, 0.015f });
+			stopTurning(); //Added
+		}
 
-			//updateFriction();
+
+		//Handbrake
+		if (Keyboard::isKeyPressed(Keyboard::Space)) {
+			updateFriction();
+		}
+
+
+		//Respawn
+		if (Keyboard::isKeyPressed(Keyboard::R)) {
+			teleport(ls::getTilePosition(ls::findTiles(ls::START)[0]));
 
 		}
-	
+
+		//Old Impulse
+		//		//impulse({0, -(float)(dt * _groundspeed) });
+
+		// Clamp velocity.
+		//auto v = getVelocity();
+		//v.x = copysign(min(abs(v.x), _maxVelocity.x), v.x);
+		//v.y = copysign(min(abs(v.y), _maxVelocity.y), v.y);
+		//setVelocity(v);
 	}
-	else {
-		// Dampen X axis movement
-		dampen({ 0.015f, 0.015f });
-		stopTurning(); //Added
-	}
-
-
-	//Handbrake
-	if (Keyboard::isKeyPressed(Keyboard::Space)) {
-		updateFriction();
-	}
-
-
-	//Respawn
-	if (Keyboard::isKeyPressed(Keyboard::R)) {
-		teleport(ls::getTilePosition(ls::findTiles(ls::START)[0]));
-
-	}
-
-	//Old Impulse
-	//		//impulse({0, -(float)(dt * _groundspeed) });
-	
-	// Clamp velocity.
-	//auto v = getVelocity();
-	//v.x = copysign(min(abs(v.x), _maxVelocity.x), v.x);
-	//v.y = copysign(min(abs(v.y), _maxVelocity.y), v.y);
-	//setVelocity(v);
-
 	PhysicsComponent::update(dt);
 }
 
