@@ -456,6 +456,17 @@ void Scene::MapSetup() {
 
 }
 
+
+void Scene::setSprite(std::string sprite) {
+	auto t = testPlayer->GetCompatibleComponent<SpriteComponent>()[1];
+
+	t->getSprite().setTexture(*Resources::get<Texture>(sprite));
+	t->getSprite().setScale(.45f, .45f);
+	t->getSprite().setColor(Color::Red);
+	t->getSprite().setOrigin(10, 0);
+}
+
+
 sf::Vector2u Engine::getWindowSize() { return _window->getSize(); }
 
 sf::RenderWindow& Engine::GetWindow() { return *_window; }

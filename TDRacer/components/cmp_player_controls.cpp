@@ -50,12 +50,15 @@ void PlayerControls::DefineControls() {
 	Keys["Handbrake"] = key;
 }
 
+sf::Keyboard::Key PlayerControls::getControl(std::string control) {
+	return Keys[control].myKeyCode;
+}
 
 PlayerControls::PlayerControls(Entity* p) : Component(p ) {
 	DefineControls();
 }
 
-
+//Not Used
 void PlayerControls::ChangeControls(std::string control, Event e) {
 	
 	//auto test = Engine::GetEvent();
@@ -310,6 +313,7 @@ void PlayerControls::update(double dt) {
 
 	//PhysicsComponent::update(dt);
 }
+
 
 void PlayerControls::render(){}
 

@@ -23,7 +23,7 @@ using namespace std;
 using namespace sf;
 using namespace Resources;
 
-static shared_ptr<Entity> player;
+//static shared_ptr<Entity> player;
 static shared_ptr<Entity> raceTimer;
 static shared_ptr<Entity> WinnerMessage;
 
@@ -84,25 +84,25 @@ void Level1Scene::Load() {
 #pragma region CreatePlayers
 
 	//Create an PlayerCar Entity, add component and set texture
-	player = makeEntity();
+	//player = makeEntity();  ////Run at new game menu option
 
 	//Adds a Sprite component
-	auto t = player->addComponent<SpriteComponent>(); //Add a sprite component
+	//auto t = testPlayer->addComponent<SpriteComponent>(); //Add a sprite component - Run when car selected
 
 	//t->getSprite().setTexture(*Resources::get<Texture>("Black_viper.png"));
 	//t->getSprite().setScale(.45f, .45f);
 
-	t->getSprite().setTexture(*Resources::get<Texture>("car_green_small_2.png"));
+	/*t->getSprite().setTexture(*Resources::get<Texture>("car_green_small_2.png")); Run when car selected
 	t->getSprite().setScale(.45f, .45f);
 	t->getSprite().setColor(Color::Red);
-	t->getSprite().setOrigin(10, 0);
+	t->getSprite().setOrigin(10, 0);*/
 
 	//Add a Player Physics Component
-	auto p = player->addComponent<PlayerPhysicsComponent>(Vector2f(27.9f, 18.f));
+	//auto p = player->addComponent<PlayerPhysicsComponent>(Vector2f(27.9f, 18.f));  Run when car selected
 	//p->setMass(10);
 
 	////Testing Controls component
-	auto c1 = player->addComponent<PlayerControls>();
+	//auto c1 = player->addComponent<PlayerControls>(); Run at new game menu option
 
 	//auto sp = player->addComponent<SoundComponent>();
 	//sp->getSound().setBuffer(*Resources::get<SoundBuffer>("AudiAcc.wav"));
@@ -112,16 +112,20 @@ void Level1Scene::Load() {
 	auto lv = ls::getTilePosition(l[0]);
 
 	//Set the players starting position
-	player->setPosition(Vector2f(lv));
+	testPlayer->setPosition(Vector2f(lv));
+
+	auto a = testPlayer->GetCompatibleComponent<SpriteComponent>()[0];
+	a->getSprite().setPosition(Vector2f(lv));
+
 
 #pragma endregion
 
 
 #pragma region Testing
 
-	auto winnerText = raceTimer->addComponent<TextComponent>(" ");
+	/*auto winnerText = raceTimer->addComponent<TextComponent>(" ");
 	winnerText->setCenterPos(Engine::getWindowSize().x / 2.f, Engine::getWindowSize().y / 2, 60.f);
-
+*/
 #pragma endregion
 
 	setLoaded(true);
@@ -130,7 +134,7 @@ void Level1Scene::Load() {
 
 void Level1Scene::UnLoad() {
 	cout << "Scene 1 Unload" << endl;
-	player.reset();
+	//player.reset();
 	ls::unload();
 	Scene::UnLoad();
 }
@@ -160,10 +164,10 @@ void Level1Scene::Update(const double& dt) {
 
 
 #pragma region CheckRaceStatus
-	auto test = Engine::GetEvent();
+	/*auto test = Engine::GetEvent();
 
 	auto t = player->GetCompatibleComponent<PlayerControls>()[0];
-	t->ChangeControls("Forward", test);
+	t->ChangeControls("Forward", test);*/
 
 	//Player crossing finish triggers new laptime and increments lap counter
 
@@ -178,8 +182,8 @@ void Level1Scene::Update(const double& dt) {
 	auto lt = raceTimer->GetCompatibleComponent<LapTimer>()[0];
 
 	//New Lap Incrementor - will increment when player goes over the finsih
-	if (player->getPosition().y > s2.y - tileSize / 2 && player->getPosition().y < s3.y + tileSize / 2) {
-		if (player->getPosition().x > s2.x - tileSize / 2 && player->getPosition().x < s3.x + tileSize / 2) {
+	if (testPlayer->getPosition().y > s2.y - tileSize / 2 && testPlayer->getPosition().y < s3.y + tileSize / 2) {
+		if (testPlayer->getPosition().x > s2.x - tileSize / 2 && testPlayer->getPosition().x < s3.x + tileSize / 2) {
 
 			auto lapCounter = lt->getLapCounter();
 
@@ -207,9 +211,10 @@ void Level1Scene::Update(const double& dt) {
 
 	//Checks if game is over - will be changed for a variable depending on what player selects when
 	//selecting the track - Either 3 or 5
+	
 	if (lt->getCurrentLap() == 3) {
 		cout << "Race Over" << endl;
-		player->setForDelete();
+		testPlayer->setForDelete();
 		auto text = raceTimer->GetCompatibleComponent<TextComponent>()[1];
 		text->SetText("WINNER!");
 

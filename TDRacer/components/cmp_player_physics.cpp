@@ -51,13 +51,6 @@ using namespace Physics;
 
 void PlayerPhysicsComponent::Forward() {
 
-
-	//Keys["Back"].myKeyCode = sf::Keyboard::Space;
-		/*if (Keyboard::isKeyPressed(Keyboard::Key::k)) {
-			Keys["Forward"] =
-		}*/
-
-
 	auto checkGrass = ls::getTileAt(_parent->GetCompatibleComponent<SpriteComponent>()[0]->getSprite().getPosition() + Vector2f(0, 1));
 	auto worldVector = _body->GetWorldVector(b2Vec2(0, 1));
 
@@ -117,55 +110,38 @@ void PlayerPhysicsComponent::update(double dt) {
 	const auto pos = _parent->getPosition();
 	/*const auto snd = _parent->GetCompatibleComponent<SoundComponent>()[0];*/
 
+	auto t = _parent->GetCompatibleComponent<PlayerControls>()[0];
+	//t->ChangeControls("Forward", test);
+	
+	auto checkGrass = ls::getTileAt(_parent->GetCompatibleComponent<SpriteComponent>()[0]->getSprite().getPosition() + Vector2f(0, 1));
+	auto checkGrassReverse = ls::getTileAt(_parent->GetCompatibleComponent<SpriteComponent>()[0]->getSprite().getPosition() + Vector2f(0, -1));
+
 	auto worldVector = _body->GetWorldVector(b2Vec2(0, 1));
 
-	auto test = Engine::GetEvent();
-	
-	/*auto t = _parent->GetCompatibleComponent<PlayerControls>()[0];
-	t->ChangeControls("Forward", test);*/
+	auto a = t->getAccelerateControl();
+	if (sf::Keyboard::isKeyPressed(t->getControl("Forward"))) {
+		if (checkGrass == 'g') {
+			dampen({ 0.5f, 0.5f });
+			impulse({ -worldVector.x , -worldVector.y });
+		}
+		else {
+			impulse({ -worldVector.x, -worldVector.y });
+		}
+	}
+	else if (Keyboard::isKeyPressed(t->getControl("Reverse"))) {
+		if (checkGrassReverse == 'g') {
+			dampen({ 0.5f, 0.5f });
+			impulse({ worldVector.x, worldVector.y });
+		}
+		else {
+			impulse({ worldVector.x, worldVector.y });
+		}
+		//Forward();
 
-	//if (test.type == Event::KeyPressed) {
-	//	//cout << "Event Type: " << to_string(test.type) << endl;
-	//	cout << "Before: " << Keys["Forward"].myKeyCode << endl;
-	//	
-	//	auto a = test.key.code;
-		//Keys["Forward"].myKeyCode = Keyboard::W;
-		//Keys["Forward"].myKeyCode = a;
-
-		//std::this_thread::sleep_for(std::chrono::milliseconds(300));
-
-	//	cout << "After" << Keys["Forward"].myKeyCode << endl;
-	//	test.type = Event::KeyPressed;
-	//};
-
-	/*cout << a << endl;*/
-	//
-	//if (sf::Keyboard::isKeyPressed(Keys["Forward"].myKeyCode)) {
-	//	cout << test.key.code << endl;
-	//	Forward();
-	//}
-	//else {
-	//	dampen({ 0.015f, 0.015f });
-	//}
-
-	//if (test.key.code == Keys["Forward"].myKeyCode)
-	//{
-	//	// You can use a function
-	//	//cout << "we are in " << Keys["Forward"].myKeyCode << endl;
-	//}
-
-
-	//if (KeyEvent(Keys["Forward"], test))
-	//{
-	//	// You can use a function
-	//	Forward();
-	//	cout << "we are in " << Keys["Forward"].myKeyCode << endl;
-	//}
-	//if (KeyEvent(Keys["Back"], test))
-	//{
-	//	Back();
-	//}
-
+	}
+	else {
+		dampen({ 0.015f, 0.015f });
+	}
 
 	//
 	//Teleport to start if we fall off map. 

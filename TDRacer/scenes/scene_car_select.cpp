@@ -7,7 +7,9 @@
 #include <system_renderer.h>
 #include <system_resources.h>
 #include "../components/cmp_sprite.h"
+#include "../components/cmp_player_physics.h"
 #include "../components/cmp_sound.h"
+#include "../components/cmp_sprite.h"
 #include <LevelSystem.h>
 
 
@@ -420,30 +422,36 @@ void CarSelectScreen::Update(const double & dt)
 		if (sf::Keyboard::isKeyPressed(Keyboard::Return)) {
 			switch (GetPressedItem()) {
 
-			case 1:
-				cout << "Car 1 Selected!" << endl;
-				sound_cmp[0]->getSound().play();
-				std::this_thread::sleep_for(std::chrono::milliseconds(150));
-				PlayGame();
-				break;
-			case 2:
-				cout << "Car 2 Selected!" << endl;
-				sound_cmp[0]->getSound().play();
-				std::this_thread::sleep_for(std::chrono::milliseconds(150));
-				PlayGame();
-				break;
-			case 3:
-				cout << "Car 3 Selected!" << endl;
-				sound_cmp[0]->getSound().play();
-				std::this_thread::sleep_for(std::chrono::milliseconds(150));
-				PlayGame();
-				break;
-			case 4:
-				cout << "Car 4 Selected!" << endl;
-				sound_cmp[0]->getSound().play();
-				std::this_thread::sleep_for(std::chrono::milliseconds(150));
-				PlayGame();
-				break;
+				case 1:
+					cout << "Car 1 Selected!" << endl;
+					sound_cmp[0]->getSound().play();
+					testPlayer->addComponent<PlayerPhysicsComponent>(Vector2f(27.9f, 18.f));
+					testPlayer->addComponent<SpriteComponent>(); //Add a sprite component
+					setSprite("car_green_small_2.png");		
+					std::this_thread::sleep_for(std::chrono::milliseconds(150));
+					PlayGame();
+					break;
+				case 2:
+					cout << "Car 2 Selected!" << endl;
+					sound_cmp[0]->getSound().play();
+					testPlayer->addComponent<PlayerPhysicsComponent>(Vector2f(27.9f, 18.f));
+					std::this_thread::sleep_for(std::chrono::milliseconds(150));
+					PlayGame();
+					break;
+				case 3:
+					cout << "Car 3 Selected!" << endl;
+					sound_cmp[0]->getSound().play();
+					testPlayer->addComponent<PlayerPhysicsComponent>(Vector2f(27.9f, 18.f));
+					std::this_thread::sleep_for(std::chrono::milliseconds(150));
+					PlayGame();
+					break;
+				case 4:
+					cout << "Car 4 Selected!" << endl;
+					sound_cmp[0]->getSound().play();
+					testPlayer->addComponent<PlayerPhysicsComponent>(Vector2f(27.9f, 18.f));
+					std::this_thread::sleep_for(std::chrono::milliseconds(150));
+					PlayGame();
+					break;
 			}
 		}
 	}

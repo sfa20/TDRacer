@@ -24,6 +24,8 @@ public:
 	*/
 	void MapSetup();
 	//void CheckScreenRes();*/
+
+	void setSprite(std::string sprite);
 	//////
 
 	EntityManager ents;
@@ -35,6 +37,10 @@ private:
 	mutable std::future<void> _loaded_future;
 	mutable std::mutex _loaded_mtx;
 };
+
+
+
+
 
 class Engine {
 public:

@@ -584,7 +584,6 @@ void ControlScreen::Update(const double & dt)
 				updatecontrols->ChangeControls("Right", controlsReverse[rightIndex]);
 
 
-
 				Engine::ChangeScene(&menuScreen);
 				break;
 			}

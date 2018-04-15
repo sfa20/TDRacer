@@ -44,6 +44,9 @@ public:
 	std::string getTurnRightControl();
 	std::string getTurnLeftControl();
 
+	sf::Keyboard::Key PlayerControls::getControl(std::string control);
+
+
 	~PlayerControls();
 };
 

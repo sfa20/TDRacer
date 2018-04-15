@@ -1,4 +1,5 @@
 #pragma once
+#include <SFML/Window/Keyboard.hpp>
 
 #include "scenes/scene_level1.h"
 #include "scenes/scene_level2.h"
@@ -15,6 +16,8 @@
 #include "scenes/scene_sounds.h"
 #include "scenes/scene_controls.h"
 #include "scenes/scene_graphics.h"
+#include "components\cmp_player_controls.h"
+#include "system_physics.h"
 
 
 /************************MENUS*************************/
@@ -49,3 +52,6 @@ extern sf::Vector2f scale;
 /****************Players****************************/
 
 extern std::shared_ptr<Entity> testPlayer;
+
+//extern MyKeys key;
+//extern std::map<std::string, MyKeys> Keys;
