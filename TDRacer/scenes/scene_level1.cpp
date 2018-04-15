@@ -86,23 +86,24 @@ void Level1Scene::Load() {
 	//Create an PlayerCar Entity, add component and set texture
 	//player = makeEntity();  ////Run at new game menu option
 
-	//Adds a Sprite component
-	//auto t = testPlayer->addComponent<SpriteComponent>(); //Add a sprite component - Run when car selected
+	////Adds a Sprite component
+	////auto t = testPlayer->addComponent<SpriteComponent>(); //Add a sprite component - Run when car selected
+	//auto t = player->addComponent<SpriteComponent>(); //Add a sprite component - Run when car selected
 
-	//t->getSprite().setTexture(*Resources::get<Texture>("Black_viper.png"));
+	////*t->getSprite().setTexture(*Resources::get<Texture>("Black_viper.png"));
+	//t->getSprite().setScale(.45f, .45f);*/
+
+	//t->getSprite().setTexture(*Resources::get<Texture>("car_green_small_2.png")); //Run when car selected
 	//t->getSprite().setScale(.45f, .45f);
+	//t->getSprite().setColor(Color::Red);
+	//t->getSprite().setOrigin(10, 0);
 
-	/*t->getSprite().setTexture(*Resources::get<Texture>("car_green_small_2.png")); Run when car selected
-	t->getSprite().setScale(.45f, .45f);
-	t->getSprite().setColor(Color::Red);
-	t->getSprite().setOrigin(10, 0);*/
-
-	//Add a Player Physics Component
-	//auto p = player->addComponent<PlayerPhysicsComponent>(Vector2f(27.9f, 18.f));  Run when car selected
+	////Add a Player Physics Component
+	//auto p = player->addComponent<PlayerPhysicsComponent>(Vector2f(27.9f, 18.f));  //Run when car selected
 	//p->setMass(10);
 
 	////Testing Controls component
-	//auto c1 = player->addComponent<PlayerControls>(); Run at new game menu option
+	//auto c1 = player->addComponent<PlayerControls>(); //Run at new game menu option
 
 	//auto sp = player->addComponent<SoundComponent>();
 	//sp->getSound().setBuffer(*Resources::get<SoundBuffer>("AudiAcc.wav"));
@@ -113,9 +114,11 @@ void Level1Scene::Load() {
 
 	//Set the players starting position
 	testPlayer->setPosition(Vector2f(lv));
+	//player->setPosition(Vector2f(100,200));
 
-	auto a = testPlayer->GetCompatibleComponent<SpriteComponent>()[0];
-	a->getSprite().setPosition(Vector2f(lv));
+	////auto a = testPlayer->GetCompatibleComponent<SpriteComponent>()[1];
+	//auto a = player->GetCompatibleComponent<SpriteComponent>()[0];
+	//a->getSprite().setPosition(Vector2f(100,100));
 
 
 #pragma endregion
@@ -135,6 +138,8 @@ void Level1Scene::Load() {
 void Level1Scene::UnLoad() {
 	cout << "Scene 1 Unload" << endl;
 	//player.reset();
+	//testPlayer.reset();
+
 	ls::unload();
 	Scene::UnLoad();
 }
@@ -166,80 +171,84 @@ void Level1Scene::Update(const double& dt) {
 #pragma region CheckRaceStatus
 	/*auto test = Engine::GetEvent();
 
-	auto t = player->GetCompatibleComponent<PlayerControls>()[0];
-	t->ChangeControls("Forward", test);*/
+	auto t = playeols("Forwr->GetCompatibleComponent<PlayerControls>()[0];
+	t->ChangeContrard", test);*/
 
 	//Player crossing finish triggers new laptime and increments lap counter
 
-	auto s1 = ls::getTilePosition(ls::findTiles(ls::START)[0]);
-	auto s2 = ls::getTilePosition(ls::findTiles(ls::STARTLEFT)[0]);
-	auto s3 = ls::getTilePosition(ls::findTiles(ls::STARTRIGHT)[0]);
+	//auto s1 = ls::getTilePosition(ls::findTiles(ls::START)[0]);
+	//auto s2 = ls::getTilePosition(ls::findTiles(ls::STARTLEFT)[0]);
+	//auto s3 = ls::getTilePosition(ls::findTiles(ls::STARTRIGHT)[0]);
 
-	auto tileSize = ls::getTileSize();
+	//auto tileSize = ls::getTileSize();
 
-	//get the second race timer added to entity
+	////get the second race timer added to entity
 
-	auto lt = raceTimer->GetCompatibleComponent<LapTimer>()[0];
+	//auto lt = raceTimer->GetCompatibleComponent<LapTimer>()[0];
 
-	//New Lap Incrementor - will increment when player goes over the finsih
-	if (testPlayer->getPosition().y > s2.y - tileSize / 2 && testPlayer->getPosition().y < s3.y + tileSize / 2) {
-		if (testPlayer->getPosition().x > s2.x - tileSize / 2 && testPlayer->getPosition().x < s3.x + tileSize / 2) {
+	////New Lap Incrementor - will increment when player goes over the finsih
+	//if (player->getPosition().y > s2.y - tileSize / 2 && testPlayer->getPosition().y < s3.y + tileSize / 2) {
+	////if (testPlayer->getPosition().y > s2.y - tileSize / 2 && testPlayer->getPosition().y < s3.y + tileSize / 2) {
+	//		if (player->getPosition().x > s2.x - tileSize / 2 && testPlayer->getPosition().x < s3.x + tileSize / 2) {
+	//		//if (testPlayer->getPosition().x > s2.x - tileSize / 2 && testPlayer->getPosition().x < s3.x + tileSize / 2) {
 
-			auto lapCounter = lt->getLapCounter();
+	//		auto lapCounter = lt->getLapCounter();
 
-			if (lapCounter) {
+	//		if (lapCounter) {
 
-				lt->setLapCounter(false);
-				lt->setLaptime(lt->getCurrentLap());
+	//			lt->setLapCounter(false);
+	//			lt->setLaptime(lt->getCurrentLap());
 
-				lt->reset();
-				lt->increaseLapCounter();
+	//			lt->reset();
+	//			lt->increaseLapCounter();
 
-				//Displays current lap times
-				cout << "Current Lap: " << lt->getCurrentLap() << endl;
-				cout << lt->getLapTimes() << endl;
-			}
-		}
-	}
+	//			//Displays current lap times
+	//			cout << "Current Lap: " << lt->getCurrentLap() << endl;
+	//			cout << lt->getLapTimes() << endl;
+	//		}
+	//	}
+	//}
 
-	//Prevents a player going back and forward over the line  //Need a better way to handle this
-	lt->temp = lt->getClock().getElapsedTime().asMilliseconds();
-	if (lt->temp > 10000) {
-		lt->setLapCounter(true);
-	}
-
-
-	//Checks if game is over - will be changed for a variable depending on what player selects when
-	//selecting the track - Either 3 or 5
-	
-	if (lt->getCurrentLap() == 3) {
-		cout << "Race Over" << endl;
-		testPlayer->setForDelete();
-		auto text = raceTimer->GetCompatibleComponent<TextComponent>()[1];
-		text->SetText("WINNER!");
-
-		if (counter <= 10) {
-			if (counter == 2 || counter == 4 || counter == 6) {
-				text->SetText("WINNER!");
-				std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-
-			}
-			else {
-				text->SetText("");
-				std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-
-			}
-		}
-
-		if (counter > 6) {
-			UnLoad();
-			Engine::ChangeScene(&level2);
-		}
-		counter++;
+	////Prevents a player going back and forward over the line  //Need a better way to handle this
+	//lt->temp = lt->getClock().getElapsedTime().asMilliseconds();
+	//if (lt->temp > 10000) {
+	//	lt->setLapCounter(true);
+	//}
 
 
-		//std::this_thread::sleep_for(std::chrono::milliseconds(3000));
-	}
+	////Checks if game is over - will be changed for a variable depending on what player selects when
+	////selecting the track - Either 3 or 5
+	//
+	//if (lt->getCurrentLap() == 3) {
+	//	cout << "Race Over" << endl;
+	//	player->setForDelete();
+	//	//testPlayer->setForDelete();
+
+	//	auto text = raceTimer->GetCompatibleComponent<TextComponent>()[1];
+	//	text->SetText("WINNER!");
+
+	//	if (counter <= 10) {
+	//		if (counter == 2 || counter == 4 || counter == 6) {
+	//			text->SetText("WINNER!");
+	//			std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+
+	//		}
+	//		else {
+	//			text->SetText("");
+	//			std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+
+	//		}
+	//	}
+
+	//	if (counter > 6) {
+	//		UnLoad();
+	//		Engine::ChangeScene(&level2);
+	//	}
+	//	counter++;
+
+
+	//	//std::this_thread::sleep_for(std::chrono::milliseconds(3000));
+	//}
 
 
 #pragma endregion
