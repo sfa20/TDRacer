@@ -41,8 +41,8 @@ Level3Scene level3;
 
 bool settingConfirmed = false;
 bool nisFullscreen = false;
-int nHeight;
-int nWidth;
+int nHeight = 1080;
+int nWidth = 1980;
 
 int main() {
 

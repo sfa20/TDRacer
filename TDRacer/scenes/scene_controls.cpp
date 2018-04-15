@@ -23,6 +23,7 @@ using namespace sf;
 using namespace Resources;
 
 string * controls;
+int * controlsReverse;
 int accelIndex = 0;
 int reverseIndex = 0;
 int brakeIndex = 0;
@@ -309,20 +310,22 @@ void ControlScreen::Load() {
 #pragma endregion
 
 
-		auto bo = stoi(getControls->getAccelerateControl());
-		cout << "stoi: " << bo << endl;
-		auto bb = KeyValues[bo];
-		cout << "BB: " << endl;
+	auto bo = stoi(getControls->getAccelerateControl());
+	cout << "stoi: " << bo << endl;
+	auto bb = KeyValues[bo];
+	cout << "BB: " << endl;
+	
 	{
 		//creates entitys for splash and adds text components
 		control = makeEntity();
 		auto title = control->addComponent<TextComponent>("TD CHAMPIONSHIP RACER");
 		auto selectTrack = control->addComponent<TextComponent>("placeholder SELECTED TRACK");
-		auto accel = control->addComponent<TextComponent>("Accellerate : " + KeyValues[stoi(getControls->getAccelerateControl())]);
+		auto accel = control->addComponent<TextComponent>("Accelerate : " + KeyValues[stoi(getControls->getAccelerateControl())]);
 		auto reverse = control->addComponent<TextComponent>("Reverse:    " + KeyValues[stoi(getControls->getReverseControl())]);
 		auto handbrake = control->addComponent<TextComponent>("Handbrake:" + KeyValues[stoi(getControls->getHandBrakeControl())]);
 		auto turnl = control->addComponent<TextComponent>("Turn Left:    " + KeyValues[stoi(getControls->getTurnLeftControl())]);
 		auto turnr = control->addComponent<TextComponent>("Turn Right:   " + KeyValues[stoi(getControls->getTurnRightControl())]);
+		auto main = control->addComponent<TextComponent>("Main Menu");
 
 
 		//controlSound = makeEntity();
@@ -337,22 +340,27 @@ void ControlScreen::Load() {
 		handbrake->setCenterPos(Engine::getWindowSize().x / 2.1f, 620.f, 50);
 		turnl->setCenterPos(Engine::getWindowSize().x / 2.1f, 680.f, 50);
 		turnr->setCenterPos(Engine::getWindowSize().x / 2.1f , 740.f, 50);
+		main->setCenterPos(Engine::getWindowSize().x / 2.1f, 880.f, 50);
+
 		accel->setColor(255, 0, 0, 255);
 	}
 	
 
 	sizeOfControls = KeyValues.size();
 	controls = new string[sizeOfControls];
+	controlsReverse = new int[sizeOfControls];
+
 	int i = 0;
 
 	for each (auto key in KeyValues) {
 		
 		controls[i] = "Accelerate: "  + KeyValues[key.first];
+		controlsReverse[i] = key.first;
 		i++;
 	}
 
 	for (std::size_t i = 0; i < sizeOfControls; i++) {
-		cout << controls[i] << endl;
+		cout << controlsReverse[i] << endl;
 	}
 
 
@@ -376,7 +384,7 @@ void ControlScreen::MoveDown() {
 	auto txt_cmp = control->GetCompatibleComponent<TextComponent>();
 
 	//used for keyboard movement in menus
-	if (selectedItemIndex + 1 < 7) {
+	if (selectedItemIndex + 1 < 8) {
 		txt_cmp[selectedItemIndex]->setColor(255, 255, 255, 255);
 		selectedItemIndex++;
 		txt_cmp[selectedItemIndex]->setColor(255, 0, 0, 255);
@@ -470,7 +478,7 @@ void ControlScreen::Update(const double & dt)
 		}
 
 		if (sf::Keyboard::isKeyPressed(Keyboard::Down)) {
-			if (GetPressedItem() != 6)
+			if (GetPressedItem() != 7)
 				MoveDown();
 		}
 
@@ -478,15 +486,13 @@ void ControlScreen::Update(const double & dt)
 			switch (GetPressedItem()) {
 
 			case 2:
-				std::cout << "Accellerate Btn has been pressed" << std::endl;
+				std::cout << "Accelerate Btn has been pressed" << std::endl;
 				//sound_cmp[0]->getSound().play();
 				std::this_thread::sleep_for(std::chrono::milliseconds(150));
-				//txt_cmp[2]->SetText
 				if (accelIndex >= 0)
 				{
 					txt_cmp[2]->SetText(controls[accelIndex]);
 					accelIndex++;
-
 				}
 
 				if (accelIndex == sizeOfControls)
@@ -563,6 +569,22 @@ void ControlScreen::Update(const double & dt)
 					rightIndex = 0;
 					txt_cmp[6]->SetText(controls[rightIndex]);
 				}
+				break;
+			case 7:
+				std::cout << "Main Menu button has been pressed" << std::endl;
+				//sound_cmp[0]->getSound().play();
+				std::this_thread::sleep_for(std::chrono::milliseconds(150));
+
+				auto updatecontrols = testPlayer->GetCompatibleComponent<PlayerControls>()[0];
+
+				//auto a = stoi(controls[accelIndex]);
+				//auto a = stoi(controls[accelIndex]);
+				auto b = controlsReverse[accelIndex];
+				updatecontrols->ChangeControls("Accelerate", b);
+
+
+
+				Engine::ChangeScene(&menuScreen);
 				break;
 			}
 		}

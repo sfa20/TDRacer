@@ -27,6 +27,7 @@ public:
 	
 	void DefineControls();
 	void ChangeControls(std::string control, Event test);
+	void ChangeControls(std::string control, int hmm);
 
 	void update(double dt) override;
 	void render();

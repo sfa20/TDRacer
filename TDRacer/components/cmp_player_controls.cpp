@@ -53,8 +53,6 @@ void PlayerControls::DefineControls() {
 
 PlayerControls::PlayerControls(Entity* p) : Component(p ) {
 	DefineControls();
-
-	
 }
 
 
@@ -75,6 +73,27 @@ void PlayerControls::ChangeControls(std::string control, Event e) {
 		cout << "After" << Keys[control].myKeyCode << endl;
 		e.type = Event::KeyPressed;
 	};
+}
+
+//testing
+void PlayerControls::ChangeControls(std::string control, int e) {
+
+	//auto test = Engine::GetEvent();
+
+	
+		//cout << "Event Type: " << to_string(test.type) << endl;
+		cout << "Before: " << Keys[control].myKeyCode << endl;
+
+		/*auto a = e.key.code;*/
+		//Keys[control].myKeyCode = Keyboard::W;
+
+		Keys[control].myKeyCode = static_cast<sf::Keyboard::Key>(e);
+
+		std::this_thread::sleep_for(std::chrono::milliseconds(300));
+
+		cout << "After" << Keys[control].myKeyCode << endl;
+		
+
 }
 
 

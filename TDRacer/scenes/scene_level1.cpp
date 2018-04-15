@@ -32,7 +32,7 @@ int counter = 0;
 
 void Level1Scene::Load() {
 
-	float size = 50.f;
+	float size;
 
 
 #pragma region CheckScreen Resolution
@@ -41,7 +41,7 @@ void Level1Scene::Load() {
 	cout << to_string(nWidth) << endl;
 	cout << to_string(nHeight) << endl;
 
-	if (nWidth == 1920 && nHeight == 1080) {
+	if (nWidth == 1980 && nHeight == 1080) {
 		scale = { 0.400f, 0.400f };
 		size = 50.f;
 	}
