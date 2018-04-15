@@ -82,7 +82,7 @@ void PlayerControls::ChangeControls(std::string control, int e) {
 
 	
 		//cout << "Event Type: " << to_string(test.type) << endl;
-		cout << "Before: " << Keys[control].myKeyCode << endl;
+		cout << control << " before: " << Keys[control].myKeyCode << endl;
 
 		/*auto a = e.key.code;*/
 		//Keys[control].myKeyCode = Keyboard::W;
@@ -91,7 +91,7 @@ void PlayerControls::ChangeControls(std::string control, int e) {
 
 		std::this_thread::sleep_for(std::chrono::milliseconds(300));
 
-		cout << "After" << Keys[control].myKeyCode << endl;
+		cout << control <<" after: " << Keys[control].myKeyCode << endl;
 		
 
 }

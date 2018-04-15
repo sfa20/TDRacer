@@ -577,10 +577,11 @@ void ControlScreen::Update(const double & dt)
 
 				auto updatecontrols = testPlayer->GetCompatibleComponent<PlayerControls>()[0];
 
-				//auto a = stoi(controls[accelIndex]);
-				//auto a = stoi(controls[accelIndex]);
-				auto b = controlsReverse[accelIndex];
-				updatecontrols->ChangeControls("Accelerate", b);
+				updatecontrols->ChangeControls("Accelerate", controlsReverse[accelIndex]);
+				updatecontrols->ChangeControls("Reverse", controlsReverse[reverseIndex]);
+				updatecontrols->ChangeControls("Handbrake", controlsReverse[brakeIndex]);
+				updatecontrols->ChangeControls("Left", controlsReverse[leftIndex]);
+				updatecontrols->ChangeControls("Right", controlsReverse[rightIndex]);
 
 
 
