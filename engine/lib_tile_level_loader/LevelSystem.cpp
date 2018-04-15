@@ -110,7 +110,7 @@ void LevelSystem::buildSprites(bool optimise) {
 		sf::Vector2f s;
 		sf::Color c;
 	};
-	
+
 	vector<tp> tps;
 
 	const auto tls = Vector2f(_tileSize, _tileSize);
@@ -118,7 +118,7 @@ void LevelSystem::buildSprites(bool optimise) {
 		for (size_t x = 0; x < _width; ++x) {
 			Tile t = getTile({ x, y });
 			if (t == TRACK) {
-				
+
 				continue;
 			}
 			tps.push_back({ getTilePosition({x, y}), tls, getColor(t) });
