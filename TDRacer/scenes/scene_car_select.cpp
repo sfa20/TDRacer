@@ -10,6 +10,7 @@
 #include "../components/cmp_player_physics.h"
 #include "../components/cmp_sound.h"
 #include "../components/cmp_sprite.h"
+#include "../components/cmp_player_profile.h"
 #include <LevelSystem.h>
 
 
@@ -23,6 +24,7 @@ static std::shared_ptr<Entity> selectCarSound;
 
 void CarSelectScreen::Load()
 {
+
 #pragma region Background Setup
 
 
@@ -239,8 +241,6 @@ void CarSelectScreen::Load()
 
 #pragma region DisplayCars
 
-		
-
 		/*********CAR ONE****************************/
 		auto car1Ent = makeEntity();
 		auto c1Sprite = car1Ent->addComponent<SpriteComponent>();
@@ -269,6 +269,11 @@ void CarSelectScreen::Load()
 		c4Sprite->getSprite().setTexture(*Resources::get<Texture>("Mini_truck.png"));
 		c4Sprite->getSprite().setPosition(Engine::getWindowSize().x / 1.7, 300);
 
+		auto car5Ent = makeEntity();
+		auto c5Sprite = car4Ent->addComponent<SpriteComponent>();
+
+		c5Sprite->getSprite().setTexture(*Resources::get<Texture>("Mini_truck.png"));
+		c5Sprite->getSprite().setPosition(Engine::getWindowSize().x / 1.5, 300);
 #pragma endregion
 
 
@@ -288,7 +293,6 @@ void CarSelectScreen::Load()
 
 		auto c4Txt = txt->addComponent<TextComponent>("Bob Mobile");
 		c4Txt->setCenterPos(Engine::getWindowSize().x / 1.61, 435, 25);
-
 
 		selectCarSound = makeEntity();
 		auto beep = selectCarSound->addComponent<SoundComponent>();
@@ -424,31 +428,32 @@ void CarSelectScreen::Update(const double & dt)
 
 				case 1:
 					cout << "Car 1 Selected!" << endl;
-					sound_cmp[0]->getSound().play();
-					testPlayer->addComponent<PlayerPhysicsComponent>(Vector2f(27.9f, 18.f));
-					testPlayer->addComponent<SpriteComponent>(); //Add a sprite component
-					setSprite("car_green_small_2.png");		
+					//sound_cmp[0]->getSound().play();
+					//testPlayer->addComponent<PlayerPhysicsComponent>(Vector2f(27.9f, 18.f));
+					//testPlayer->addComponent<SpriteComponent>(); //Add a sprite component
+					//setSprite("car_green_small_2.png");
+					setSelection(1);
 					std::this_thread::sleep_for(std::chrono::milliseconds(150));
 					PlayGame();
 					break;
 				case 2:
 					cout << "Car 2 Selected!" << endl;
 					sound_cmp[0]->getSound().play();
-					testPlayer->addComponent<PlayerPhysicsComponent>(Vector2f(27.9f, 18.f));
+					//testPlayer->addComponent<PlayerPhysicsComponent>(Vector2f(27.9f, 18.f));
 					std::this_thread::sleep_for(std::chrono::milliseconds(150));
 					PlayGame();
 					break;
 				case 3:
 					cout << "Car 3 Selected!" << endl;
 					sound_cmp[0]->getSound().play();
-					testPlayer->addComponent<PlayerPhysicsComponent>(Vector2f(27.9f, 18.f));
+					//testPlayer->addComponent<PlayerPhysicsComponent>(Vector2f(27.9f, 18.f));
 					std::this_thread::sleep_for(std::chrono::milliseconds(150));
 					PlayGame();
 					break;
 				case 4:
 					cout << "Car 4 Selected!" << endl;
 					sound_cmp[0]->getSound().play();
-					testPlayer->addComponent<PlayerPhysicsComponent>(Vector2f(27.9f, 18.f));
+					//testPlayer->addComponent<PlayerPhysicsComponent>(Vector2f(27.9f, 18.f));
 					std::this_thread::sleep_for(std::chrono::milliseconds(150));
 					PlayGame();
 					break;
@@ -458,6 +463,13 @@ void CarSelectScreen::Update(const double & dt)
 
 #pragma endregion
 
+}
+
+
+
+void CarSelectScreen::setSelection(int selection) {
+	//auto t = playerProfile->GetCompatibleComponent<PlayerProfile>()[0];
+	//t->setSelectedCar(1);
 }
 
 void CarSelectScreen::PlayGame() {

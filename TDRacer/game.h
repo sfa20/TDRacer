@@ -51,7 +51,7 @@ extern sf::Vector2f scale;
 
 /****************Players****************************/
 
-extern std::shared_ptr<Entity> testPlayer;
-
+//extern std::shared_ptr<Entity> testPlayer;
+extern std::shared_ptr<Entity> playerProfile;
 //extern MyKeys key;
 //extern std::map<std::string, MyKeys> Keys;

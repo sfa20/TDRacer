@@ -413,28 +413,28 @@ void AvatarScreen::Update(const double & dt)
 				std::cout << "Ninja selected" << std::endl;
 				sound_cmp[0]->getSound().play();
 				std::this_thread::sleep_for(std::chrono::milliseconds(150));
-				AddAvatar("Ninja.png");
+				//AddAvatar("Ninja.png");
 				Engine::ChangeScene(&menuScreen);
 				break;
 			case 2:
 				std::cout << "Guy Selected" << std::endl;
 				sound_cmp[0]->getSound().play();
 				std::this_thread::sleep_for(std::chrono::milliseconds(150));
-				AddAvatar("Guy.png");
+				//AddAvatar("Guy.png");
 				Engine::ChangeScene(&menuScreen);
 				break;
 			case 3:
 				std::cout << "Clown Selected" << std::endl;
 				sound_cmp[0]->getSound().play();
 				std::this_thread::sleep_for(std::chrono::milliseconds(150));
-				AddAvatar("Clown.png");
+				//AddAvatar("Clown.png");
 				Engine::ChangeScene(&menuScreen);
 				break;
 			case 4:
 				cout << "Vamp Selected!" << endl;
 				sound_cmp[0]->getSound().play();
 				std::this_thread::sleep_for(std::chrono::milliseconds(150));
-				AddAvatar("Vamp.png");
+				//AddAvatar("Vamp.png");
 				Engine::ChangeScene(&menuScreen);
 				break;
 			}
@@ -446,6 +446,6 @@ void AvatarScreen::Update(const double & dt)
 }
 
 void AvatarScreen::AddAvatar(std::string avatar) {
-	auto avatarComponent = testPlayer->addComponent<SpriteComponent>();
-	avatarComponent->getSprite().setTexture(*Resources::get<Texture>(avatar));
+	//auto avatarComponent = testPlayer->addComponent<SpriteComponent>();
+	//avatarComponent->getSprite().setTexture(*Resources::get<Texture>(avatar));
 }

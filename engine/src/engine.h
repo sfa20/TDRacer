@@ -25,7 +25,7 @@ public:
 	void MapSetup();
 	//void CheckScreenRes();*/
 
-	void setSprite(std::string sprite);
+	void setnewSprite(std::string sprite);
 	//////
 
 	EntityManager ents;

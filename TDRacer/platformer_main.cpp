@@ -39,6 +39,8 @@ Level1Scene level1;
 Level2Scene level2;
 Level3Scene level3;
 
+shared_ptr<Entity> playerProfile;
+
 bool settingConfirmed = false;
 bool nisFullscreen = false;
 int nHeight = 1080;

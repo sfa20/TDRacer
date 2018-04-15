@@ -26,7 +26,7 @@ using namespace Resources;
 //static shared_ptr<Entity> player;
 static shared_ptr<Entity> raceTimer;
 static shared_ptr<Entity> WinnerMessage;
-
+static shared_ptr<Entity> playerOne;
 sf::Vector2f scale = { 0.400f, 0.400f };
 int counter = 0;
 
@@ -84,41 +84,86 @@ void Level1Scene::Load() {
 #pragma region CreatePlayers
 
 	//Create an PlayerCar Entity, add component and set texture
-	//player = makeEntity();  ////Run at new game menu option
+	//playerOne = makeEntity();  ////Run at new game menu option
 
-	////Adds a Sprite component
-	////auto t = testPlayer->addComponent<SpriteComponent>(); //Add a sprite component - Run when car selected
-	//auto t = player->addComponent<SpriteComponent>(); //Add a sprite component - Run when car selected
-
-	////*t->getSprite().setTexture(*Resources::get<Texture>("Black_viper.png"));
-	//t->getSprite().setScale(.45f, .45f);*/
-
-	//t->getSprite().setTexture(*Resources::get<Texture>("car_green_small_2.png")); //Run when car selected
+	//////Adds a Sprite component
+	//auto sc = playerOne->addComponent<SpriteComponent>(); //Add a sprite component - Run when car selected
+	//
+	//sc->getSprite().setTexture(*Resources::get<Texture>("Black_viper.png"));
+	//sc->getSprite().setScale(.45f, .45f);
+	
+	//auto t = playerOne->GetCompatibleComponent<SpriteComponent>()[0];
+	//t->getSprite().setTexture(*Resources::get<Texture>("Black_viper.png")); //Run when car selected
 	//t->getSprite().setScale(.45f, .45f);
 	//t->getSprite().setColor(Color::Red);
 	//t->getSprite().setOrigin(10, 0);
+	//
+	//auto i = testPlayer->GetCompatibleComponent<PlayerControls>()[0];
+	////cout << i->getAccelerateControl() << endl;
 
-	////Add a Player Physics Component
-	//auto p = player->addComponent<PlayerPhysicsComponent>(Vector2f(27.9f, 18.f));  //Run when car selected
-	//p->setMass(10);
 
-	////Testing Controls component
-	//auto c1 = player->addComponent<PlayerControls>(); //Run at new game menu option
+	
+	//////Add a Player Physics Component
+	//playerOne->addComponent<PlayerPhysicsComponent>(Vector2f(27.9f, 18.f));  //Run when car selected
+	//p->setMass(10); 
+
+	//////Testing Controls component
+	//auto pc = playerOne->addComponent<PlayerControls>(); //Run at new game menu option
 
 	//auto sp = player->addComponent<SoundComponent>();
 	//sp->getSound().setBuffer(*Resources::get<SoundBuffer>("AudiAcc.wav"));
 
 	//Find the starting position 
-	auto l = ls::findTiles(ls::START);
-	auto lv = ls::getTilePosition(l[0]);
+	//auto l = ls::findTiles(ls::START);
+	//auto lv = ls::getTilePosition(l[0]);
 
 	//Set the players starting position
-	testPlayer->setPosition(Vector2f(lv));
-	//player->setPosition(Vector2f(100,200));
+	//playerOne->setPosition(Vector2f(200,200));
+	//testPlayer->setPosition(Vector2f(100,200));
+	//auto fuck = testPlayer->getPosition();
+	//cout << fuck << endl;
+	//testPlayer->setVisible(true);
+;
+	
+	//auto a = testPlayer->GetCompatibleComponent<SpriteComponent>()[0];
+	/*auto a = player->GetCompatibleComponent<SpriteComponent>()[0];
+	a->getSprite().setPosition(Vector2f(100,100));
+*/
 
-	////auto a = testPlayer->GetCompatibleComponent<SpriteComponent>()[1];
-	//auto a = player->GetCompatibleComponent<SpriteComponent>()[0];
-	//a->getSprite().setPosition(Vector2f(100,100));
+	//Create an PlayerCar Entity, add component and set texture
+	playerOne = makeEntity();
+	
+	//Adds a Sprite component
+	auto t = playerOne->addComponent<SpriteComponent>(); //Add a sprite component
+	
+	 //t->getSprite().setTexture(Resources::get<Texture>("Black_viper.png"));
+	 //t->getSprite().setScale(.45f, .45f);
+	
+	t->getSprite().setTexture(*Resources::get<Texture>("car_green_small_2.png"));
+	t->getSprite().setScale(.45f, .45f);
+	t->getSprite().setColor(Color::Red);
+	t->getSprite().setOrigin(10, 0);
+	auto pc = playerOne->addComponent<PlayerControls>(); //Run at new game menu option
+
+	//Add a Player Physics Component
+	auto p = playerOne->addComponent<PlayerPhysicsComponent>(Vector2f(27.9f, 18.f));
+	//p->setMass(10);
+	
+	//Find the starting position 
+	auto l = ls::findTiles(ls::START);
+	auto lv = ls::getTilePosition(l[0]);
+	
+	//Set the players starting position
+	playerOne->setPosition(Vector2f(lv));
+	/*auto i = playerOne->GetCompatibleComponent<SpriteComponent>()[0];
+	i->getSprite().setPosition(lv);
+
+*/
+
+
+
+
+
 
 
 #pragma endregion
@@ -188,9 +233,7 @@ void Level1Scene::Update(const double& dt) {
 
 	////New Lap Incrementor - will increment when player goes over the finsih
 	//if (player->getPosition().y > s2.y - tileSize / 2 && testPlayer->getPosition().y < s3.y + tileSize / 2) {
-	////if (testPlayer->getPosition().y > s2.y - tileSize / 2 && testPlayer->getPosition().y < s3.y + tileSize / 2) {
 	//		if (player->getPosition().x > s2.x - tileSize / 2 && testPlayer->getPosition().x < s3.x + tileSize / 2) {
-	//		//if (testPlayer->getPosition().x > s2.x - tileSize / 2 && testPlayer->getPosition().x < s3.x + tileSize / 2) {
 
 	//		auto lapCounter = lt->getLapCounter();
 
@@ -255,6 +298,7 @@ void Level1Scene::Update(const double& dt) {
 
 
 	Scene::Update(dt);
+
 }
 
 void Level1Scene::Render() {

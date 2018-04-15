@@ -10,6 +10,7 @@
 #include "../TDRacer/game.h"
 #include "LevelSystem.h"
 #include "../TDRacer/components/cmp_sprite.h"
+#include "../TDRacer//components/cmp_player_profile.h"
 
 using namespace sf;
 using namespace std;
@@ -185,7 +186,7 @@ void Scene::setLoaded(bool b) {
 }
 
 void Scene::UnLoad() {
-	ents.list.clear();
+	//ents.list.clear();
 	setLoaded(false);
 }
 
@@ -457,14 +458,16 @@ void Scene::MapSetup() {
 }
 
 
-void Scene::setSprite(std::string sprite) {
-	auto t = testPlayer->GetCompatibleComponent<SpriteComponent>()[1];
+void Scene::setnewSprite(std::string sprite) {
+	//auto t = testPlayer->GetCompatibleComponent<SpriteComponent>()[0];
 
-	t->getSprite().setTexture(*Resources::get<Texture>(sprite));
-	t->getSprite().setScale(.45f, .45f);
-	t->getSprite().setColor(Color::Red);
-	t->getSprite().setOrigin(10, 0);
+	//t->getSprite().setTexture(*Resources::get<Texture>(sprite));
+	//t->getSprite().setScale(.45f, .45f);
+	//t->getSprite().setColor(Color::Red);
+	//t->getSprite().setOrigin(10, 0);
 }
+
+
 
 
 sf::Vector2u Engine::getWindowSize() { return _window->getSize(); }

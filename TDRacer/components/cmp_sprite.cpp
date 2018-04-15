@@ -7,28 +7,6 @@ using namespace std;
 
 SpriteComponent::SpriteComponent(Entity* p) : Component(p), _sprite(make_shared<sf::Sprite>()) {}
 
-//SpriteComponent::SpriteComponent(Entity* p, b2World world) : Component(p),  _sprite(make_shared<sf::Sprite>()) {	
-//	
-//}
-
-
-//added
-//void SpriteComponent::setBody() {
-//	auto sprite = _parent->GetCompatibleComponent<SpriteComponent>()[0];
-//	float width = sprite->getSprite().getLocalBounds().width / 2;  // returns 0
-//	float height = sprite->getSprite().getLocalBounds().height / 2; // returns 0
-//
-//	//Set the sprites origin to center - not working
-//	_sprite->setOrigin(5, 5);
-//
-//	//not sure if doing anything
-//	bodyDef.type = b2_dynamicBody;
-//	body = Physics::GetWorld()->CreateBody(&bodyDef);
-//	b2PolygonShape box;
-//	box.SetAsBox(10.f, 10.f);
-//	b2Fixture* fixture = body->CreateFixture(&box, 0.1f);
-//}
-
 
 sf::Sprite& SpriteComponent::getSprite() const {
 	return *_sprite;

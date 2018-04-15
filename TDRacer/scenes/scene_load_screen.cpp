@@ -22,13 +22,12 @@ using namespace Resources;
 
 static shared_ptr<Entity> loadS;
 static shared_ptr<Entity> loadSound;
-shared_ptr<Entity> testPlayer;
+//shared_ptr<Entity> testPlayer;
 
 void LoadScreen::Load()
 {
-
-	std::cout << "Menu Load \n";
 	{
+	std::cout << "Menu Load \n";
 		ls::loadLevelFile("res/menu.txt", 50.f);
 
 #pragma region Background Setup
@@ -354,7 +353,6 @@ void LoadScreen::Load()
 
 #pragma endregion
 
-
 		loadS = makeEntity();
 		auto title = loadS->addComponent<TextComponent>("TD CHAMPIONSHIP RACER");
 		auto control = loadS->addComponent<TextComponent>("New game");
@@ -412,6 +410,7 @@ void LoadScreen::Update(const double & dt)
 	sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
 
 	startWindow.pollEvent(startEvent);
+
 
 #pragma region MouseControls
 
@@ -480,7 +479,7 @@ void LoadScreen::Update(const double & dt)
 				std::cout << "New game has been pressed" << std::endl;
 				sound_cmp[0]->getSound().play();
 				std::this_thread::sleep_for(std::chrono::milliseconds(150));
-				testPlayer = makeEntity();
+				playerProfile = makeEntity();
 				AddControls();
 				Engine::ChangeScene(&avatarScreen);
 				break;
@@ -492,7 +491,6 @@ void LoadScreen::Update(const double & dt)
 				break;
 			}
 		}
-
 	}
 
 #pragma endregion
@@ -501,7 +499,8 @@ void LoadScreen::Update(const double & dt)
 }
 
 void LoadScreen::AddControls() {
-	auto c1 = testPlayer->addComponent<PlayerControls>();
+	auto c1 = playerProfile->addComponent<PlayerControls>();
+	//auto c2 = testPlayer->addComponent<TextComponent>("Fuck c++");
 }
 
 

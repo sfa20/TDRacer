@@ -108,46 +108,46 @@ void PlayerPhysicsComponent::update(double dt) {
 	}*/
 
 	const auto pos = _parent->getPosition();
-	/*const auto snd = _parent->GetCompatibleComponent<SoundComponent>()[0];*/
+	//const auto snd = _parent->GetCompatibleComponent<SoundComponent>()[0];
 
-	auto t = _parent->GetCompatibleComponent<PlayerControls>()[0];
-	//t->ChangeControls("Forward", test);
-	
+	//auto t = _parent->GetCompatibleComponent<PlayerControls>()[0];
+	////t->ChangeControls("Forward", test);
+	//
 	auto checkGrass = ls::getTileAt(_parent->GetCompatibleComponent<SpriteComponent>()[0]->getSprite().getPosition() + Vector2f(0, 1));
 	auto checkGrassReverse = ls::getTileAt(_parent->GetCompatibleComponent<SpriteComponent>()[0]->getSprite().getPosition() + Vector2f(0, -1));
 
 	auto worldVector = _body->GetWorldVector(b2Vec2(0, 1));
 
-	auto a = t->getAccelerateControl();
-	if (sf::Keyboard::isKeyPressed(t->getControl("Forward"))) {
-		if (checkGrass == 'g') {
-			dampen({ 0.5f, 0.5f });
-			impulse({ -worldVector.x , -worldVector.y });
-		}
-		else {
-			impulse({ -worldVector.x, -worldVector.y });
-		}
-	}
-	else if (Keyboard::isKeyPressed(t->getControl("Reverse"))) {
-		if (checkGrassReverse == 'g') {
-			dampen({ 0.5f, 0.5f });
-			impulse({ worldVector.x, worldVector.y });
-		}
-		else {
-			impulse({ worldVector.x, worldVector.y });
-		}
-		//Forward();
+	//auto a = t->getAccelerateControl();
+	//if (sf::Keyboard::isKeyPressed(t->getControl("Forward"))) {
+	//	if (checkGrass == 'g') {
+	//		dampen({ 0.5f, 0.5f });
+	//		impulse({ -worldVector.x , -worldVector.y });
+	//	}
+	//	else {
+	//		impulse({ -worldVector.x, -worldVector.y });
+	//	}
+	//}
+	//else if (Keyboard::isKeyPressed(t->getControl("Reverse"))) {
+	//	if (checkGrassReverse == 'g') {
+	//		dampen({ 0.5f, 0.5f });
+	//		impulse({ worldVector.x, worldVector.y });
+	//	}
+	//	else {
+	//		impulse({ worldVector.x, worldVector.y });
+	//	}
+	//	//Forward();
 
-	}
-	else {
-		dampen({ 0.015f, 0.015f });
-	}
+	//}
+	//else {
+	//	dampen({ 0.015f, 0.015f });
+	//}
 
 	//
 	//Teleport to start if we fall off map. 
-	if (pos.y > ls::getHeight() * ls::getTileSize() || pos.x > ls::getWidth() * ls::getTileSize() || pos.x < 0 || pos.y < 0) {
-		teleport(ls::getTilePosition(ls::findTiles(ls::START)[0]));
-	}
+	//if (pos.y > ls::getHeight() * ls::getTileSize() || pos.x > ls::getWidth() * ls::getTileSize() || pos.x < 0 || pos.y < 0) {
+	//	teleport(ls::getTilePosition(ls::findTiles(ls::START)[0]));
+	//}
 
 	////This gets the world vector for moving the Entity
 	////Currently controlling the speed of the car - something needs done to control speed somehow

@@ -190,7 +190,6 @@ void Level2Scene::Update(const double& dt) {
 		lt->setLapCounter(true);
 	}
 
-
 	//Checks if game is over - will be changed for a variable depending on what player selects when
 	//selecting the track - Either 3 or 5
 	if (lt->getCurrentLap() == 3) {

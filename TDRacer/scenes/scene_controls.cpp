@@ -36,9 +36,6 @@ static shared_ptr<Entity> control;
 
 void ControlScreen::Load() {
 
-	auto getControls = testPlayer->GetCompatibleComponent<PlayerControls>()[0];
-	
-	auto b = getControls->getAccelerateControl();
 
 
 #pragma region Background Setup
@@ -310,21 +307,16 @@ void ControlScreen::Load() {
 #pragma endregion
 
 
-	auto bo = stoi(getControls->getAccelerateControl());
-	cout << "stoi: " << bo << endl;
-	auto bb = KeyValues[bo];
-	cout << "BB: " << endl;
-	
 	{
 		//creates entitys for splash and adds text components
 		control = makeEntity();
 		auto title = control->addComponent<TextComponent>("TD CHAMPIONSHIP RACER");
 		auto selectTrack = control->addComponent<TextComponent>("placeholder SELECTED TRACK");
-		auto accel = control->addComponent<TextComponent>("Accelerate : " + KeyValues[stoi(getControls->getAccelerateControl())]);
-		auto reverse = control->addComponent<TextComponent>("Reverse:    " + KeyValues[stoi(getControls->getReverseControl())]);
-		auto handbrake = control->addComponent<TextComponent>("Handbrake:" + KeyValues[stoi(getControls->getHandBrakeControl())]);
-		auto turnl = control->addComponent<TextComponent>("Turn Left:    " + KeyValues[stoi(getControls->getTurnLeftControl())]);
-		auto turnr = control->addComponent<TextComponent>("Turn Right:   " + KeyValues[stoi(getControls->getTurnRightControl())]);
+		//auto accel = control->addComponent<TextComponent>("Accelerate : " + KeyValues[stoi(getControls->getAccelerateControl())]);
+		//auto reverse = control->addComponent<TextComponent>("Reverse:    " + KeyValues[stoi(getControls->getReverseControl())]);
+		//auto handbrake = control->addComponent<TextComponent>("Handbrake:" + KeyValues[stoi(getControls->getHandBrakeControl())]);
+		//auto turnl = control->addComponent<TextComponent>("Turn Left:    " + KeyValues[stoi(getControls->getTurnLeftControl())]);
+		//auto turnr = control->addComponent<TextComponent>("Turn Right:   " + KeyValues[stoi(getControls->getTurnRightControl())]);
 		auto main = control->addComponent<TextComponent>("Main Menu");
 
 
@@ -335,14 +327,14 @@ void ControlScreen::Load() {
 		//sets text position
 		title->setCenterPos(Engine::getWindowSize().x / 2.f, 100.f, 50);
 		
-		accel->setCenterPos(Engine::getWindowSize().x / 2.1f , 500.f, 50);
-		reverse->setCenterPos(Engine::getWindowSize().x / 2.1f , 560.f, 50);	
-		handbrake->setCenterPos(Engine::getWindowSize().x / 2.1f, 620.f, 50);
-		turnl->setCenterPos(Engine::getWindowSize().x / 2.1f, 680.f, 50);
-		turnr->setCenterPos(Engine::getWindowSize().x / 2.1f , 740.f, 50);
+		//accel->setCenterPos(Engine::getWindowSize().x / 2.1f , 500.f, 50);
+		//reverse->setCenterPos(Engine::getWindowSize().x / 2.1f , 560.f, 50);	
+		//handbrake->setCenterPos(Engine::getWindowSize().x / 2.1f, 620.f, 50);
+		//turnl->setCenterPos(Engine::getWindowSize().x / 2.1f, 680.f, 50);
+		//turnr->setCenterPos(Engine::getWindowSize().x / 2.1f , 740.f, 50);
 		main->setCenterPos(Engine::getWindowSize().x / 2.1f, 880.f, 50);
 
-		accel->setColor(255, 0, 0, 255);
+		//accel->setColor(255, 0, 0, 255);
 	}
 	
 
@@ -575,13 +567,13 @@ void ControlScreen::Update(const double & dt)
 				//sound_cmp[0]->getSound().play();
 				std::this_thread::sleep_for(std::chrono::milliseconds(150));
 
-				auto updatecontrols = testPlayer->GetCompatibleComponent<PlayerControls>()[0];
+				//auto updatecontrols = testPlayer->GetCompatibleComponent<PlayerControls>()[0];
 
-				updatecontrols->ChangeControls("Accelerate", controlsReverse[accelIndex]);
-				updatecontrols->ChangeControls("Reverse", controlsReverse[reverseIndex]);
-				updatecontrols->ChangeControls("Handbrake", controlsReverse[brakeIndex]);
-				updatecontrols->ChangeControls("Left", controlsReverse[leftIndex]);
-				updatecontrols->ChangeControls("Right", controlsReverse[rightIndex]);
+				//updatecontrols->ChangeControls("Accelerate", controlsReverse[accelIndex]);
+				//updatecontrols->ChangeControls("Reverse", controlsReverse[reverseIndex]);
+				//updatecontrols->ChangeControls("Handbrake", controlsReverse[brakeIndex]);
+				//updatecontrols->ChangeControls("Left", controlsReverse[leftIndex]);
+				//updatecontrols->ChangeControls("Right", controlsReverse[rightIndex]);
 
 
 				Engine::ChangeScene(&menuScreen);
