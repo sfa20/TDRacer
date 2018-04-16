@@ -26,77 +26,81 @@ void PlayerPhysicsComponent::update(double dt) {
 
 #pragma region Player Movement
 
-	//Handle keyboard input from user
-	if (Keyboard::isKeyPressed(ctrl->getControl("Accelerate")) || Keyboard::isKeyPressed(ctrl->getControl("Reverse"))) {
+	if (controlsEnabled) {
 
-		auto checkGrass = ls::getTileAt(_parent->GetCompatibleComponent<SpriteComponent>()[0]->getSprite().getPosition() + Vector2f(0, 1));
-		auto checkGrassReverse = ls::getTileAt(_parent->GetCompatibleComponent<SpriteComponent>()[0]->getSprite().getPosition() + Vector2f(0, -1));
+		//Handle keyboard input from user
+		if (Keyboard::isKeyPressed(ctrl->getControl("Accelerate")) || Keyboard::isKeyPressed(ctrl->getControl("Reverse"))) {
+
+			auto checkGrass = ls::getTileAt(_parent->GetCompatibleComponent<SpriteComponent>()[0]->getSprite().getPosition() + Vector2f(0, 1));
+			auto checkGrassReverse = ls::getTileAt(_parent->GetCompatibleComponent<SpriteComponent>()[0]->getSprite().getPosition() + Vector2f(0, -1));
 
 
-		if (Keyboard::isKeyPressed(ctrl->getControl("Accelerate"))) {
-			/*if (getVelocity().x < _maxVelocity.x) {*/
-			//updateFriction();
-			if (checkGrass == 'g') {
-				dampen({ 0.5f, 0.5f });
-				impulse({ -worldVector.x , -worldVector.y });
+			if (Keyboard::isKeyPressed(ctrl->getControl("Accelerate"))) {
+				/*if (getVelocity().x < _maxVelocity.x) {*/
+				//updateFriction();
+				if (checkGrass == 'g') {
+					dampen({ 0.5f, 0.5f });
+					impulse({ -worldVector.x , -worldVector.y });
+				}
+				else {
+					impulse({ -worldVector.x, -worldVector.y });
+				}
 			}
-			else {
-				impulse({ -worldVector.x, -worldVector.y });
+			else if (Keyboard::isKeyPressed(ctrl->getControl("Reverse"))) {
+				//if (getVelocity().x < _maxVelocity.x) {
+				//updateFriction();
+				if (checkGrassReverse == 'g') {
+					dampen({ 0.5f, 0.5f });
+					impulse({ worldVector.x, worldVector.y });
+				}
+				else {
+					impulse({ worldVector.x, worldVector.y });
+
+				}
+				//stopTurning();
+				//}
+
 			}
 		}
-		else if (Keyboard::isKeyPressed(ctrl->getControl("Reverse"))) {
-			//if (getVelocity().x < _maxVelocity.x) {
-			//updateFriction();
-			if (checkGrassReverse == 'g') {
-				dampen({ 0.5f, 0.5f });
-				impulse({ worldVector.x, worldVector.y });
+		else {
+			// Dampen X axis movement
+			dampen({ 0.015f, 0.015f });
+			stopTurning(); //Added
+		}
+
+		//Turning
+		if (Keyboard::isKeyPressed(ctrl->getControl("Left")) || Keyboard::isKeyPressed(ctrl->getControl("Right"))) {
+
+			if (Keyboard::isKeyPressed(ctrl->getControl("Right"))) {
+				turnRight();
+				dampen({ 0.05f, 0.05f });
 			}
-			else {
-				impulse({ worldVector.x, worldVector.y });
-
+			else if (Keyboard::isKeyPressed(ctrl->getControl("Left"))) {
+				turnLeft();
+				dampen({ 0.05f, 0.05f });
 			}
-			//stopTurning();
-			//}
+		}
+		else {
+			// Dampen X axis movement
+			dampen({ 0.015f, 0.015f });
+			stopTurning(); //Added
+		}
+
+
+		//Handbrake
+		if (Keyboard::isKeyPressed(Keyboard::Space)) {
+			updateFriction();
+		}
+
+
+		//Respawn
+		if (Keyboard::isKeyPressed(Keyboard::R)) {
+			teleport(ls::getTilePosition(ls::findTiles(ls::START)[0]));
 
 		}
-	}
-	else {
-		// Dampen X axis movement
-		dampen({ 0.015f, 0.015f });
-		stopTurning(); //Added
-	}
 
-	//Turning
-	if (Keyboard::isKeyPressed(ctrl->getControl("Left")) || Keyboard::isKeyPressed(ctrl->getControl("Right"))) {
-		
-		if (Keyboard::isKeyPressed(ctrl->getControl("Right"))) {
-			turnRight();
-			dampen({ 0.05f, 0.05f });
-		}
-		else if (Keyboard::isKeyPressed(ctrl->getControl("Left"))) {
-			turnLeft();
-			dampen({ 0.05f, 0.05f });
-		}
-	}
-	else {
-		// Dampen X axis movement
-		dampen({ 0.015f, 0.015f });
-		stopTurning(); //Added
-	}
-
-
-	//Handbrake
-	if (Keyboard::isKeyPressed(Keyboard::Space)) {
-		updateFriction();
-	}
-
-
-	//Respawn
-	if (Keyboard::isKeyPressed(Keyboard::R)) {
-		teleport(ls::getTilePosition(ls::findTiles(ls::START)[0]));
 
 	}
-
 #pragma endregion
 
 

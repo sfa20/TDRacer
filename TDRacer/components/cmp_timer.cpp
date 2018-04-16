@@ -95,6 +95,9 @@ std::string Timer::getTime() {
 
 void Timer::update(double dt) {
 
+
+
+
 	if (timer.getElapsedTime().asMilliseconds() > 60000) {
 		mins += 1;
 		timer.restart();

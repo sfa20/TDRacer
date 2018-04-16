@@ -7,23 +7,34 @@ using namespace sf;
 
 namespace Physics {
 static shared_ptr<b2World> world;
-const int32 velocityIterations = 6;
-const int32 positionIterations = 2;
+const int32 velocityIterations = 6;;
+const int32 positionIterations = 2;;
+float pausedTime = 0.f;
 
 void initialise() {
   b2Vec2 gravity(0.0f, 0.0f);
   // Construct a world object, which will hold and simulate the rigid bodies.
   world.reset(new b2World(gravity));
-  
+  int32 velocityIterations = 6;
+  int32 positionIterations = 2;
 }
 
 void shutdown() { world.reset(); }
 
 void update(const double& dt) {
-  world->Step((float)dt, velocityIterations, positionIterations);
+	world->Step((float)dt, velocityIterations, positionIterations);
 }
 
 std::shared_ptr<b2World> GetWorld() { return world; }
+
+const int32 GetVelocityIterations() {
+	return velocityIterations;
+}
+
+const int32 GetPositionIterations() {
+	return positionIterations;
+}
+
 
 const Vector2f bv2_to_sv2(const b2Vec2& in, bool scale) {
   if (scale) {

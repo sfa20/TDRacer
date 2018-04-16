@@ -2,6 +2,7 @@
 
 #include "cmp_physics.h"
 #include "SFML\Window.hpp"
+#include <map>
 
 using namespace sf;
 
@@ -36,6 +37,9 @@ public:
 	void Left();
 	void Right();
 	void Handbrake();
+
+	std::map<int, std::string> KeyValues;
+
 
 	std::string getAccelerateControl();
 	std::string getReverseControl();

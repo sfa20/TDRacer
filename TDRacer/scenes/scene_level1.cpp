@@ -17,6 +17,7 @@
 #include "../components/cmp_car_body.h"
 #include "../components/cmp_player_controls.h"
 #include "../components//cmp_ai_physics.h"
+#include "../components/cmp_pause_menu.h"
 
 using namespace std;
 using namespace sf;
@@ -27,6 +28,7 @@ static shared_ptr<Entity> ai;
 
 static shared_ptr<Entity> raceTimer;
 static shared_ptr<Entity> WinnerMessage;
+static shared_ptr<Entity> pauseMenu;
 
 std::map<int, std::string> KeyValues;
 
@@ -37,7 +39,13 @@ int playeroneLapNo;
 int playertwoLapNo;
 int playeroneCheckpoint;
 int playertwoCheckpoint;
-
+bool active;
+int accelIndex = 0;
+int reverseIndex = 0;
+int brakeIndex = 0;
+int leftIndex = 0;
+//int sizeOfControls;
+int rightIndex = 0;
 
 void Level1Scene::Load() {
 
@@ -505,6 +513,7 @@ void Level1Scene::Load() {
 
 #pragma endregion
 
+
 #pragma region AI Testing
 
 	//Create an PlayerCar Entity, add component and set texture
@@ -545,12 +554,16 @@ void Level1Scene::Load() {
 	auto winnerText = raceTimer->addComponent<TextComponent>(" ");
 	winnerText->setCenterPos(Engine::getWindowSize().x / 2.f, Engine::getWindowSize().y / 2, 60.f);
 
+	pauseMenu = makeEntity();
+	pauseMenu->addComponent<PauseMenu>();
+	pauseMenu->addComponent<PlayerControls>();
+	auto pausecmp = pauseMenu->GetCompatibleComponent<PauseMenu>()[0];
+	pausecmp->active = false;
+	pausecmp->submenuActive = false;
+
 #pragma endregion
 
-
 }
-
-
 
 void Level1Scene::UnLoad() {
 	cout << "Scene 1 Unload" << endl;
@@ -581,6 +594,175 @@ void Level1Scene::Update(const double& dt) {
 
 
 #pragma region CheckRaceStatus
+
+
+#pragma region PauseMenu Test
+	auto pausecmp = pauseMenu->GetCompatibleComponent<PauseMenu>()[0];
+	auto mainTimer = raceTimer->GetCompatibleComponent<Timer>()[0];
+	auto lapsTimer = raceTimer->GetCompatibleComponent<LapTimer>()[0];
+	auto playercmp = player->GetCompatibleComponent<PlayerPhysicsComponent>()[0];
+
+	auto aicmp = ai->GetCompatibleComponent<AIPhysicsComponent>()[0];
+	auto txt_cmp = pauseMenu->GetCompatibleComponent<TextComponent>();
+
+
+	if (Keyboard::isKeyPressed(Keyboard::P)) {
+		pausecmp->active = true;
+		playercmp->dampen(Vector2f(10, 10));
+		playercmp->controlsEnabled = false;
+		aicmp->dampen(Vector2f(10, 10));
+		aicmp->controlsEnabled = false;
+	}
+	
+	if(pausecmp->active || pausecmp->submenuActive) {
+		if (sf::Event::KeyPressed) {
+			
+			if (sf::Keyboard::isKeyPressed(Keyboard::Up)) {
+				if (pausecmp->GetPressedItem() != 1) {
+					pausecmp->MoveUp();
+				}
+			}
+
+			if (sf::Keyboard::isKeyPressed(Keyboard::Down)) {
+				if (pausecmp->GetPressedItem() != 11)
+					pausecmp->MoveDown();
+			}
+
+			if (sf::Keyboard::isKeyPressed(Keyboard::Return)) {
+				switch (pausecmp->GetPressedItem()) {
+
+#pragma region Main Menu
+				case 1:
+					std::cout << "Resume control pressed" << std::endl;
+					std::this_thread::sleep_for(std::chrono::milliseconds(150));
+					pausecmp->active = false;
+					playercmp->controlsEnabled = true;
+					aicmp->controlsEnabled = true;
+					break;
+				case 2:
+					std::cout << "Restart pressed" << std::endl;
+					std::this_thread::sleep_for(std::chrono::milliseconds(150));
+					pausecmp->active = false;
+					Engine::ChangeScene(&level1);
+					break;
+				case 3:
+					std::cout << "Controls 3 pressed" << std::endl;
+					std::this_thread::sleep_for(std::chrono::milliseconds(150));
+					pausecmp->active = false;
+					pausecmp->submenuActive = true;
+					pausecmp->selectedItemIndex = 5;
+					break;
+				case 4:
+					std::cout << "Exit Menu 4 pressed" << std::endl;
+					std::this_thread::sleep_for(std::chrono::milliseconds(150));
+					pausecmp->active = false;
+					Engine::ChangeScene(&menuScreen);
+					break;
+
+#pragma endregion
+
+
+#pragma region Controls Menu
+				case 5:
+					std::cout << "Option 4 pressed" << std::endl;
+					std::this_thread::sleep_for(std::chrono::milliseconds(150));
+					if (accelIndex >= 0)
+					{
+						txt_cmp[5]->SetText("Accelerate: " + controls[accelIndex]);
+						accelIndex++;
+						cout << "test press" << controls[accelIndex] << endl;
+					}
+
+					if (accelIndex == sizeOfControls)
+					{
+						accelIndex = 0;
+						txt_cmp[5]->SetText("Accelerate: " + controls[accelIndex]);
+					}
+					break;
+				case 6:
+					std::cout << "Option 4 pressed" << std::endl;
+					std::this_thread::sleep_for(std::chrono::milliseconds(150));
+					if (reverseIndex >= 0)
+					{
+						txt_cmp[6]->SetText("Reverse: " + controls[reverseIndex]);
+						reverseIndex++;
+						cout << "test press" << controls[reverseIndex] << endl;
+					}
+
+					if (reverseIndex == sizeOfControls)
+					{
+						reverseIndex = 0;
+						txt_cmp[6]->SetText("Reverse: " + controls[reverseIndex]);
+					}
+					break;
+				case 7:
+					std::cout << "Option 4 pressed" << std::endl;
+					std::this_thread::sleep_for(std::chrono::milliseconds(150));
+					if (brakeIndex >= 0)
+					{
+						txt_cmp[7]->SetText("Brake: " + controls[brakeIndex]);
+						brakeIndex++;
+						cout << "test press" << controls[brakeIndex] << endl;
+					}
+
+					if (brakeIndex == sizeOfControls)
+					{
+						brakeIndex = 0;
+						txt_cmp[7]->SetText("Brake: " + controls[brakeIndex]);
+					}
+					break;
+				case 8:
+					std::cout << "Option 4 pressed" << std::endl;
+					std::this_thread::sleep_for(std::chrono::milliseconds(150));
+					if (leftIndex >= 0)
+					{
+						txt_cmp[8]->SetText("Turn Left: " + controls[leftIndex]);
+						leftIndex++;
+
+					}
+
+					if (leftIndex == sizeOfControls)
+					{
+						leftIndex = 0;
+						txt_cmp[8]->SetText("Turn Left: " + controls[leftIndex]);
+					}
+					break;
+				case 9:
+					std::cout << "Option 4 pressed" << std::endl;
+					std::this_thread::sleep_for(std::chrono::milliseconds(150));
+					if (rightIndex >= 0)
+					{
+						txt_cmp[9]->SetText("Turn Right" + controls[rightIndex]);
+						rightIndex++;
+					}
+
+					if (rightIndex == sizeOfControls)
+					{
+						rightIndex = 0;
+						txt_cmp[9]->SetText("Turn Right:" + controls[rightIndex]);
+					}
+					break;
+				case 10:
+					std::cout << "Exit Menu pressed" << std::endl;
+					std::this_thread::sleep_for(std::chrono::milliseconds(150));
+					pausecmp->active = false;
+					pausecmp->active = true;
+					pausecmp->submenuActive = false;
+					playercmp->controlsEnabled = true;
+					aicmp->controlsEnabled = true;
+					break;
+
+#pragma endregion
+
+				}
+
+			}
+		}
+	}
+	
+#pragma endregion
+
+	
 
 #pragma region Lap Checker
 

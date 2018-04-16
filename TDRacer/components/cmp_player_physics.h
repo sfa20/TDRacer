@@ -17,6 +17,7 @@ private:
 public:
   void update(double dt) override;
   explicit PlayerPhysicsComponent(Entity* p, const sf::Vector2f& size);
+  //bool controlsEnabled;
 
   PlayerPhysicsComponent() = delete;
 };
