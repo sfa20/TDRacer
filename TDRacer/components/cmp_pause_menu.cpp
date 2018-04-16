@@ -7,11 +7,11 @@ using namespace sf;
 
 PauseMenu::PauseMenu(Entity* p) : Component(p) {
 	
-	_parent->addComponent<TextComponent>("PAUSED");
-	_parent->addComponent<TextComponent>("Resume");
-	_parent->addComponent<TextComponent>("Restart");
-	_parent->addComponent<TextComponent>("Controls");
-	_parent->addComponent<TextComponent>("Quit");
+	_parent->addComponent<TextComponent>("");
+	_parent->addComponent<TextComponent>("");
+	_parent->addComponent<TextComponent>("");
+	_parent->addComponent<TextComponent>("");
+	_parent->addComponent<TextComponent>("");
 
 	auto textComps = _parent->GetCompatibleComponent<TextComponent>();
 
@@ -20,8 +20,8 @@ PauseMenu::PauseMenu(Entity* p) : Component(p) {
 	textComps[2]->setCenterPos(Engine::getWindowSize().x / 2.f, 570.f, 50.f);
 	textComps[3]->setCenterPos(Engine::getWindowSize().x / 2.f, 620.f, 50.f);
 	textComps[4]->setCenterPos(Engine::getWindowSize().x / 2.f, 670.f, 50.f);
-
 	textComps[1]->setColor(255, 0, 0, 255);
+
 
 	selectedItemIndex = 1;
 }
@@ -54,7 +54,24 @@ void PauseMenu::MoveDown() {
 
 
 void PauseMenu::update(double dt) {
+	auto textComps = _parent->GetCompatibleComponent<TextComponent>();
 
+	if (active) {
+
+		textComps[0]->SetText("PAUSED");
+		textComps[1]->SetText("Resume");
+		textComps[2]->SetText("Restart");
+		textComps[3]->SetText("Controls");
+		textComps[4]->SetText("Quit");
+
+	}
+	else {
+		textComps[0]->SetText("");
+		textComps[1]->SetText("");
+		textComps[2]->SetText("");
+		textComps[3]->SetText("");
+		textComps[4]->SetText("");
+	}
 
 }
 

@@ -39,7 +39,7 @@ int playeroneLapNo;
 int playertwoLapNo;
 int playeroneCheckpoint;
 int playertwoCheckpoint;
-
+bool active;
 
 void Level1Scene::Load() {
 
@@ -548,6 +548,10 @@ void Level1Scene::Load() {
 	auto winnerText = raceTimer->addComponent<TextComponent>(" ");
 	winnerText->setCenterPos(Engine::getWindowSize().x / 2.f, Engine::getWindowSize().y / 2, 60.f);
 
+	pauseMenu = makeEntity();
+	pauseMenu->addComponent<PauseMenu>();
+	auto pausecmp = pauseMenu->GetCompatibleComponent<PauseMenu>()[0];
+	pausecmp->active = false;
 #pragma endregion
 
 
@@ -586,11 +590,44 @@ void Level1Scene::Update(const double& dt) {
 #pragma region CheckRaceStatus
 
 #pragma region PauseMenu Test
+	auto pausecmp = pauseMenu->GetCompatibleComponent<PauseMenu>()[0];
 
 	if (Keyboard::isKeyPressed(Keyboard::P)) {
-		pauseMenu = makeEntity();
-		pauseMenu->addComponent<PauseMenu>();
+		
+		pausecmp->active = true;
 	}
+	
+	if(pausecmp->active) {
+		if (sf::Event::KeyPressed) {
+			
+			if (sf::Keyboard::isKeyPressed(Keyboard::Up)) {
+				if (pausecmp->GetPressedItem() != 1)
+					pausecmp->MoveUp();
+			}
+
+			if (sf::Keyboard::isKeyPressed(Keyboard::Down)) {
+				if (pausecmp->GetPressedItem() != 4)
+					pausecmp->MoveDown();
+			}
+
+			if (sf::Keyboard::isKeyPressed(Keyboard::Return)) {
+				switch (pausecmp->GetPressedItem()) {
+
+				case 1:
+					std::cout << "Option 1 pressed" << std::endl;
+					std::this_thread::sleep_for(std::chrono::milliseconds(150));
+					pausecmp->active = false;
+					break;
+				case 2:
+					std::cout << "Option 2 pressed" << std::endl;
+					std::this_thread::sleep_for(std::chrono::milliseconds(150));
+					pausecmp->active = false;
+					break;
+				}
+			}
+		}
+	}
+	
 #pragma endregion
 
 

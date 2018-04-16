@@ -5,7 +5,7 @@
 class PauseMenu : public Component {
 public:
 	explicit PauseMenu(Entity* p);
-
+	bool active;
 	int GetPressedItem() { return selectedItemIndex; } //added - sfa20	
 	void MoveUp();
 	void MoveDown();

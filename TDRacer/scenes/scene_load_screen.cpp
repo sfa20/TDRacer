@@ -252,6 +252,7 @@ void LoadScreen::Load()
 	setLoaded(true);
 	selectedItemIndex = 1;
 }
+
 void LoadScreen::MoveUp() {
 	auto txt_cmp = loadS->GetCompatibleComponent<TextComponent>();
 
@@ -327,6 +328,8 @@ void LoadScreen::Update(const double & dt)
 		}
 
 	}
+	
+	
 	//Handles Keyboard input and checks against the Menu Options
 	if (sf::Event::KeyPressed) {
 
