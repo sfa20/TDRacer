@@ -446,11 +446,8 @@ void Level1Scene::Load() {
 	//for accel, brake etc and will allow these to be dynamically changed through an
 	//options menu
 	auto aictrl = player->addComponent<PlayerControls>();
-	//aictrl->ChangeControls("Accelerate", KeyValues[2]);
-	//KeyValues[2];
+	//aictrl->ChangeControls("Accelerate", KeyValues[2]);  
 
-	//aictrl->
-	//auto a = KeyValues[1];
 
 	//Add a Player Physics Component
 	auto aip = ai->addComponent<AIPhysicsComponent>(Vector2f(27.9f, 18.f));
@@ -462,12 +459,6 @@ void Level1Scene::Load() {
 
 	//Set the players starting position
 	ai->setPosition(Vector2f(lrv));
-
-
-
-
-
-
 
 
 #pragma endregion

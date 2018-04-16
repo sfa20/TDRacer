@@ -7,6 +7,22 @@ using namespace std;
 using namespace sf;
 using namespace Physics;
 
+AIPhysicsComponent::AIPhysicsComponent(Entity* p, const Vector2f& size) : PhysicsComponent(p, true, size) {
+	_size = sv2_to_bv2(size, true);
+	teleport(ls::getTilePosition(ls::findTiles(ls::STARTRIGHT)[0]));
+	auto svsize = bv2_to_sv2(_size, true);
+	maxSpeed = 40.f;
+	_maxVelocity = Vector2f(200.f, 400.f);
+	_groundspeed = 60.f;
+	_body->SetSleepingAllowed(false);
+	_body->SetFixedRotation(true);
+
+	//Bullet items have higher-res collision detection
+	_body->SetBullet(true);
+
+}
+
+
 void AIPhysicsComponent::update(double dt) {
 
 	const auto pos = _parent->getPosition();
@@ -104,20 +120,4 @@ void AIPhysicsComponent::update(double dt) {
 }
 
 
-AIPhysicsComponent::AIPhysicsComponent(Entity* p, const Vector2f& size) : PhysicsComponent(p, true, size) {
-	//_size = sv2_to_bv2(size, true);
-
-	//auto svsize = bv2_to_sv2(_size, true);
-	//cout << "b2vec size:" << "\nX: " << _size.x << "\nY: " <<_size.y << "\n---------------------------" << endl;
-	//cout << "vector2f size: " << "\nX: " << svsize.x << "\nY: " << svsize.y << "\n---------------------------" << endl;
-	//maxSpeed = 40.f;
-	//_maxVelocity = Vector2f(200.f, 400.f);
-	//_groundspeed = 60.f;
-	//_body->SetSleepingAllowed(false);
-	//_body->SetFixedRotation(true);
-	//
-	////Bullet items have higher-res collision detection
-	//_body->SetBullet(true);
-
-}
 
