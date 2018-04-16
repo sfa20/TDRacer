@@ -324,6 +324,80 @@ void Level1Scene::Load() {
 		}
 
 
+#pragma region Testing Checkpoints
+
+		auto checkpoint1Tiles = ls::findTiles(ls::CHECKPOINT1);
+		for each (auto t in checkpoint1Tiles)
+		{
+			static shared_ptr<Entity> chkpt1;
+			chkpt1 = makeEntity();
+			auto t1 = chkpt1->addComponent<SpriteComponent>();
+			t1->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
+			t1->getSprite().setScale(scale);
+			//Add a new sprite component set texture and scale
+			auto t2 = chkpt1->addComponent<SpriteComponent>();
+			t2->getSprite().setTexture(*Resources::get<Texture>("Straights/straight_vertical_noBorder_right.png"));
+			t2->getSprite().setScale(scale);
+
+
+			//get tile position - vector2f
+			auto g = ls::getTilePosition(t);
+			chkpt1->setPosition(g);
+
+		}
+
+		auto checkpoint2Tiles = ls::findTiles(ls::CHECKPOINT2);
+		for each (auto t in checkpoint2Tiles)
+		{
+			static shared_ptr<Entity> chkpt2;
+			chkpt2 = makeEntity();
+			auto t1 = chkpt2->addComponent<SpriteComponent>();
+			t1->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
+			t1->getSprite().setScale(scale);
+			//Add a new sprite component set texture and scale
+			auto t2 = chkpt2->addComponent<SpriteComponent>();
+			t2->getSprite().setTexture(*Resources::get<Texture>("Straights/straight_noBorder.png"));
+			t2->getSprite().setScale(scale);
+
+
+			//get tile position - vector2f
+			auto g = ls::getTilePosition(t);
+			chkpt2->setPosition(g);
+
+		}
+
+		auto checkpoint3Tiles = ls::findTiles(ls::CHECKPOINT3);
+		for each (auto t in checkpoint3Tiles)
+		{
+			static shared_ptr<Entity> chkpt3;
+			chkpt3 = makeEntity();
+			auto t1 = chkpt3->addComponent<SpriteComponent>();
+			t1->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
+			t1->getSprite().setScale(scale);
+			//Add a new sprite component set texture and scale
+			auto t2 = chkpt3->addComponent<SpriteComponent>();
+			t2->getSprite().setTexture(*Resources::get<Texture>("Straights/straight_vertical_noBorder_left.png"));
+			t2->getSprite().setScale(scale);
+
+
+			//get tile position - vector2f
+			auto g = ls::getTilePosition(t);
+			chkpt3->setPosition(g);
+
+		}
+
+
+
+
+
+
+
+
+#pragma endregion
+
+
+
+
 
 #pragma endregion
 
@@ -476,6 +550,7 @@ void Level1Scene::Load() {
 }
 
 
+
 void Level1Scene::UnLoad() {
 	cout << "Scene 1 Unload" << endl;
 
@@ -546,7 +621,7 @@ void Level1Scene::Update(const double& dt) {
 
 	//Checks if game is over - will be changed for a variable depending on what player selects when
 	//selecting the track - Either 3 or 5
-	if (lt->getCurrentLap() == 3) {
+	if (lt->getCurrentLap() == 5) {
 		cout << "Race Over" << endl;
 		player->setForDelete();
 		auto text = raceTimer->GetCompatibleComponent<TextComponent>()[1];

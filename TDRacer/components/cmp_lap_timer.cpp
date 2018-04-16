@@ -8,7 +8,7 @@ using namespace sf;
 
 LapTimer::LapTimer(Entity* p) : Timer(p){
 
-	currentLap = 1;
+	currentLap = 0;
 
 	lap1 = "0:00:00";
 	lap2 = "0:00:00";
