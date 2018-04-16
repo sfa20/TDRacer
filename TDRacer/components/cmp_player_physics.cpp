@@ -2,7 +2,7 @@
 #include "system_physics.h"
 #include <LevelSystem.h>
 #include <SFML/Window/Keyboard.hpp>
-
+#include "cmp_player_controls.h"
 using namespace std;
 using namespace sf;
 using namespace Physics;
@@ -10,7 +10,7 @@ using namespace Physics;
 void PlayerPhysicsComponent::update(double dt) {
 
 	const auto pos = _parent->getPosition();
-	//
+	
 	//Teleport to start if we fall off map. 
 	if (pos.y > ls::getHeight() * ls::getTileSize() || pos.x > ls::getWidth() * ls::getTileSize() || pos.x < 0 || pos.y < 0) {
 		teleport(ls::getTilePosition(ls::findTiles(ls::START)[0]));
@@ -21,27 +21,32 @@ void PlayerPhysicsComponent::update(double dt) {
 	//gets the currend speed in forward direction
 	auto worldVector = _body->GetWorldVector(b2Vec2(0, 1));
 
-	//Handle keyboard input from user
-	if (Keyboard::isKeyPressed(Keyboard::W) || Keyboard::isKeyPressed(Keyboard::S)) {
+	//Get the defined controls for the player
+	auto ctrl = _parent->GetCompatibleComponent<PlayerControls>()[0];
 
-		auto checkGrass = ls::getTileAt(_parent->GetCompatibleComponent<SpriteComponent>()[0]->getSprite().getPosition() + Vector2f(0,1));
+#pragma region Player Movement
+
+	//Handle keyboard input from user
+	if (Keyboard::isKeyPressed(ctrl->getControl("Accelerate")) || Keyboard::isKeyPressed(ctrl->getControl("Reverse"))) {
+
+		auto checkGrass = ls::getTileAt(_parent->GetCompatibleComponent<SpriteComponent>()[0]->getSprite().getPosition() + Vector2f(0, 1));
 		auto checkGrassReverse = ls::getTileAt(_parent->GetCompatibleComponent<SpriteComponent>()[0]->getSprite().getPosition() + Vector2f(0, -1));
 
-		
-		if (Keyboard::isKeyPressed(Keyboard::W)) {
+
+		if (Keyboard::isKeyPressed(ctrl->getControl("Accelerate"))) {
 			/*if (getVelocity().x < _maxVelocity.x) {*/
-				//updateFriction();
+			//updateFriction();
 			if (checkGrass == 'g') {
 				dampen({ 0.5f, 0.5f });
-				impulse({ -worldVector.x , -worldVector.y});
+				impulse({ -worldVector.x , -worldVector.y });
 			}
 			else {
 				impulse({ -worldVector.x, -worldVector.y });
 			}
 		}
-		else if (Keyboard::isKeyPressed(Keyboard::S)) {
+		else if (Keyboard::isKeyPressed(ctrl->getControl("Reverse"))) {
 			//if (getVelocity().x < _maxVelocity.x) {
-				//updateFriction();
+			//updateFriction();
 			if (checkGrassReverse == 'g') {
 				dampen({ 0.5f, 0.5f });
 				impulse({ worldVector.x, worldVector.y });
@@ -50,9 +55,9 @@ void PlayerPhysicsComponent::update(double dt) {
 				impulse({ worldVector.x, worldVector.y });
 
 			}
-				//stopTurning();
+			//stopTurning();
 			//}
-			
+
 		}
 	}
 	else {
@@ -62,26 +67,16 @@ void PlayerPhysicsComponent::update(double dt) {
 	}
 
 	//Turning
-	if (Keyboard::isKeyPressed(Keyboard::A) || Keyboard::isKeyPressed(Keyboard::D)) {
-	
-		if (Keyboard::isKeyPressed(Keyboard::D)) {
-			
+	if (Keyboard::isKeyPressed(ctrl->getControl("Left")) || Keyboard::isKeyPressed(ctrl->getControl("Right"))) {
+		
+		if (Keyboard::isKeyPressed(ctrl->getControl("Right"))) {
 			turnRight();
 			dampen({ 0.05f, 0.05f });
-			//impulse({ -worldVector.x, -worldVector.y }); 
-			//updateFriction();
-
 		}
-		else if (Keyboard::isKeyPressed(Keyboard::A)) {
-			//cout << getVelocity() << en5dl;
-			//impulse({ -worldVector.x, -worldVector.y });
+		else if (Keyboard::isKeyPressed(ctrl->getControl("Left"))) {
 			turnLeft();
 			dampen({ 0.05f, 0.05f });
-
-			//updateFriction();
-
 		}
-	
 	}
 	else {
 		// Dampen X axis movement
@@ -102,14 +97,8 @@ void PlayerPhysicsComponent::update(double dt) {
 
 	}
 
-	//Old Impulse
-	//		//impulse({0, -(float)(dt * _groundspeed) });
-	
-	// Clamp velocity.
-	//auto v = getVelocity();
-	//v.x = copysign(min(abs(v.x), _maxVelocity.x), v.x);
-	//v.y = copysign(min(abs(v.y), _maxVelocity.y), v.y);
-	//setVelocity(v);
+#pragma endregion
+
 
 	PhysicsComponent::update(dt);
 }
@@ -132,5 +121,3 @@ PlayerPhysicsComponent::PlayerPhysicsComponent(Entity* p, const Vector2f& size) 
 
 }
 
-
-//Engine::GetWindow().mapPixelToCoords
