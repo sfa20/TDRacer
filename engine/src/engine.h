@@ -17,7 +17,7 @@ public:
 	virtual void Render();
 	bool isLoaded() const;
 	std::shared_ptr<Entity> makeEntity();
-	
+
 	////added
 	/*mutable sf::Vector2f scale = { 0.f,0.f };
 	mutable float size = 0.f;
@@ -41,6 +41,7 @@ public:
 	static void Start(unsigned int width, unsigned int height, const std::string& gameName, Scene* scn, bool isFullscreen);
 	static void ChangeScene(Scene*);
 	static sf::RenderWindow& GetWindow();
+	static sf::Event& GetEvent();
 	static sf::Vector2u getWindowSize();
 	static void setVsync(bool b);
 

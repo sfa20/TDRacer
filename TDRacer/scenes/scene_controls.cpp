@@ -374,4 +374,28 @@ void ControlScreen::Update(const double & dt)
 			}
 		}
 	}
+
+	if (sf::Joystick::isButtonPressed(0, 0) || sf::Joystick::isButtonPressed(0, 7)) {
+
+		switch (GetPressedItem()) {
+
+		case 2:
+			std::cout << "Track 1 button has been pressed" << std::endl;
+			sound_cmp[0]->getSound().play();
+			std::this_thread::sleep_for(std::chrono::milliseconds(150));
+			Engine::ChangeScene(&level1);
+			break;
+		case 3:
+			std::cout << "Track 2 Options button has been pressed" << std::endl;
+			std::this_thread::sleep_for(std::chrono::milliseconds(150));
+			sound_cmp[0]->getSound().play();
+			Engine::ChangeScene(&level1);
+			break;
+		case 4:
+			std::cout << "Track 3 button has been pressed" << std::endl;
+			sound_cmp[0]->getSound().play();
+			std::this_thread::sleep_for(std::chrono::milliseconds(150));
+			break;
+		}
+	}
 }

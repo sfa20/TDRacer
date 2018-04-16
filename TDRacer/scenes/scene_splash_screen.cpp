@@ -9,6 +9,7 @@
 #include "../components/cmp_sprite.h"
 #include "../components//cmp_sound.h"
 #include <LevelSystem.h>
+#include "engine.h"
 
 
 using namespace std;
@@ -17,7 +18,44 @@ using namespace Resources;
 
 static std::shared_ptr<Entity> txt;
 
+bool joystick1 = false;
+bool joystick2 = false;
+
+int j1buttonCount = 0;
+int j2buttonCount = 0;
+
+bool Left = false;
+bool right = false;
+bool up = false;
+bool down = false;
+bool idle = true;
+
+bool hasAxis;
+
 void SplashScreen::Load() {
+
+	bool hasAxis = sf::Joystick::hasAxis(0, sf::Joystick::PovY);
+
+	bool one = sf::Joystick::hasAxis(0, sf::Joystick::Axis::X);
+
+
+
+	if (sf::Joystick::isConnected(0) || sf::Joystick::isConnected(1))
+	{
+		if (sf::Joystick::isConnected(0)) {
+			cout << "joystick 0  connected" << endl;
+			j1buttonCount = sf::Joystick::getButtonCount(0);
+			joystick1 = true;
+		}
+
+		if (sf::Joystick::isConnected(1)) {
+			cout << "joystick 1  connected" << endl;
+			j2buttonCount = sf::Joystick::getButtonCount(1);
+			joystick2 = true;
+		}
+
+
+	}
 
 	ls::loadLevelFile("res/opening.txt", 50.f);
 
@@ -206,8 +244,6 @@ void SplashScreen::Load() {
 		splash1->setPosition(sf::Vector2f(Engine::getWindowSize().y / 2.f - 100, 890));
 
 
-
-
 		////creates entitys for splash and adds text components
 		txt = makeEntity();
 		auto title = txt->addComponent<TextComponent>("TD CHAMPIONSHIP RACER");
@@ -223,6 +259,19 @@ void SplashScreen::Load() {
 
 void SplashScreen::Update(const double & dt)
 {
+	//joystick controls
+	if (joystick1 == true || joystick2 == true)
+	{
+		if (sf::Joystick::isButtonPressed(0, 0) || sf::Joystick::isButtonPressed(0, 7) || sf::Joystick::isButtonPressed(1, 0) || sf::Joystick::isButtonPressed(1, 7))
+		{
+			cout << " joystick button pressed" << endl;
+
+			std::this_thread::sleep_for(std::chrono::milliseconds(150));
+			Engine::ChangeScene(&menuScreen);
+		}
+	}
+
+	//keyboard and mouse controls
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) || sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 		std::this_thread::sleep_for(std::chrono::milliseconds(500));
 		Engine::ChangeScene(&menuScreen);
@@ -230,4 +279,16 @@ void SplashScreen::Update(const double & dt)
 
 	Scene::Update(dt);
 }
+
+/////
+// a = 0
+// b = 1
+// x = 2
+// y = 3
+// lb = 4
+// rb = 5
+// select = 6
+// start = 7
+// l3 = 8
+// r3 = 9
 

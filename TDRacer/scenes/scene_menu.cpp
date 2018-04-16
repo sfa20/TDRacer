@@ -414,6 +414,66 @@ void MenuScreen::Update(const double& dt) {
 
 	window.pollEvent(event);
 
+
+	//joystick events 	
+	Vector2f didItMove(sf::Joystick::getAxisPosition(0, sf::Joystick::X),
+		sf::Joystick::getAxisPosition(0, sf::Joystick::Y));
+
+
+	if (didItMove.x > 15) {
+		cout << " joystick right pressed" << endl;
+		std::this_thread::sleep_for(std::chrono::milliseconds(150));
+	}
+
+	if (didItMove.x < -15) {
+		cout << " joystick left pressed" << endl;
+		std::this_thread::sleep_for(std::chrono::milliseconds(150));
+	}
+
+	if (didItMove.y < -15) {
+		if (selectedItemIndex - 1 > 0) {
+			txt_cmp[selectedItemIndex]->setColor(255, 255, 255, 255);
+			selectedItemIndex--;
+			txt_cmp[selectedItemIndex]->setColor(255, 0, 0, 255);
+			std::this_thread::sleep_for(std::chrono::milliseconds(150));
+		}
+		cout << " joystick up pressed" << endl;
+		std::this_thread::sleep_for(std::chrono::milliseconds(150));
+	}
+
+	if (didItMove.y > 15) {
+		if (selectedItemIndex + 1 < 5) {
+			txt_cmp[selectedItemIndex]->setColor(255, 255, 255, 255);
+			selectedItemIndex++;
+			txt_cmp[selectedItemIndex]->setColor(255, 0, 0, 255);
+			std::this_thread::sleep_for(std::chrono::milliseconds(150));
+		}
+		cout << " joystick down pressed" << endl;
+		std::this_thread::sleep_for(std::chrono::milliseconds(150));
+	}
+
+
+
+	if (txt_cmp[1]->GetText().getGlobalBounds().contains(mousePosF)) {
+		txt_cmp[selectedItemIndex]->setColor(255, 255, 255, 255);
+		selectedItemIndex = 1;
+		txt_cmp[selectedItemIndex]->setColor(255, 0, 0, 255);
+	}
+	else if (txt_cmp[2]->GetText().getGlobalBounds().contains(mousePosF)) {
+		txt_cmp[selectedItemIndex]->setColor(255, 255, 255, 255);
+		selectedItemIndex = 2;
+		txt_cmp[selectedItemIndex]->setColor(255, 0, 0, 255);
+	}
+	else if (txt_cmp[3]->GetText().getGlobalBounds().contains(mousePosF)) {
+		txt_cmp[selectedItemIndex]->setColor(255, 255, 255, 255);
+		selectedItemIndex = 3;
+		txt_cmp[selectedItemIndex]->setColor(255, 0, 0, 255);
+	}
+	else if (txt_cmp[4]->GetText().getGlobalBounds().contains(mousePosF)) {
+		txt_cmp[selectedItemIndex]->setColor(255, 255, 255, 255);
+		selectedItemIndex = 4;
+		txt_cmp[selectedItemIndex]->setColor(255, 0, 0, 255);
+	}
 	//Handles this mouse hovering over the menu options
 	if (sf::Event::MouseMoved) {
 
@@ -511,6 +571,34 @@ void MenuScreen::Update(const double& dt) {
 				window.close();
 				break;
 			}
+		}
+	}
+
+	if (sf::Joystick::isButtonPressed(0, 0) || sf::Joystick::isButtonPressed(0, 7)) {
+
+		switch (GetPressedItem()) {
+
+		case 1:
+			std::cout << "Play game button has been pressed joystick" << std::endl;
+			sound_cmp[0]->getSound().play();
+			std::this_thread::sleep_for(std::chrono::milliseconds(150));
+			Engine::ChangeScene(&loadScreen);
+			break;
+		case 2:
+			std::cout << "Options button has been pressed joystick" << std::endl;
+			sound_cmp[0]->getSound().play();
+			std::this_thread::sleep_for(std::chrono::milliseconds(150));
+			Engine::ChangeScene(&optionScreen);
+			break;
+		case 3:
+			std::cout << "Credits button has been pressed joystick" << std::endl;
+			sound_cmp[0]->getSound().play();
+			std::this_thread::sleep_for(std::chrono::milliseconds(150));
+			break;
+		case 4:
+			sound_cmp[0]->getSound().play();
+			window.close();
+			break;
 		}
 	}
 }

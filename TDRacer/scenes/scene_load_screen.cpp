@@ -398,6 +398,34 @@ void LoadScreen::Update(const double & dt)
 
 	startWindow.pollEvent(startEvent);
 
+	//joystick events 	
+	Vector2f didItMove(sf::Joystick::getAxisPosition(0, sf::Joystick::X),
+		sf::Joystick::getAxisPosition(0, sf::Joystick::Y));
+
+
+
+	if (didItMove.y < -15) {
+		if (selectedItemIndex - 1 > 0) {
+			txt_cmp[selectedItemIndex]->setColor(255, 255, 255, 255);
+			selectedItemIndex--;
+			txt_cmp[selectedItemIndex]->setColor(255, 0, 0, 255);
+			std::this_thread::sleep_for(std::chrono::milliseconds(150));
+		}
+		cout << " joystick up pressed" << endl;
+		std::this_thread::sleep_for(std::chrono::milliseconds(150));
+	}
+
+	if (didItMove.y > 15) {
+		if (selectedItemIndex + 1 < 3) {
+			txt_cmp[selectedItemIndex]->setColor(255, 255, 255, 255);
+			selectedItemIndex++;
+			txt_cmp[selectedItemIndex]->setColor(255, 0, 0, 255);
+			std::this_thread::sleep_for(std::chrono::milliseconds(150));
+		}
+		cout << " joystick down pressed" << endl;
+		std::this_thread::sleep_for(std::chrono::milliseconds(150));
+	}
+
 	//Handles this mouse hovering over the menu options
 	if (sf::Event::MouseMoved) {
 
@@ -464,6 +492,25 @@ void LoadScreen::Update(const double & dt)
 			}
 		}
 
+	}
+
+	if (sf::Joystick::isButtonPressed(0, 0) || sf::Joystick::isButtonPressed(0, 7)) {
+
+		switch (GetPressedItem()) {
+
+		case 1:
+			std::cout << "new game button has been pressed joystick" << std::endl;
+			sound_cmp[0]->getSound().play();
+			std::this_thread::sleep_for(std::chrono::milliseconds(150));
+			Engine::ChangeScene(&avatarScreen);
+			break;
+		case 2:
+			std::cout << "load game button has been pressed joystick" << std::endl;
+			sound_cmp[0]->getSound().play();
+			std::this_thread::sleep_for(std::chrono::milliseconds(150));
+			Engine::ChangeScene(&loadPScreen);
+			break;
+		}
 	}
 }
 
