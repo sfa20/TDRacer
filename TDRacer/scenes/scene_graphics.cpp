@@ -259,6 +259,121 @@ void GraphicScreen::Load() {
 
 		}
 
+		auto blueTiles = ls::findTiles(ls::BLUETENT);
+		for each (auto t in blueTiles)
+		{
+			static shared_ptr<Entity> blue;
+			blue = makeEntity();
+
+			auto t1 = blue->addComponent<SpriteComponent>();
+			t1->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
+			t1->getSprite().setScale(0.400f, 0.400f);
+			//Add a new sprite component set texture and scale
+			auto t2 = blue->addComponent<SpriteComponent>();
+			t2->getSprite().setTexture(*Resources::get<Texture>("blue_tent.png"));
+			t2->getSprite().setScale(0.400f, 0.400f);
+
+
+			//get tile position - vector2f
+			auto g = ls::getTilePosition(t);
+			blue->setPosition(g);
+			/*t1->getSprite().setPosition(g);
+			t2->getSprite().setPosition(g);*/
+
+		}
+
+		auto redTiles = ls::findTiles(ls::REDTENT);
+		for each (auto t in redTiles)
+		{
+			static shared_ptr<Entity> red;
+			red = makeEntity();
+
+			auto t1 = red->addComponent<SpriteComponent>();
+			t1->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
+			t1->getSprite().setScale(0.400f, 0.400f);
+			//Add a new sprite component set texture and scale
+			auto t2 = red->addComponent<SpriteComponent>();
+			t2->getSprite().setTexture(*Resources::get<Texture>("red_tent.png"));
+			t2->getSprite().setScale(0.400f, 0.400f);
+
+
+			//get tile position - vector2f
+			auto g = ls::getTilePosition(t);
+			red->setPosition(g);
+			/*t1->getSprite().setPosition(g);
+			t2->getSprite().setPosition(g);*/
+
+		}
+
+		auto standTiles = ls::findTiles(ls::STANDUP);
+		for each (auto t in standTiles)
+		{
+			static shared_ptr<Entity> stand;
+			stand = makeEntity();
+
+			auto t1 = stand->addComponent<SpriteComponent>();
+			t1->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
+			t1->getSprite().setScale(0.400f, 0.400f);
+			//Add a new sprite component set texture and scale
+			auto t2 = stand->addComponent<SpriteComponent>();
+			t2->getSprite().setTexture(*Resources::get<Texture>("stand.png"));
+			t2->getSprite().setScale(0.400f, 0.400f);
+
+
+			//get tile position - vector2f
+			auto g = ls::getTilePosition(t);
+			stand->setPosition(g);
+			/*t1->getSprite().setPosition(g);
+			t2->getSprite().setPosition(g);*/
+
+		}
+
+		auto standDwnTiles = ls::findTiles(ls::STANDDWN);
+		for each (auto t in standDwnTiles)
+		{
+			static shared_ptr<Entity> standDwn;
+			standDwn = makeEntity();
+
+			auto t1 = standDwn->addComponent<SpriteComponent>();
+			t1->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
+			t1->getSprite().setScale(0.400f, 0.400f);
+			//Add a new sprite component set texture and scale
+			auto t2 = standDwn->addComponent<SpriteComponent>();
+			t2->getSprite().setTexture(*Resources::get<Texture>("stand.png"));
+			t2->getSprite().setScale(0.400f, 0.400f);
+
+
+			//get tile position - vector2f
+			auto g = ls::getTilePosition(t);
+			standDwn->setPosition(g);
+			/*t1->getSprite().setPosition(g);
+			t2->getSprite().setPosition(g);*/
+
+		}
+
+		auto treeTiles = ls::findTiles(ls::TREEL);
+		for each (auto t in treeTiles)
+		{
+			static shared_ptr<Entity> tree;
+			tree = makeEntity();
+
+			auto t1 = tree->addComponent<SpriteComponent>();
+			t1->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
+			t1->getSprite().setScale(0.400f, 0.400f);
+			//Add a new sprite component set texture and scale
+			auto t2 = tree->addComponent<SpriteComponent>();
+			t2->getSprite().setTexture(*Resources::get<Texture>("tree_large.png"));
+			t2->getSprite().setScale(0.400f, 0.400f);
+
+
+			//get tile position - vector2f
+			auto g = ls::getTilePosition(t);
+			tree->setPosition(g);
+			/*t1->getSprite().setPosition(g);
+			t2->getSprite().setPosition(g);*/
+
+		}
+
 		//converts current desktop mode to display in control3 
 		auto a = VideoMode::getDesktopMode().width;
 		auto b = VideoMode::getDesktopMode().height;
@@ -332,6 +447,43 @@ void GraphicScreen::Update(const double & dt)
 
 	window.pollEvent(event);
 
+	//joystick events 	
+	Vector2f didItMove(sf::Joystick::getAxisPosition(0, sf::Joystick::X),
+		sf::Joystick::getAxisPosition(0, sf::Joystick::Y));
+
+
+	if (didItMove.x > 15) {
+		cout << " joystick right pressed" << endl;
+		std::this_thread::sleep_for(std::chrono::milliseconds(150));
+	}
+
+	if (didItMove.x < -15) {
+		cout << " joystick left pressed" << endl;
+		std::this_thread::sleep_for(std::chrono::milliseconds(150));
+	}
+
+	if (didItMove.y < -15) {
+		if (selectedItemIndex - 1 > 0) {
+			txt_cmp[selectedItemIndex]->setColor(255, 255, 255, 255);
+			selectedItemIndex--;
+			txt_cmp[selectedItemIndex]->setColor(255, 0, 0, 255);
+			std::this_thread::sleep_for(std::chrono::milliseconds(150));
+		}
+		cout << " joystick up pressed" << endl;
+		std::this_thread::sleep_for(std::chrono::milliseconds(150));
+	}
+
+	if (didItMove.y > 15) {
+		if (selectedItemIndex + 1 < 5) {
+			txt_cmp[selectedItemIndex]->setColor(255, 255, 255, 255);
+			selectedItemIndex++;
+			txt_cmp[selectedItemIndex]->setColor(255, 0, 0, 255);
+			std::this_thread::sleep_for(std::chrono::milliseconds(150));
+		}
+		cout << " joystick down pressed" << endl;
+		std::this_thread::sleep_for(std::chrono::milliseconds(150));
+	}
+
 	//Handles this mouse hovering over the menu options
 	if (sf::Event::MouseMoved) {
 
@@ -396,8 +548,9 @@ void GraphicScreen::Update(const double & dt)
 			}
 			if (resIndex == sizeOfModes)
 			{
-				resIndex = 1;
+
 				txt_cmp[2]->SetText("RESOLUTION : " + res[resIndex]);
+				resIndex = 1;
 			}
 			cout << "RESOLUTION PRESSED!" << endl;
 			sound_cmp[0]->getSound().play();
@@ -565,4 +718,97 @@ void GraphicScreen::Update(const double & dt)
 			}
 		}
 	}
+	if (sf::Joystick::isButtonPressed(0, 0) || sf::Joystick::isButtonPressed(0, 7)) {
+
+		switch (GetPressedItem()) {
+
+		case 1:
+			//controls vsync selection for keyboard
+			std::cout << "vSync button has been pressed" << std::endl;
+			if (vSyncIndex == 0)
+			{
+				vSyncIndex++;
+				txt_cmp[1]->SetText("V-SYNC : OFF");
+				Engine::setVsync(false);
+			}
+			else
+			{
+				vSyncIndex--;
+				txt_cmp[1]->SetText("V-SYNC : ON ");
+				Engine::setVsync(true);
+			}
+			sound_cmp[0]->getSound().play();
+			std::this_thread::sleep_for(std::chrono::milliseconds(150));
+			break;
+		case 2:
+			std::cout << "Track 2 Options button has been pressed" << std::endl;
+			sizeRes = res->max_size();
+
+
+			if (resIndex >= 0)
+			{
+				txt_cmp[2]->SetText("RESOLUTION : " + res[resIndex]);
+				resIndex++;
+
+			}
+			if (resIndex == sizeOfModes)
+			{
+				resIndex = 0;
+				txt_cmp[2]->SetText("RESOLUTION : " + res[resIndex]);
+			}
+			sound_cmp[0]->getSound().play();
+			std::this_thread::sleep_for(std::chrono::milliseconds(150));
+			break;
+		case 3:
+			if (windowModeIndex == 1)
+			{
+				txt_cmp[3]->SetText("WINDOW MODE : WINDOWED ");
+				windowModeIndex++;
+			}
+			else
+			{
+				txt_cmp[3]->SetText("WINDOW MODE : FULLSCREEN ");
+				windowModeIndex--;
+			}
+			std::cout << "Window style button has been pressed" << std::endl;
+			sound_cmp[0]->getSound().play();
+			std::this_thread::sleep_for(std::chrono::milliseconds(150));
+			break;
+		case 4:
+			std::cout << "Track 4 button has been pressed" << std::endl;
+			sound_cmp[0]->getSound().play();
+			std::this_thread::sleep_for(std::chrono::milliseconds(150));
+			std::string masterString = res[resIndex];
+			std::stringstream iss(masterString);
+
+			while (iss.good())
+			{
+				stringCount++;
+
+				std::string resString;
+				getline(iss, resString, 'x');
+
+				if (stringCount == 1)
+					nWidth = atoi(resString.c_str());
+				else
+					nHeight = atoi(resString.c_str());
+			}
+			if (windowModeIndex == 1)
+			{
+				settingConfirmed = true;
+				nisFullscreen = true;
+
+				window.close();
+			}
+			else
+			{
+				settingConfirmed = true;
+				nisFullscreen = false;
+
+				window.close();
+			}
+			break;
+		}
+	}
 }
+

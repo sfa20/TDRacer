@@ -1,3 +1,5 @@
+#pragma once
+
 #include "engine.h"
 #include "game.h"
 #include "scenes/scene_menu.h"
@@ -14,6 +16,7 @@
 #include "scenes/scene_sounds.h"
 #include "system_resources.h"
 #include "SFML/Graphics.hpp"
+#include "SFML/Window/Joystick.hpp"
 
 using namespace std;
 using namespace sf;
@@ -50,8 +53,12 @@ int main() {
 	*Resources::load<SoundBuffer>("beep.wav");
 
 
+<<<<<<< HEAD
 
 	Engine::Start(1980, 1080, "TD Championship Racer", &splashScreen, true);
+=======
+	Engine::Start(1980, 1080, "TD Championship Racer", &splashScreen, false);
+>>>>>>> craig
 
 
 	while (!sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
