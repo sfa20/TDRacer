@@ -67,7 +67,7 @@ void PlayerControls::ChangeControls(std::string control, int e) {
 	//auto test = Engine::GetEvent();
 	
 		//cout << "Event Type: " << to_string(test.type) << endl;
-		cout << control << " before: " << Keys[control].myKeyCode << endl;
+		//cout << control << " before: " << Keys[control].myKeyCode << endl;
 
 		/*auto a = e.key.code;*/
 		//Keys[control].myKeyCode = Keyboard::W;
@@ -76,7 +76,7 @@ void PlayerControls::ChangeControls(std::string control, int e) {
 
 		std::this_thread::sleep_for(std::chrono::milliseconds(300));
 
-		cout << control <<" after: " << Keys[control].myKeyCode << endl;
+		//cout << control <<" after: " << Keys[control].myKeyCode << endl;
 		
 
 }
@@ -162,7 +162,7 @@ void PlayerControls::update(double dt) {
 	////	test.type = Event::KeyPressed;
 	////};
 
-	///*cout << a << endl;*/
+	//cout << a << endl;
 	//
 	//if (sf::Keyboard::isKeyPressed(Keys["Forward"].myKeyCode)) {
 	//	cout << test.key.code << endl;
@@ -327,4 +327,3 @@ std::string PlayerControls::getTurnRightControl(){
 PlayerControls::~PlayerControls() {
 
 }
-//Engine::GetWindow().mapPixelToCoords

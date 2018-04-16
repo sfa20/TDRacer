@@ -108,8 +108,8 @@ PlayerPhysicsComponent::PlayerPhysicsComponent(Entity* p, const Vector2f& size) 
 	_size = sv2_to_bv2(size, true);
 
 	auto svsize = bv2_to_sv2(_size, true);
-	cout << "b2vec size:" << "\nX: " << _size.x << "\nY: " <<_size.y << "\n---------------------------" << endl;
-	cout << "vector2f size: " << "\nX: " << svsize.x << "\nY: " << svsize.y << "\n---------------------------" << endl;
+	//cout << "b2vec size:" << "\nX: " << _size.x << "\nY: " <<_size.y << "\n---------------------------" << endl;
+	//cout << "vector2f size: " << "\nX: " << svsize.x << "\nY: " << svsize.y << "\n---------------------------" << endl;
 	maxSpeed = 40.f;
 	_maxVelocity = Vector2f(200.f, 400.f);
 	_groundspeed = 60.f;
