@@ -59,3 +59,7 @@ extern MyKeys key;
 extern int sizeOfControls;
 extern std::string * controls;
 extern int * controlsReverse;
+
+
+//extern const int32 velocityIterations;
+//extern const int32 positionIterations;

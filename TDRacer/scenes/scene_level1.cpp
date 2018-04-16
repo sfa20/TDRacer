@@ -595,23 +595,32 @@ void Level1Scene::Update(const double& dt) {
 
 #pragma region CheckRaceStatus
 
+
 #pragma region PauseMenu Test
 	auto pausecmp = pauseMenu->GetCompatibleComponent<PauseMenu>()[0];
 	auto mainTimer = raceTimer->GetCompatibleComponent<Timer>()[0];
 	auto lapsTimer = raceTimer->GetCompatibleComponent<LapTimer>()[0];
-	
+	auto playercmp = player->GetCompatibleComponent<PlayerPhysicsComponent>()[0];
+
+	auto aicmp = ai->GetCompatibleComponent<AIPhysicsComponent>()[0];
 	auto txt_cmp = pauseMenu->GetCompatibleComponent<TextComponent>();
+
 
 	if (Keyboard::isKeyPressed(Keyboard::P)) {
 		pausecmp->active = true;
+		playercmp->dampen(Vector2f(10, 10));
+		playercmp->controlsEnabled = false;
+		aicmp->dampen(Vector2f(10, 10));
+		aicmp->controlsEnabled = false;
 	}
 	
 	if(pausecmp->active || pausecmp->submenuActive) {
 		if (sf::Event::KeyPressed) {
 			
 			if (sf::Keyboard::isKeyPressed(Keyboard::Up)) {
-				if (pausecmp->GetPressedItem() != 1)
+				if (pausecmp->GetPressedItem() != 1) {
 					pausecmp->MoveUp();
+				}
 			}
 
 			if (sf::Keyboard::isKeyPressed(Keyboard::Down)) {
@@ -622,84 +631,92 @@ void Level1Scene::Update(const double& dt) {
 			if (sf::Keyboard::isKeyPressed(Keyboard::Return)) {
 				switch (pausecmp->GetPressedItem()) {
 
+#pragma region Main Menu
 				case 1:
-					std::cout << "Option 1 pressed" << std::endl;
+					std::cout << "Resume control pressed" << std::endl;
 					std::this_thread::sleep_for(std::chrono::milliseconds(150));
 					pausecmp->active = false;
+					playercmp->controlsEnabled = true;
+					aicmp->controlsEnabled = true;
 					break;
 				case 2:
-					std::cout << "Option 2 pressed" << std::endl;
+					std::cout << "Restart pressed" << std::endl;
 					std::this_thread::sleep_for(std::chrono::milliseconds(150));
 					pausecmp->active = false;
+					Engine::ChangeScene(&level1);
 					break;
 				case 3:
-					std::cout << "Option 3 pressed" << std::endl;
+					std::cout << "Controls 3 pressed" << std::endl;
 					std::this_thread::sleep_for(std::chrono::milliseconds(150));
 					pausecmp->active = false;
 					pausecmp->submenuActive = true;
 					pausecmp->selectedItemIndex = 5;
 					break;
 				case 4:
-					std::cout << "Option 4 pressed" << std::endl;
+					std::cout << "Exit Menu 4 pressed" << std::endl;
 					std::this_thread::sleep_for(std::chrono::milliseconds(150));
 					pausecmp->active = false;
+					Engine::ChangeScene(&menuScreen);
 					break;
+
+#pragma endregion
+
+
+#pragma region Controls Menu
 				case 5:
 					std::cout << "Option 4 pressed" << std::endl;
 					std::this_thread::sleep_for(std::chrono::milliseconds(150));
 					if (accelIndex >= 0)
 					{
-						txt_cmp[5]->SetText(controls[accelIndex]);
+						txt_cmp[5]->SetText("Accelerate: " + controls[accelIndex]);
 						accelIndex++;
+						cout << "test press" << controls[accelIndex] << endl;
 					}
 
 					if (accelIndex == sizeOfControls)
 					{
 						accelIndex = 0;
-						txt_cmp[5]->SetText(controls[accelIndex]);
+						txt_cmp[5]->SetText("Accelerate: " + controls[accelIndex]);
 					}
-					pausecmp->active = false;
 					break;
 				case 6:
 					std::cout << "Option 4 pressed" << std::endl;
 					std::this_thread::sleep_for(std::chrono::milliseconds(150));
-					pausecmp->active = false;
 					if (reverseIndex >= 0)
 					{
-						txt_cmp[6]->SetText(controls[reverseIndex]);
+						txt_cmp[6]->SetText("Reverse: " + controls[reverseIndex]);
 						reverseIndex++;
+						cout << "test press" << controls[reverseIndex] << endl;
 					}
 
 					if (reverseIndex == sizeOfControls)
 					{
 						reverseIndex = 0;
-						txt_cmp[6]->SetText(controls[reverseIndex]);
+						txt_cmp[6]->SetText("Reverse: " + controls[reverseIndex]);
 					}
 					break;
 				case 7:
 					std::cout << "Option 4 pressed" << std::endl;
 					std::this_thread::sleep_for(std::chrono::milliseconds(150));
-					pausecmp->active = false;
 					if (brakeIndex >= 0)
 					{
-						txt_cmp[7]->SetText(controls[brakeIndex]);
+						txt_cmp[7]->SetText("Brake: " + controls[brakeIndex]);
 						brakeIndex++;
-
+						cout << "test press" << controls[brakeIndex] << endl;
 					}
 
 					if (brakeIndex == sizeOfControls)
 					{
 						brakeIndex = 0;
-						txt_cmp[7]->SetText(controls[brakeIndex]);
+						txt_cmp[7]->SetText("Brake: " + controls[brakeIndex]);
 					}
 					break;
 				case 8:
 					std::cout << "Option 4 pressed" << std::endl;
 					std::this_thread::sleep_for(std::chrono::milliseconds(150));
-					pausecmp->active = false;
 					if (leftIndex >= 0)
 					{
-						txt_cmp[8]->SetText(controls[leftIndex]);
+						txt_cmp[8]->SetText("Turn Left: " + controls[leftIndex]);
 						leftIndex++;
 
 					}
@@ -707,43 +724,36 @@ void Level1Scene::Update(const double& dt) {
 					if (leftIndex == sizeOfControls)
 					{
 						leftIndex = 0;
-						txt_cmp[8]->SetText(controls[leftIndex]);
+						txt_cmp[8]->SetText("Turn Left: " + controls[leftIndex]);
 					}
 					break;
 				case 9:
 					std::cout << "Option 4 pressed" << std::endl;
 					std::this_thread::sleep_for(std::chrono::milliseconds(150));
-					pausecmp->active = false;
 					if (rightIndex >= 0)
 					{
-						txt_cmp[9]->SetText(controls[rightIndex]);
+						txt_cmp[9]->SetText("Turn Right" + controls[rightIndex]);
 						rightIndex++;
-
 					}
 
 					if (rightIndex == sizeOfControls)
 					{
 						rightIndex = 0;
-						txt_cmp[9]->SetText(controls[rightIndex]);
+						txt_cmp[9]->SetText("Turn Right:" + controls[rightIndex]);
 					}
 					break;
 				case 10:
-					std::cout << "Option 4 pressed" << std::endl;
+					std::cout << "Exit Menu pressed" << std::endl;
 					std::this_thread::sleep_for(std::chrono::milliseconds(150));
 					pausecmp->active = false;
-					if (reverseIndex >= 0)
-					{
-						txt_cmp[10]->SetText(controls[reverseIndex]);
-						reverseIndex++;
-
-					}
-
-					if (reverseIndex == sizeOfControls)
-					{
-						reverseIndex = 0;
-						txt_cmp[10]->SetText(controls[reverseIndex]);
-					}
+					pausecmp->active = true;
+					pausecmp->submenuActive = false;
+					playercmp->controlsEnabled = true;
+					aicmp->controlsEnabled = true;
 					break;
+
+#pragma endregion
+
 				}
 
 			}

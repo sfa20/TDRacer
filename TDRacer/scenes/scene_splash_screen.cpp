@@ -126,6 +126,13 @@ void SplashScreen::Load() {
 
 	}
 	setLoaded(true);
+
+
+	if (sf::Joystick::isConnected(0)) {
+		cout << "controller connected" << endl;
+	}
+
+
 }
 
 void SplashScreen::Update(const double & dt)

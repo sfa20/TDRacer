@@ -26,6 +26,7 @@ public:
   void setMass(float m);
 
   ////////Added
+  bool controlsEnabled;
 
   void turnRight();					//added
   void turnLeft();					//added

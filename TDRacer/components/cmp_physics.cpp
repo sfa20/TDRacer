@@ -16,7 +16,7 @@ void PhysicsComponent::update(double dt) {
   _parent->setRotation((180 / b2_pi) * _body->GetAngle());
 }
 
-
+//Constructor
 PhysicsComponent::PhysicsComponent(Entity* p, bool dyn, const Vector2f& size) : Component(p), _dynamic(dyn) {
 
 	 b2BodyDef BodyDef;
@@ -115,15 +115,6 @@ void PhysicsComponent::setVelocity(const sf::Vector2f& v) {
 
 b2Fixture* const PhysicsComponent::getFixture() const { 
 	return _fixture; 
-}
-
-
-PhysicsComponent::~PhysicsComponent() {
-  auto a = Physics::GetWorld();
-  _body->SetActive(false);
-  Physics::GetWorld()->DestroyBody(_body);
-  // delete _body;
-  _body = nullptr;
 }
 
 
@@ -258,4 +249,14 @@ std::vector<const b2Contact const*> PhysicsComponent::getTouching() const {
 
 void PhysicsComponent::setRestitution(float r) {
   _fixture->SetRestitution(r);
+}
+
+
+//Destructor
+PhysicsComponent::~PhysicsComponent() {
+	auto a = Physics::GetWorld();
+	_body->SetActive(false);
+	Physics::GetWorld()->DestroyBody(_body);
+	// delete _body;
+	_body = nullptr;
 }

@@ -103,6 +103,14 @@ void PauseMenu::update(double dt) {
 		textComps[2]->SetText("Restart");
 		textComps[3]->SetText("Controls");
 		textComps[4]->SetText("Quit");
+
+		textComps[5]->SetText("");
+		textComps[6]->SetText("");
+		textComps[7]->SetText("");
+		textComps[8]->SetText("");
+		textComps[9]->SetText("");
+		textComps[10]->SetText("");
+
 	}
 	else if (submenuActive ) {
 		textComps[0]->SetText("");

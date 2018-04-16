@@ -125,15 +125,16 @@ PlayerControls::PlayerControls(Entity* p) : Component(p ) {
 	int i = 0;
 
 	for each (auto key in KeyValues) {
-
-		controls[i] = "Accelerate: " + KeyValues[key.first];
+		controls[i] = KeyValues[key.first];
 		controlsReverse[i] = key.first;
 		i++;
 	}
 
-	for (std::size_t i = 0; i < sizeOfControls; i++) {
-		cout << controlsReverse[i] << endl;
-	}
+	//for (std::size_t i = 0; i < sizeOfControls; i++) {
+	//	cout << "controls" << controls[i] << endl;
+	//	cout << "Reverse controls" << controlsReverse[i] << endl;
+
+	//}
 
 #pragma endregion
 }
