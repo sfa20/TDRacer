@@ -16,13 +16,23 @@
 #include "../components/cmp_lap_timer.h"
 #include "../components/cmp_car_body.h"
 #include "../components/cmp_player_controls.h"
+#include "../components//cmp_ai_physics.h"
+
 using namespace std;
 using namespace sf;
 using namespace Resources;
 
 static shared_ptr<Entity> player;
+static shared_ptr<Entity> ai;
+
 static shared_ptr<Entity> raceTimer;
 static shared_ptr<Entity> WinnerMessage;
+
+std::map<int, std::string> KeyValues;
+
+
+
+
 
 sf::Vector2f scale = { 0.400f, 0.400f };
 int counter = 0;
@@ -358,6 +368,107 @@ void Level1Scene::Load() {
 
 	//Set the players starting position
 	player->setPosition(Vector2f(lv));
+
+#pragma endregion
+
+
+#pragma region SetKeyValues
+
+
+	KeyValues[0] = "A";
+	KeyValues[1] = "B";
+	KeyValues[2] = "C";
+	KeyValues[3] = "D";
+	KeyValues[4] = "E";
+	KeyValues[5] = "F";
+	KeyValues[6] = "G";
+	KeyValues[7] = "H";
+	KeyValues[8] = "I";
+	KeyValues[9] = "J";
+	KeyValues[10] = "K";
+	KeyValues[11] = "L";
+	KeyValues[12] = "M";
+	KeyValues[13] = "N";
+	KeyValues[14] = "O";
+	KeyValues[15] = "P";
+	KeyValues[16] = "Q";
+	KeyValues[17] = "R";
+	KeyValues[18] = "S";
+	KeyValues[19] = "T";
+	KeyValues[20] = "U";
+	KeyValues[21] = "V";
+	KeyValues[22] = "W";
+	KeyValues[23] = "X";
+	KeyValues[24] = "Y";
+	KeyValues[25] = "Z";
+	KeyValues[37] = "Left Ctl";
+	KeyValues[38] = "Left Shift";
+	KeyValues[39] = "Left Alt";
+	KeyValues[41] = "Right Ctrl";
+	KeyValues[42] = "Right Shift";
+	KeyValues[43] = "Right Alt";
+	KeyValues[49] = "Comma";
+	KeyValues[50] = "Period";
+	KeyValues[52] = "Forward Slash (/)";
+	KeyValues[53] = "Back Slash ('\')";
+	KeyValues[57] = "Space";
+	KeyValues[59] = "Backspace";
+	KeyValues[71] = "Left";
+	KeyValues[72] = "Right";
+	KeyValues[73] = "Up";
+	KeyValues[74] = "Down";
+	KeyValues[75] = "NumPad 0";
+	KeyValues[76] = "NumPad 1";
+	KeyValues[77] = "NumPad 2";
+	KeyValues[78] = "NumPad 3";
+	KeyValues[79] = "NumPad 4";
+	KeyValues[80] = "NumPad 5";
+	KeyValues[81] = "NumPad 6";
+	KeyValues[82] = "NumPad 7";
+	KeyValues[83] = "NumPad 8";
+	KeyValues[84] = "NumPad 9";
+
+#pragma endregion
+
+#pragma region AI Testing
+
+	//Create an PlayerCar Entity, add component and set texture
+	ai = makeEntity();
+
+	//Adds a Sprite component & set values
+	auto ait = ai->addComponent<SpriteComponent>(); //Add a sprite component
+	ait->getSprite().setTexture(*Resources::get<Texture>("car_green_small_2.png"));
+	ait->getSprite().setScale(.45f, .45f);
+	ait->getSprite().setColor(Color::Red);
+	ait->getSprite().setOrigin(10, 0);
+
+	//Add a player controls component - This allows the user to have different controls
+	//for accel, brake etc and will allow these to be dynamically changed through an
+	//options menu
+	auto aictrl = player->addComponent<PlayerControls>();
+	//aictrl->ChangeControls("Accelerate", KeyValues[2]);
+	//KeyValues[2];
+
+	//aictrl->
+	//auto a = KeyValues[1];
+
+	//Add a Player Physics Component
+	auto aip = ai->addComponent<AIPhysicsComponent>(Vector2f(27.9f, 18.f));
+	//p->setMass(10);
+
+	//Find the starting position 
+	auto lr = ls::findTiles(ls::STARTRIGHT);
+	auto lrv = ls::getTilePosition(lr[0]);
+
+	//Set the players starting position
+	ai->setPosition(Vector2f(lrv));
+
+
+
+
+
+
+
 
 #pragma endregion
 

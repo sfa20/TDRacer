@@ -65,7 +65,6 @@ PlayerControls::PlayerControls(Entity* p) : Component(p ) {
 void PlayerControls::ChangeControls(std::string control, int e) {
 
 	//auto test = Engine::GetEvent();
-
 	
 		//cout << "Event Type: " << to_string(test.type) << endl;
 		cout << control << " before: " << Keys[control].myKeyCode << endl;

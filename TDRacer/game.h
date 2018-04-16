@@ -15,6 +15,7 @@
 #include "scenes/scene_sounds.h"
 #include "scenes/scene_controls.h"
 #include "scenes/scene_graphics.h"
+#include <map>
 
 
 /************************MENUS*************************/
@@ -44,3 +45,4 @@ extern int nHeight;
 extern int nWidth;
 
 
+extern std::map<int, std::string> KeyValues;
