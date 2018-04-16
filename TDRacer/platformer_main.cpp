@@ -50,7 +50,9 @@ int main() {
 	*Resources::load<SoundBuffer>("beep.wav");
 
 
+
 	Engine::Start(1980, 1080, "TD Championship Racer", &splashScreen, true);
+
 
 	while (!sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
 	{

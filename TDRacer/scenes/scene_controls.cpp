@@ -24,6 +24,7 @@ static shared_ptr<Entity> controlSound;
 
 void ControlScreen::Load() {
 
+#pragma region Map Setup
 
 	std::cout << "Menu Load \n";
 	{
@@ -46,6 +47,7 @@ void ControlScreen::Load() {
 			t3->getSprite().setPosition(g);
 
 		}
+		
 		auto peakTiles = ls::findTiles(ls::TOP);
 		for each (auto t in peakTiles)
 		{
@@ -63,6 +65,7 @@ void ControlScreen::Load() {
 
 
 		}
+		
 		auto bottomTiles = ls::findTiles(ls::BOTTOM);
 		for each (auto t in bottomTiles)
 		{
@@ -81,6 +84,7 @@ void ControlScreen::Load() {
 			t2->getSprite().setPosition(g);
 
 		}
+		
 		auto trackTiles = ls::findTiles(ls::TRACK);
 		for each (auto t in trackTiles)
 		{
@@ -97,6 +101,7 @@ void ControlScreen::Load() {
 			t2->getSprite().setPosition(g);
 
 		}
+		
 		////Get position of Corner tiles and set sprites to each postition
 		auto corner1Tiles = ls::findTiles(ls::CORNER1);
 		for each (auto t in corner1Tiles)
@@ -226,6 +231,68 @@ void ControlScreen::Load() {
 
 		}
 
+#pragma endregion
+
+//#pragma region SetKeyValues
+//
+//
+//		KeyValues[0] = "A";
+//		KeyValues[1] = "B";
+//		KeyValues[2] = "C";
+//		KeyValues[3] = "D";
+//		KeyValues[4] = "E";
+//		KeyValues[5] = "F";
+//		KeyValues[6] = "G";
+//		KeyValues[7] = "H";
+//		KeyValues[8] = "I";
+//		KeyValues[9] = "J";
+//		KeyValues[10] = "K";
+//		KeyValues[11] = "L";
+//		KeyValues[12] = "M";
+//		KeyValues[13] = "N";
+//		KeyValues[14] = "O";
+//		KeyValues[15] = "P";
+//		KeyValues[16] = "Q";
+//		KeyValues[17] = "R";
+//		KeyValues[18] = "S";
+//		KeyValues[19] = "T";
+//		KeyValues[20] = "U";
+//		KeyValues[21] = "V";
+//		KeyValues[22] = "W";
+//		KeyValues[23] = "X";
+//		KeyValues[24] = "Y";
+//		KeyValues[25] = "Z";
+//		KeyValues[37] = "Left Ctl";
+//		KeyValues[38] = "Left Shift";
+//		KeyValues[39] = "Left Alt";
+//		KeyValues[41] = "Right Ctrl";
+//		KeyValues[42] = "Right Shift";
+//		KeyValues[43] = "Right Alt";
+//		KeyValues[49] = "Comma";
+//		KeyValues[50] = "Period";
+//		KeyValues[52] = "Forward Slash (/)";
+//		KeyValues[53] = "Back Slash ('\')";
+//		KeyValues[57] = "Space";
+//		KeyValues[59] = "Backspace";
+//		KeyValues[71] = "Left";
+//		KeyValues[72] = "Right";
+//		KeyValues[73] = "Up";
+//		KeyValues[74] = "Down";
+//		KeyValues[75] = "NumPad 0";
+//		KeyValues[76] = "NumPad 1";
+//		KeyValues[77] = "NumPad 2";
+//		KeyValues[78] = "NumPad 3";
+//		KeyValues[79] = "NumPad 4";
+//		KeyValues[80] = "NumPad 5";
+//		KeyValues[81] = "NumPad 6";
+//		KeyValues[82] = "NumPad 7";
+//		KeyValues[83] = "NumPad 8";
+//		KeyValues[84] = "NumPad 9";
+//
+//#pragma endregion
+
+
+
 		//creates entitys for splash and adds text components
 		control = makeEntity();
 		auto title = control->addComponent<TextComponent>("TD CHAMPIONSHIP RACER");
@@ -248,6 +315,12 @@ void ControlScreen::Load() {
 	}
 	setLoaded(true);
 	selectedItemIndex = 2;
+}
+
+
+void ControlScreen::GetKeyValue(int key) {
+
+
 }
 
 void ControlScreen::MoveUp() {

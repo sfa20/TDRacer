@@ -41,10 +41,13 @@ public:
 		//Corner4
 
 		TOP = 'p',
+		LEFT = 'l', //this is an L
+		CHECKPOINT1 = '1',
 		RIGHT = 'r',
-		LEFT = 'l',
+		CHECKPOINT3 = '3',	
 		BOTTOM = 'b',
 		TRACK = 't',
+		CHECKPOINT2 = '2',
 		CORNER1 = 'c',
 		CORNER2 = 'd',
 		CORNER3 = 'e',

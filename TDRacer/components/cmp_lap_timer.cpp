@@ -8,7 +8,7 @@ using namespace sf;
 
 LapTimer::LapTimer(Entity* p) : Timer(p){
 
-	currentLap = 1;
+	currentLap = 0;
 
 	lap1 = "0:00:00";
 	lap2 = "0:00:00";
@@ -25,7 +25,7 @@ void LapTimer::update(double dt) {
 
 	//cout << this->getClock().getElapsedTime().asMilliseconds() << endl;
 
-	if (this->getClock().getElapsedTime().asMilliseconds() > 12000) {
+	if (this->getClock().getElapsedTime().asMilliseconds() > 60000) {
 
 		this->setMins(this->getMins() + 1);
 		this->reset();

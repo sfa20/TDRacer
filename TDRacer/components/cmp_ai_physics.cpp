@@ -1,4 +1,4 @@
-#include "cmp_player_physics.h"
+#include "cmp_ai_physics.h"
 #include "system_physics.h"
 #include <LevelSystem.h>
 #include <SFML/Window/Keyboard.hpp>
@@ -7,13 +7,29 @@ using namespace std;
 using namespace sf;
 using namespace Physics;
 
-void PlayerPhysicsComponent::update(double dt) {
+AIPhysicsComponent::AIPhysicsComponent(Entity* p, const Vector2f& size) : PhysicsComponent(p, true, size) {
+	_size = sv2_to_bv2(size, true);
+	teleport(ls::getTilePosition(ls::findTiles(ls::STARTRIGHT)[0]));
+	auto svsize = bv2_to_sv2(_size, true);
+	maxSpeed = 40.f;
+	_maxVelocity = Vector2f(200.f, 400.f);
+	_groundspeed = 60.f;
+	_body->SetSleepingAllowed(false);
+	_body->SetFixedRotation(true);
+
+	//Bullet items have higher-res collision detection
+	_body->SetBullet(true);
+
+}
+
+
+void AIPhysicsComponent::update(double dt) {
 
 	const auto pos = _parent->getPosition();
 	
 	//Teleport to start if we fall off map. 
 	if (pos.y > ls::getHeight() * ls::getTileSize() || pos.x > ls::getWidth() * ls::getTileSize() || pos.x < 0 || pos.y < 0) {
-		teleport(ls::getTilePosition(ls::findTiles(ls::START)[0]));
+		teleport(ls::getTilePosition(ls::findTiles(ls::STARTRIGHT)[0]));
 	}
 
 	//This gets the world vector for moving the Entity
@@ -22,18 +38,18 @@ void PlayerPhysicsComponent::update(double dt) {
 	auto worldVector = _body->GetWorldVector(b2Vec2(0, 1));
 
 	//Get the defined controls for the player
-	auto ctrl = _parent->GetCompatibleComponent<PlayerControls>()[0];
+	//auto ctrl = _parent->GetCompatibleComponent<PlayerControls>()[0];
 
 #pragma region Player Movement
 
 	//Handle keyboard input from user
-	if (Keyboard::isKeyPressed(ctrl->getControl("Accelerate")) || Keyboard::isKeyPressed(ctrl->getControl("Reverse"))) {
+	if (Keyboard::isKeyPressed(Keyboard::W) || Keyboard::isKeyPressed(Keyboard::S)) {
 
 		auto checkGrass = ls::getTileAt(_parent->GetCompatibleComponent<SpriteComponent>()[0]->getSprite().getPosition() + Vector2f(0, 1));
 		auto checkGrassReverse = ls::getTileAt(_parent->GetCompatibleComponent<SpriteComponent>()[0]->getSprite().getPosition() + Vector2f(0, -1));
 
 
-		if (Keyboard::isKeyPressed(ctrl->getControl("Accelerate"))) {
+		if (Keyboard::isKeyPressed(Keyboard::W)) {
 			/*if (getVelocity().x < _maxVelocity.x) {*/
 			//updateFriction();
 			if (checkGrass == 'g') {
@@ -44,7 +60,7 @@ void PlayerPhysicsComponent::update(double dt) {
 				impulse({ -worldVector.x, -worldVector.y });
 			}
 		}
-		else if (Keyboard::isKeyPressed(ctrl->getControl("Reverse"))) {
+		else if (Keyboard::isKeyPressed(Keyboard::S)) {
 			//if (getVelocity().x < _maxVelocity.x) {
 			//updateFriction();
 			if (checkGrassReverse == 'g') {
@@ -67,13 +83,13 @@ void PlayerPhysicsComponent::update(double dt) {
 	}
 
 	//Turning
-	if (Keyboard::isKeyPressed(ctrl->getControl("Left")) || Keyboard::isKeyPressed(ctrl->getControl("Right"))) {
+	if (Keyboard::isKeyPressed(Keyboard::A) || Keyboard::isKeyPressed(Keyboard::D)) {
 		
-		if (Keyboard::isKeyPressed(ctrl->getControl("Right"))) {
+		if (Keyboard::isKeyPressed(Keyboard::D)) {
 			turnRight();
 			dampen({ 0.05f, 0.05f });
 		}
-		else if (Keyboard::isKeyPressed(ctrl->getControl("Left"))) {
+		else if (Keyboard::isKeyPressed(Keyboard::A)) {
 			turnLeft();
 			dampen({ 0.05f, 0.05f });
 		}
@@ -93,7 +109,7 @@ void PlayerPhysicsComponent::update(double dt) {
 
 	//Respawn
 	if (Keyboard::isKeyPressed(Keyboard::R)) {
-		teleport(ls::getTilePosition(ls::findTiles(ls::START)[0]));
+		teleport(ls::getTilePosition(ls::findTiles(ls::STARTRIGHT)[0]));
 
 	}
 
@@ -104,20 +120,4 @@ void PlayerPhysicsComponent::update(double dt) {
 }
 
 
-PlayerPhysicsComponent::PlayerPhysicsComponent(Entity* p, const Vector2f& size) : PhysicsComponent(p, true, size) {
-	_size = sv2_to_bv2(size, true);
-
-	auto svsize = bv2_to_sv2(_size, true);
-	//cout << "b2vec size:" << "\nX: " << _size.x << "\nY: " <<_size.y << "\n---------------------------" << endl;
-	//cout << "vector2f size: " << "\nX: " << svsize.x << "\nY: " << svsize.y << "\n---------------------------" << endl;
-	maxSpeed = 40.f;
-	_maxVelocity = Vector2f(200.f, 400.f);
-	_groundspeed = 60.f;
-	_body->SetSleepingAllowed(false);
-	_body->SetFixedRotation(true);
-	
-	//Bullet items have higher-res collision detection
-	_body->SetBullet(true);
-
-}
 
