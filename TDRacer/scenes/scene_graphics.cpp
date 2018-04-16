@@ -514,7 +514,7 @@ void GraphicScreen::Update(const double & dt)
 				std::this_thread::sleep_for(std::chrono::milliseconds(150));
 				break;
 			case 3:
-				if (windowModeIndex == 0)
+				if (windowModeIndex == 1)
 				{
 					txt_cmp[3]->SetText("WINDOW MODE : WINDOWED ");
 					windowModeIndex++;
@@ -566,4 +566,3 @@ void GraphicScreen::Update(const double & dt)
 		}
 	}
 }
-
