@@ -1,5 +1,5 @@
 #pragma once
-
+#include "SFML\Graphics.hpp"
 #include "scenes/scene_level1.h"
 #include "scenes/scene_level2.h"
 #include "scenes/scene_level3.h"
@@ -15,7 +15,13 @@
 #include "scenes/scene_sounds.h"
 #include "scenes/scene_controls.h"
 #include "scenes/scene_graphics.h"
+#include "engine.h"
 #include <map>
+#include <SFML/Window/Keyboard.hpp>
+#include "system_resources.h"
+#include "system_physics.h"
+#include "components\cmp_player_controls.h"
+
 
 
 /************************MENUS*************************/
@@ -46,3 +52,10 @@ extern int nWidth;
 
 
 extern std::map<int, std::string> KeyValues;
+
+extern std::map<std::string, MyKeys> Keys;
+extern MyKeys key;
+
+extern int sizeOfControls;
+extern std::string * controls;
+extern int * controlsReverse;

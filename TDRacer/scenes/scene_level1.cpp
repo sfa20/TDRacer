@@ -40,6 +40,12 @@ int playertwoLapNo;
 int playeroneCheckpoint;
 int playertwoCheckpoint;
 bool active;
+int accelIndex = 0;
+int reverseIndex = 0;
+int brakeIndex = 0;
+int leftIndex = 0;
+//int sizeOfControls;
+int rightIndex = 0;
 
 void Level1Scene::Load() {
 
@@ -550,14 +556,14 @@ void Level1Scene::Load() {
 
 	pauseMenu = makeEntity();
 	pauseMenu->addComponent<PauseMenu>();
+	pauseMenu->addComponent<PlayerControls>();
 	auto pausecmp = pauseMenu->GetCompatibleComponent<PauseMenu>()[0];
 	pausecmp->active = false;
+	pausecmp->submenuActive = false;
+
 #pragma endregion
 
-
 }
-
-
 
 void Level1Scene::UnLoad() {
 	cout << "Scene 1 Unload" << endl;
@@ -591,13 +597,16 @@ void Level1Scene::Update(const double& dt) {
 
 #pragma region PauseMenu Test
 	auto pausecmp = pauseMenu->GetCompatibleComponent<PauseMenu>()[0];
+	auto mainTimer = raceTimer->GetCompatibleComponent<Timer>()[0];
+	auto lapsTimer = raceTimer->GetCompatibleComponent<LapTimer>()[0];
+	
+	auto txt_cmp = pauseMenu->GetCompatibleComponent<TextComponent>();
 
 	if (Keyboard::isKeyPressed(Keyboard::P)) {
-		
 		pausecmp->active = true;
 	}
 	
-	if(pausecmp->active) {
+	if(pausecmp->active || pausecmp->submenuActive) {
 		if (sf::Event::KeyPressed) {
 			
 			if (sf::Keyboard::isKeyPressed(Keyboard::Up)) {
@@ -606,7 +615,7 @@ void Level1Scene::Update(const double& dt) {
 			}
 
 			if (sf::Keyboard::isKeyPressed(Keyboard::Down)) {
-				if (pausecmp->GetPressedItem() != 4)
+				if (pausecmp->GetPressedItem() != 11)
 					pausecmp->MoveDown();
 			}
 
@@ -623,15 +632,127 @@ void Level1Scene::Update(const double& dt) {
 					std::this_thread::sleep_for(std::chrono::milliseconds(150));
 					pausecmp->active = false;
 					break;
+				case 3:
+					std::cout << "Option 3 pressed" << std::endl;
+					std::this_thread::sleep_for(std::chrono::milliseconds(150));
+					pausecmp->active = false;
+					pausecmp->submenuActive = true;
+					pausecmp->selectedItemIndex = 5;
+					break;
+				case 4:
+					std::cout << "Option 4 pressed" << std::endl;
+					std::this_thread::sleep_for(std::chrono::milliseconds(150));
+					pausecmp->active = false;
+					break;
+				case 5:
+					std::cout << "Option 4 pressed" << std::endl;
+					std::this_thread::sleep_for(std::chrono::milliseconds(150));
+					if (accelIndex >= 0)
+					{
+						txt_cmp[5]->SetText(controls[accelIndex]);
+						accelIndex++;
+					}
+
+					if (accelIndex == sizeOfControls)
+					{
+						accelIndex = 0;
+						txt_cmp[5]->SetText(controls[accelIndex]);
+					}
+					pausecmp->active = false;
+					break;
+				case 6:
+					std::cout << "Option 4 pressed" << std::endl;
+					std::this_thread::sleep_for(std::chrono::milliseconds(150));
+					pausecmp->active = false;
+					if (reverseIndex >= 0)
+					{
+						txt_cmp[6]->SetText(controls[reverseIndex]);
+						reverseIndex++;
+					}
+
+					if (reverseIndex == sizeOfControls)
+					{
+						reverseIndex = 0;
+						txt_cmp[6]->SetText(controls[reverseIndex]);
+					}
+					break;
+				case 7:
+					std::cout << "Option 4 pressed" << std::endl;
+					std::this_thread::sleep_for(std::chrono::milliseconds(150));
+					pausecmp->active = false;
+					if (brakeIndex >= 0)
+					{
+						txt_cmp[7]->SetText(controls[brakeIndex]);
+						brakeIndex++;
+
+					}
+
+					if (brakeIndex == sizeOfControls)
+					{
+						brakeIndex = 0;
+						txt_cmp[7]->SetText(controls[brakeIndex]);
+					}
+					break;
+				case 8:
+					std::cout << "Option 4 pressed" << std::endl;
+					std::this_thread::sleep_for(std::chrono::milliseconds(150));
+					pausecmp->active = false;
+					if (leftIndex >= 0)
+					{
+						txt_cmp[8]->SetText(controls[leftIndex]);
+						leftIndex++;
+
+					}
+
+					if (leftIndex == sizeOfControls)
+					{
+						leftIndex = 0;
+						txt_cmp[8]->SetText(controls[leftIndex]);
+					}
+					break;
+				case 9:
+					std::cout << "Option 4 pressed" << std::endl;
+					std::this_thread::sleep_for(std::chrono::milliseconds(150));
+					pausecmp->active = false;
+					if (rightIndex >= 0)
+					{
+						txt_cmp[9]->SetText(controls[rightIndex]);
+						rightIndex++;
+
+					}
+
+					if (rightIndex == sizeOfControls)
+					{
+						rightIndex = 0;
+						txt_cmp[9]->SetText(controls[rightIndex]);
+					}
+					break;
+				case 10:
+					std::cout << "Option 4 pressed" << std::endl;
+					std::this_thread::sleep_for(std::chrono::milliseconds(150));
+					pausecmp->active = false;
+					if (reverseIndex >= 0)
+					{
+						txt_cmp[10]->SetText(controls[reverseIndex]);
+						reverseIndex++;
+
+					}
+
+					if (reverseIndex == sizeOfControls)
+					{
+						reverseIndex = 0;
+						txt_cmp[10]->SetText(controls[reverseIndex]);
+					}
+					break;
 				}
+
 			}
 		}
 	}
 	
 #pragma endregion
 
-
-
+	
 
 #pragma region Lap Checker
 

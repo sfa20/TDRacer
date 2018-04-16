@@ -14,7 +14,9 @@ using namespace Physics;
 
 std::map<std::string, MyKeys> Keys;
 MyKeys key;
-
+string * controls;
+int * controlsReverse;
+int sizeOfControls;
 int count1 = 0;
 
 void PlayerControls::DefineControls() {
@@ -58,6 +60,82 @@ sf::Keyboard::Key PlayerControls::getControl(std::string control) {
 
 PlayerControls::PlayerControls(Entity* p) : Component(p ) {
 	DefineControls();
+
+#pragma region SetKeyValues
+
+
+	KeyValues[0] = "A";
+	KeyValues[1] = "B";
+	KeyValues[2] = "C";
+	KeyValues[3] = "D";
+	KeyValues[4] = "E";
+	KeyValues[5] = "F";
+	KeyValues[6] = "G";
+	KeyValues[7] = "H";
+	KeyValues[8] = "I";
+	KeyValues[9] = "J";
+	KeyValues[10] = "K";
+	KeyValues[11] = "L";
+	KeyValues[12] = "M";
+	KeyValues[13] = "N";
+	KeyValues[14] = "O";
+	KeyValues[15] = "P";
+	KeyValues[16] = "Q";
+	KeyValues[17] = "R";
+	KeyValues[18] = "S";
+	KeyValues[19] = "T";
+	KeyValues[20] = "U";
+	KeyValues[21] = "V";
+	KeyValues[22] = "W";
+	KeyValues[23] = "X";
+	KeyValues[24] = "Y";
+	KeyValues[25] = "Z";
+	KeyValues[37] = "Left Ctl";
+	KeyValues[38] = "Left Shift";
+	KeyValues[39] = "Left Alt";
+	KeyValues[41] = "Right Ctrl";
+	KeyValues[42] = "Right Shift";
+	KeyValues[43] = "Right Alt";
+	KeyValues[49] = "Comma";
+	KeyValues[50] = "Period";
+	KeyValues[52] = "Forward Slash (/)";
+	KeyValues[53] = "Back Slash ('\')";
+	KeyValues[57] = "Space";
+	KeyValues[59] = "Backspace";
+	KeyValues[71] = "Left";
+	KeyValues[72] = "Right";
+	KeyValues[73] = "Up";
+	KeyValues[74] = "Down";
+	KeyValues[75] = "NumPad 0";
+	KeyValues[76] = "NumPad 1";
+	KeyValues[77] = "NumPad 2";
+	KeyValues[78] = "NumPad 3";
+	KeyValues[79] = "NumPad 4";
+	KeyValues[80] = "NumPad 5";
+	KeyValues[81] = "NumPad 6";
+	KeyValues[82] = "NumPad 7";
+	KeyValues[83] = "NumPad 8";
+	KeyValues[84] = "NumPad 9";
+
+
+	sizeOfControls = KeyValues.size();
+	controls = new string[sizeOfControls];
+	controlsReverse = new int[sizeOfControls];
+
+	int i = 0;
+
+	for each (auto key in KeyValues) {
+
+		controls[i] = "Accelerate: " + KeyValues[key.first];
+		controlsReverse[i] = key.first;
+		i++;
+	}
+
+	for (std::size_t i = 0; i < sizeOfControls; i++) {
+		cout << controlsReverse[i] << endl;
+	}
+
+#pragma endregion
 }
 
 
