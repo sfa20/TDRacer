@@ -17,6 +17,7 @@
 #include "../components/cmp_car_body.h"
 #include "../components/cmp_player_controls.h"
 #include "../components//cmp_ai_physics.h"
+#include "../components/cmp_pause_menu.h"
 
 using namespace std;
 using namespace sf;
@@ -27,6 +28,7 @@ static shared_ptr<Entity> ai;
 
 static shared_ptr<Entity> raceTimer;
 static shared_ptr<Entity> WinnerMessage;
+static shared_ptr<Entity> pauseMenu;
 
 std::map<int, std::string> KeyValues;
 
@@ -505,6 +507,7 @@ void Level1Scene::Load() {
 
 #pragma endregion
 
+
 #pragma region AI Testing
 
 	//Create an PlayerCar Entity, add component and set texture
@@ -581,6 +584,17 @@ void Level1Scene::Update(const double& dt) {
 
 
 #pragma region CheckRaceStatus
+
+#pragma region PauseMenu Test
+
+	if (Keyboard::isKeyPressed(Keyboard::P)) {
+		pauseMenu = makeEntity();
+		pauseMenu->addComponent<PauseMenu>();
+	}
+#pragma endregion
+
+
+
 
 #pragma region Lap Checker
 
