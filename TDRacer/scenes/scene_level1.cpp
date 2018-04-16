@@ -30,12 +30,13 @@ static shared_ptr<Entity> WinnerMessage;
 
 std::map<int, std::string> KeyValues;
 
-
-
-
-
 sf::Vector2f scale = { 0.400f, 0.400f };
 int counter = 0;
+
+int playeroneLapNo;
+int playertwoLapNo;
+int playeroneCheckpoint;
+int playertwoCheckpoint;
 
 
 void Level1Scene::Load() {
@@ -581,42 +582,116 @@ void Level1Scene::Update(const double& dt) {
 
 #pragma region CheckRaceStatus
 
-	//Player crossing finish triggers new laptime and increments lap counter
-	auto s1 = ls::getTilePosition(ls::findTiles(ls::START)[0]);
-	auto s2 = ls::getTilePosition(ls::findTiles(ls::STARTLEFT)[0]);
-	auto s3 = ls::getTilePosition(ls::findTiles(ls::STARTRIGHT)[0]);
+#pragma region Lap Checker
+
+#pragma region Original Code
+
+
+	////Player crossing finish triggers new laptime and increments lap counter
+	//auto s1 = ls::getTilePosition(ls::findTiles(ls::START)[0]);
+	//auto s2 = ls::getTilePosition(ls::findTiles(ls::STARTLEFT)[0]);
+	//auto s3 = ls::getTilePosition(ls::findTiles(ls::STARTRIGHT)[0]);
+
+	//auto tileSize = ls::getTileSize();
+
+	////get the race timer added to entity
+	//auto lt = raceTimer->GetCompatibleComponent<LapTimer>()[0];
+
+	////New Lap Incrementor - will increment when player goes over the finsih
+	//if (player->getPosition().y > s2.y - tileSize / 2 && player->getPosition().y < s3.y + tileSize / 2) {
+	//	if (player->getPosition().x > s2.x - tileSize / 2 && player->getPosition().x < s3.x + tileSize / 2) {
+
+	//		auto lapCounter = lt->getLapCounter();
+
+	//		if (lapCounter) {
+
+	//			lt->setLapCounter(false);
+	//			lt->setLaptime(lt->getCurrentLap());
+
+	//			lt->reset();
+	//			lt->increaseLapCounter();
+
+	//			//Displays current lap times
+	//			cout << "Current Lap: " << lt->getCurrentLap() << endl;
+	//			cout << lt->getLapTimes() << endl;
+	//		}
+	//	}
+	//}
+
+	////Prevents a player going back and forward over the line  //Need a better way to handle this
+	//lt->temp = lt->getClock().getElapsedTime().asMilliseconds();
+	//if (lt->temp > 10000) {
+	//	lt->setLapCounter(true);
+	//}
+
+#pragma endregion
+
+
+#pragma region New Lap Checker -- Testing
+	//Get locations of checkpoint1
+	auto s1 = ls::getTilePosition(ls::findTiles(ls::CHECKPOINT1)[0]);
+	auto s2 = ls::getTilePosition(ls::findTiles(ls::CHECKPOINT2)[0]);
+	auto s3 = ls::getTilePosition(ls::findTiles(ls::CHECKPOINT3)[0]);
+
+	//Get locations of checkpoint2
+	auto s4 = ls::getTilePosition(ls::findTiles(ls::CHECKPOINT1)[1]);
+	auto s5 = ls::getTilePosition(ls::findTiles(ls::CHECKPOINT2)[1]);
+	auto s6 = ls::getTilePosition(ls::findTiles(ls::CHECKPOINT3)[1]);
+	
+	//get Finish Tiles
+	auto f1 = ls::getTilePosition(ls::findTiles(ls::START)[0]);
+	auto f2 = ls::getTilePosition(ls::findTiles(ls::STARTLEFT)[0]);
+	auto f3 = ls::getTilePosition(ls::findTiles(ls::STARTRIGHT)[0]);
 
 	auto tileSize = ls::getTileSize();
-
-	//get the race timer added to entity
 	auto lt = raceTimer->GetCompatibleComponent<LapTimer>()[0];
 
-	//New Lap Incrementor - will increment when player goes over the finsih
-	if (player->getPosition().y > s2.y - tileSize / 2 && player->getPosition().y < s3.y + tileSize / 2) {
-		if (player->getPosition().x > s2.x - tileSize / 2 && player->getPosition().x < s3.x + tileSize / 2) {
+	if (player->getPosition().y > s1.y - tileSize / 2 && player->getPosition().y < s1.y + tileSize / 2) {
+		if (player->getPosition().x > s1.x - tileSize / 2 && player->getPosition().x < s3.x + tileSize / 2) {
 
 			auto lapCounter = lt->getLapCounter();
 
 			if (lapCounter) {
-
 				lt->setLapCounter(false);
-				lt->setLaptime(lt->getCurrentLap());
+				playeroneCheckpoint = 1;
+				cout << "Checkpoint " << playeroneCheckpoint << " reached" << endl;
+			}
 
-				lt->reset();
-				lt->increaseLapCounter();
+			if (playeroneCheckpoint == 2) {
+				if (player->getPosition().y > s2.y - tileSize / 2 && player->getPosition().y < s3.y + tileSize / 2) {
+					if (player->getPosition().x > s2.x - tileSize / 2 && player->getPosition().x < s3.x + tileSize / 2) {
 
-				//Displays current lap times
-				cout << "Current Lap: " << lt->getCurrentLap() << endl;
-				cout << lt->getLapTimes() << endl;
+						lt->increaseLapCounter();
+						playeroneCheckpoint = 0;
+
+						lt->setLaptime(lt->getCurrentLap());
+
+						lt->reset();
+
+						//Displays current lap times
+						cout << "Current Lap: " << lt->getCurrentLap() << endl;
+						cout << lt->getLapTimes() << endl;
+						
+					}
+				}
 			}
 		}
-	}
+	}//End of Main if
 
-	//Prevents a player going back and forward over the line  //Need a better way to handle this
-	lt->temp = lt->getClock().getElapsedTime().asMilliseconds();
-	if (lt->temp > 10000) {
-		lt->setLapCounter(true);
-	}
+
+	 //Prevents a player going back and forward over the line  //Need a better way to handle this
+	 lt->temp = lt->getClock().getElapsedTime().asMilliseconds();
+	 if (lt->temp > 4000) {
+	 	lt->setLapCounter(true);
+	 }
+
+#pragma endregion
+
+
+#pragma endregion
+
+
+#pragma region Check Game End
 
 
 	//Checks if game is over - will be changed for a variable depending on what player selects when
@@ -648,6 +723,7 @@ void Level1Scene::Update(const double& dt) {
 
 		//std::this_thread::sleep_for(std::chrono::milliseconds(3000));
 	}
+#pragma endregion
 
 
 #pragma endregion
