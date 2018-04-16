@@ -269,7 +269,7 @@ void GraphicScreen::Load() {
 		graphic = makeEntity();
 		auto title = graphic->addComponent<TextComponent>("TD CHAMPIONSHIP RACER");
 		auto control1 = graphic->addComponent<TextComponent>("V-SYNC : OFF");
-		auto control2 = graphic->addComponent<TextComponent>("RESOLUTION : " + currentWidth + " x " + currentHeight);
+		auto control2 = graphic->addComponent<TextComponent>("RESOLUTION : " + res[resIndex]);
 		auto control3 = graphic->addComponent<TextComponent>("WINDOW MODE : FULLSCREEN ");
 		auto control4 = graphic->addComponent<TextComponent>("BACK TO MENU");
 
@@ -289,6 +289,8 @@ void GraphicScreen::Load() {
 	}
 	setLoaded(true);
 	selectedItemIndex = 1;
+	resIndex++;
+	windowModeIndex = 1;
 }
 
 void GraphicScreen::MoveUp() {
@@ -386,15 +388,15 @@ void GraphicScreen::Update(const double & dt)
 
 			sizeRes = res->max_size();
 
-			if (resIndex >= 0)
+			if (resIndex >= 1)
 			{
-				txt_cmp[2]->SetText("RESOLUTION : " + res[resIndex]);
 				resIndex++;
+				txt_cmp[2]->SetText("RESOLUTION : " + res[resIndex]);
 
 			}
 			if (resIndex == sizeOfModes)
 			{
-				resIndex = 0;
+				resIndex = 1;
 				txt_cmp[2]->SetText("RESOLUTION : " + res[resIndex]);
 			}
 			cout << "RESOLUTION PRESSED!" << endl;
