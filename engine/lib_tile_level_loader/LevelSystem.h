@@ -30,6 +30,16 @@ public:
 		//Corner3
 		//Corner4
 
+		//Top
+		//Right
+		//Left
+		//Bottom
+		//Track
+		//Corner1
+		//Corner2
+		//Corner3
+		//Corner4
+
 		TOP = 'p',
 		LEFT = 'l', //this is an L
 		CHECKPOINT1 = '1',
@@ -48,7 +58,12 @@ public:
 		END = 'q',
 		GRASS = 'g',
 		WALL = 'w',
-		WAYPOINT = '+'
+		WAYPOINT = '+',
+		REDTENT = 'v',
+		BLUETENT = 'z',
+		TREEL = 'x',
+		STANDUP = 'i',
+		STANDDWN = 'o'
 	};
 
 	static Tile getTile(sf::Vector2ul);

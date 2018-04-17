@@ -28,7 +28,6 @@ void OptionScreen::Load() {
 
 		ls::loadLevelFile("res/menu.txt", 50.f);
 
-
 		//Get position of grass tiles and set sprites to each position
 		auto grassTiles = ls::findTiles(ls::GRASS);
 		for each (auto t in grassTiles)
@@ -42,7 +41,7 @@ void OptionScreen::Load() {
 
 			//get tile position - vector2f
 			auto g = ls::getTilePosition(t);
-			//grass->setPosition(g);
+			grass->setPosition(g);
 			t3->getSprite().setPosition(g);
 
 		}
@@ -58,7 +57,7 @@ void OptionScreen::Load() {
 
 			//get tile position - vector2f
 			auto g = ls::getTilePosition(t);
-			//peak->setPosition(g);
+			/*peak->setPosition(g);*/
 			t2->getSprite().setPosition(g);
 
 
@@ -77,7 +76,6 @@ void OptionScreen::Load() {
 			//get tile position - vector2f
 			auto g = ls::getTilePosition(t);
 			/*bottom->setPosition(g);*/
-
 			t2->getSprite().setPosition(g);
 
 		}
@@ -138,7 +136,7 @@ void OptionScreen::Load() {
 
 			//get tile position - vector2f
 			auto g = ls::getTilePosition(t);
-			/*corn2->setPosition(g);*/
+			/*	corn2->setPosition(g);*/
 			t1->getSprite().setPosition(g);
 			t2->getSprite().setPosition(g);
 
@@ -184,7 +182,7 @@ void OptionScreen::Load() {
 
 			//get tile position - vector2f
 			auto g = ls::getTilePosition(t);
-			/*corn4->setPosition(g);*/
+			/*	corn4->setPosition(g);*/
 			t1->getSprite().setPosition(g);
 			t2->getSprite().setPosition(g);
 
@@ -226,6 +224,123 @@ void OptionScreen::Load() {
 
 		}
 
+		auto blueTiles = ls::findTiles(ls::BLUETENT);
+		for each (auto t in blueTiles)
+		{
+			static shared_ptr<Entity> blue;
+			blue = makeEntity();
+
+			auto t1 = blue->addComponent<SpriteComponent>();
+			t1->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
+			t1->getSprite().setScale(0.400f, 0.400f);
+			//Add a new sprite component set texture and scale
+			auto t2 = blue->addComponent<SpriteComponent>();
+			t2->getSprite().setTexture(*Resources::get<Texture>("blue_tent.png"));
+			t2->getSprite().setScale(0.400f, 0.400f);
+
+
+			//get tile position - vector2f
+			auto g = ls::getTilePosition(t);
+			/*blue->setPosition(g);*/
+			t1->getSprite().setPosition(g);
+			t2->getSprite().setPosition(g);
+
+		}
+
+		auto redTiles = ls::findTiles(ls::REDTENT);
+		for each (auto t in redTiles)
+		{
+			static shared_ptr<Entity> red;
+			red = makeEntity();
+
+			auto t1 = red->addComponent<SpriteComponent>();
+			t1->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
+			t1->getSprite().setScale(0.400f, 0.400f);
+			//Add a new sprite component set texture and scale
+			auto t2 = red->addComponent<SpriteComponent>();
+			t2->getSprite().setTexture(*Resources::get<Texture>("red_tent.png"));
+			t2->getSprite().setScale(0.400f, 0.400f);
+
+
+			//get tile position - vector2f
+			auto g = ls::getTilePosition(t);
+			/*red->setPosition(g);*/
+			t1->getSprite().setPosition(g);
+			t2->getSprite().setPosition(g);
+
+		}
+
+		auto standTiles = ls::findTiles(ls::STANDUP);
+		for each (auto t in standTiles)
+		{
+			static shared_ptr<Entity> stand;
+			stand = makeEntity();
+
+			auto t1 = stand->addComponent<SpriteComponent>();
+			t1->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
+			t1->getSprite().setScale(0.400f, 0.400f);
+			//Add a new sprite component set texture and scale
+			auto t2 = stand->addComponent<SpriteComponent>();
+			t2->getSprite().setTexture(*Resources::get<Texture>("standP.png"));
+			t2->getSprite().setScale(0.400f, 0.400f);
+
+
+			//get tile position - vector2f
+			auto g = ls::getTilePosition(t);
+			/*stand->setPosition(g);*/
+			t1->getSprite().setPosition(g);
+			t2->getSprite().setPosition(g);
+
+		}
+
+		auto standDwnTiles = ls::findTiles(ls::STANDDWN);
+		for each (auto t in standDwnTiles)
+		{
+			static shared_ptr<Entity> standDwn;
+			standDwn = makeEntity();
+
+			auto t1 = standDwn->addComponent<SpriteComponent>();
+			t1->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
+			t1->getSprite().setScale(0.400f, 0.400f);
+			//Add a new sprite component set texture and scale
+			auto t2 = standDwn->addComponent<SpriteComponent>();
+			t2->getSprite().setTexture(*Resources::get<Texture>("standD.png"));
+			t2->getSprite().setScale(0.400f, 0.400f);
+
+
+			//get tile position - vector2f
+			auto g = ls::getTilePosition(t);
+			/*standDwn->setPosition(g);*/
+			t1->getSprite().setPosition(g);
+			t2->getSprite().setPosition(g);
+
+		}
+
+		auto treeTiles = ls::findTiles(ls::TREEL);
+		for each (auto t in treeTiles)
+		{
+			static shared_ptr<Entity> tree;
+			tree = makeEntity();
+
+			auto t1 = tree->addComponent<SpriteComponent>();
+			t1->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
+			t1->getSprite().setScale(0.400f, 0.400f);
+			//Add a new sprite component set texture and scale
+			auto t2 = tree->addComponent<SpriteComponent>();
+			t2->getSprite().setTexture(*Resources::get<Texture>("tree_large.png"));
+			t2->getSprite().setScale(0.400f, 0.400f);
+
+
+			//get tile position - vector2f
+			auto g = ls::getTilePosition(t);
+			/*tree->setPosition(g);*/
+			t1->getSprite().setPosition(g);
+			t2->getSprite().setPosition(g);
+
+
+		}
+
+
 		options = makeEntity();
 		////creates text entitys
 		options->addComponent<TextComponent>("TD Championship Racer");
@@ -240,15 +355,15 @@ void OptionScreen::Load() {
 		beep->getSound().setBuffer(*Resources::get<SoundBuffer>("beep.wav"));
 
 		////sets positions and size of menu entitys
-		auto list = options->GetCompatibleComponent<TextComponent>();
+		auto txt_cmp = options->GetCompatibleComponent<TextComponent>();
 
-		list[0]->setCenterPos(Engine::getWindowSize().x / 2.f, 100.f, 50.f);
-		list[1]->setCenterPos(Engine::getWindowSize().x / 2.f, 520.f, 50.f);
-		list[2]->setCenterPos(Engine::getWindowSize().x / 2.f, 570.f, 50.f);
-		list[3]->setCenterPos(Engine::getWindowSize().x / 2.f, 620.f, 50.f);
-		list[4]->setCenterPos(Engine::getWindowSize().x / 2.f, 670.f, 50.f);
+		txt_cmp[0]->setCenterPos(Engine::getWindowSize().x / 2.f, 100.f, 50.f);
+		txt_cmp[1]->setCenterPos(Engine::getWindowSize().x / 2.f, 520.f, 50.f);
+		txt_cmp[2]->setCenterPos(Engine::getWindowSize().x / 2.f, 570.f, 50.f);
+		txt_cmp[3]->setCenterPos(Engine::getWindowSize().x / 2.f, 620.f, 50.f);
+		txt_cmp[4]->setCenterPos(Engine::getWindowSize().x / 2.f, 670.f, 50.f);
 
-		list[1]->setColor(255, 0, 0, 255);
+		txt_cmp[1]->setColor(255, 0, 0, 255);
 
 	}
 	selectedItemIndex = 1; //added - sfa20
@@ -257,25 +372,25 @@ void OptionScreen::Load() {
 }
 
 void OptionScreen::MoveUp() {
-	auto list = options->GetCompatibleComponent<TextComponent>();
+	auto txt_cmp = options->GetCompatibleComponent<TextComponent>();
 
 	//used for keyboard movement in menus
 	if (selectedItemIndex - 1 > 0) {
-		list[selectedItemIndex]->setColor(255, 255, 255, 255);
+		txt_cmp[selectedItemIndex]->setColor(255, 255, 255, 255);
 		selectedItemIndex--;
-		list[selectedItemIndex]->setColor(255, 0, 0, 255);
+		txt_cmp[selectedItemIndex]->setColor(255, 0, 0, 255);
 		std::this_thread::sleep_for(std::chrono::milliseconds(150));
 	}
 }
 
 void OptionScreen::MoveDown() {
-	auto list = options->GetCompatibleComponent<TextComponent>();
+	auto txt_cmp = options->GetCompatibleComponent<TextComponent>();
 
 	//used for keyboard movement in menus
 	if (selectedItemIndex + 1 < 5) {
-		list[selectedItemIndex]->setColor(255, 255, 255, 255);
+		txt_cmp[selectedItemIndex]->setColor(255, 255, 255, 255);
 		selectedItemIndex++;
-		list[selectedItemIndex]->setColor(255, 0, 0, 255);
+		txt_cmp[selectedItemIndex]->setColor(255, 0, 0, 255);
 		std::this_thread::sleep_for(std::chrono::milliseconds(150));
 	}
 }
@@ -283,7 +398,7 @@ void OptionScreen::MoveDown() {
 
 void OptionScreen::Update(const double& dt) {
 
-	auto list = options->GetCompatibleComponent<TextComponent>();
+	auto txt_cmp = options->GetCompatibleComponent<TextComponent>();
 	auto sound_cmp = optionsSound->GetCompatibleComponent<SoundComponent>();
 
 	sf::Event newEvent;
@@ -294,39 +409,75 @@ void OptionScreen::Update(const double& dt) {
 	sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
 
 	newWindow.pollEvent(newEvent);
+	//joystick events 	
+	Vector2f didItMove(sf::Joystick::getAxisPosition(0, sf::Joystick::X),
+		sf::Joystick::getAxisPosition(0, sf::Joystick::Y));
+
+
+	if (didItMove.x > 15) {
+		cout << " joystick right pressed" << endl;
+		std::this_thread::sleep_for(std::chrono::milliseconds(150));
+	}
+
+	if (didItMove.x < -15) {
+		cout << " joystick left pressed" << endl;
+		std::this_thread::sleep_for(std::chrono::milliseconds(150));
+	}
+
+	if (didItMove.y < -15) {
+		if (selectedItemIndex - 1 > 0) {
+			txt_cmp[selectedItemIndex]->setColor(255, 255, 255, 255);
+			selectedItemIndex--;
+			txt_cmp[selectedItemIndex]->setColor(255, 0, 0, 255);
+			std::this_thread::sleep_for(std::chrono::milliseconds(150));
+		}
+		cout << " joystick up pressed" << endl;
+		std::this_thread::sleep_for(std::chrono::milliseconds(150));
+	}
+
+	if (didItMove.y > 15) {
+		if (selectedItemIndex + 1 < 5) {
+			txt_cmp[selectedItemIndex]->setColor(255, 255, 255, 255);
+			selectedItemIndex++;
+			txt_cmp[selectedItemIndex]->setColor(255, 0, 0, 255);
+			std::this_thread::sleep_for(std::chrono::milliseconds(150));
+		}
+		cout << " joystick down pressed" << endl;
+		std::this_thread::sleep_for(std::chrono::milliseconds(150));
+	}
 
 	//Handles this mouse hovering over the menu options
 	if (sf::Event::MouseMoved) {
 
-		if (list[1]->GetText().getGlobalBounds().contains(mousePosF)) {
-			list[selectedItemIndex]->setColor(255, 255, 255, 255);
+		if (txt_cmp[1]->GetText().getGlobalBounds().contains(mousePosF)) {
+			txt_cmp[selectedItemIndex]->setColor(255, 255, 255, 255);
 			selectedItemIndex = 1;
-			list[selectedItemIndex]->setColor(255, 0, 0, 255);
+			txt_cmp[selectedItemIndex]->setColor(255, 0, 0, 255);
 		}
 
-		if (list[2]->GetText().getGlobalBounds().contains(mousePosF)) {
-			list[selectedItemIndex]->setColor(255, 255, 255, 255);
+		if (txt_cmp[2]->GetText().getGlobalBounds().contains(mousePosF)) {
+			txt_cmp[selectedItemIndex]->setColor(255, 255, 255, 255);
 			selectedItemIndex = 2;
-			list[selectedItemIndex]->setColor(255, 0, 0, 255);
+			txt_cmp[selectedItemIndex]->setColor(255, 0, 0, 255);
 		}
 
-		if (list[3]->GetText().getGlobalBounds().contains(mousePosF)) {
-			list[selectedItemIndex]->setColor(255, 255, 255, 255);
+		if (txt_cmp[3]->GetText().getGlobalBounds().contains(mousePosF)) {
+			txt_cmp[selectedItemIndex]->setColor(255, 255, 255, 255);
 			selectedItemIndex = 3;
-			list[selectedItemIndex]->setColor(255, 0, 0, 255);
+			txt_cmp[selectedItemIndex]->setColor(255, 0, 0, 255);
 		}
 
-		if (list[4]->GetText().getGlobalBounds().contains(mousePosF)) {
-			list[selectedItemIndex]->setColor(255, 255, 255, 255);
+		if (txt_cmp[4]->GetText().getGlobalBounds().contains(mousePosF)) {
+			txt_cmp[selectedItemIndex]->setColor(255, 255, 255, 255);
 			selectedItemIndex = 4;
-			list[selectedItemIndex]->setColor(255, 0, 0, 255);
+			txt_cmp[selectedItemIndex]->setColor(255, 0, 0, 255);
 		}
 	}
 
 	//Handles the Button controls against the menu options
 	if (Mouse::isButtonPressed(Mouse::Left)) {
 
-		if (list[1]->GetText().getGlobalBounds().contains(mousePosF)) {
+		if (txt_cmp[1]->GetText().getGlobalBounds().contains(mousePosF)) {
 			cout << "Controls Pressed!" << endl;
 			selectedItemIndex = 1;
 			sound_cmp[0]->getSound().play();
@@ -334,7 +485,7 @@ void OptionScreen::Update(const double& dt) {
 			Engine::ChangeScene(&controlScreen);
 		}
 
-		if (list[2]->GetText().getGlobalBounds().contains(mousePosF)) {
+		if (txt_cmp[2]->GetText().getGlobalBounds().contains(mousePosF)) {
 			cout << "Graphics Pressed!" << endl;
 			selectedItemIndex = 2;
 			sound_cmp[0]->getSound().play();
@@ -342,7 +493,7 @@ void OptionScreen::Update(const double& dt) {
 			Engine::ChangeScene(&graphicScreen);
 		}
 
-		if (list[3]->GetText().getGlobalBounds().contains(mousePosF)) {
+		if (txt_cmp[3]->GetText().getGlobalBounds().contains(mousePosF)) {
 			cout << "Sound Pressed!" << endl;
 			selectedItemIndex = 3;
 			sound_cmp[0]->getSound().play();
@@ -350,7 +501,7 @@ void OptionScreen::Update(const double& dt) {
 			Engine::ChangeScene(&soundScreen);
 		}
 
-		if (list[4]->GetText().getGlobalBounds().contains(mousePosF)) {
+		if (txt_cmp[4]->GetText().getGlobalBounds().contains(mousePosF)) {
 			cout << "Main menu!" << endl;
 			sound_cmp[0]->getSound().play();
 			std::this_thread::sleep_for(std::chrono::milliseconds(2000));
@@ -392,7 +543,7 @@ void OptionScreen::Update(const double& dt) {
 				Engine::ChangeScene(&soundScreen);
 				break;
 			case 4:
-				std::cout << "Sound button has been pressed" << std::endl;
+				std::cout << "menu button has been pressed" << std::endl;
 				sound_cmp[0]->getSound().play();
 				std::this_thread::sleep_for(std::chrono::milliseconds(150));
 				Engine::ChangeScene(&menuScreen);
@@ -400,8 +551,40 @@ void OptionScreen::Update(const double& dt) {
 			}
 		}
 	}
+	if (sf::Joystick::isButtonPressed(0, 0) || sf::Joystick::isButtonPressed(0, 7)) {
+
+		switch (GetPressedItem()) {
+
+		case 1:
+			std::cout << "Controls button has been pressed" << std::endl;
+			sound_cmp[0]->getSound().play();
+			std::this_thread::sleep_for(std::chrono::milliseconds(150));
+			Engine::ChangeScene(&controlScreen);
+			break;
+		case 2:
+			std::cout << "Graphics button has been pressed" << std::endl;
+			sound_cmp[0]->getSound().play();
+			std::this_thread::sleep_for(std::chrono::milliseconds(150));
+			Engine::ChangeScene(&graphicScreen);
+			break;
+		case 3:
+			std::cout << "Sound button has been pressed" << std::endl;
+			sound_cmp[0]->getSound().play();
+			std::this_thread::sleep_for(std::chrono::milliseconds(150));
+			Engine::ChangeScene(&soundScreen);
+			break;
+		case 4:
+			std::cout << "menu button has been pressed" << std::endl;
+			sound_cmp[0]->getSound().play();
+			std::this_thread::sleep_for(std::chrono::milliseconds(150));
+			Engine::ChangeScene(&menuScreen);
+			break;
+		}
+	}
 
 }
+
+
 
 
 

@@ -43,12 +43,17 @@ extern Level1Scene level1;
 extern Level2Scene level2;
 extern Level3Scene level3;
 
-
 /****************SETTINGS****************************/
 extern bool settingConfirmed;
 extern bool nisFullscreen;
 extern int nHeight;
 extern int nWidth;
+
+/***********************JOYSTICK**********************/
+extern bool joystick1;
+extern bool joystick2;
+extern int j1buttonCount;
+extern int j2buttonCount;
 
 
 extern std::map<int, std::string> KeyValues;

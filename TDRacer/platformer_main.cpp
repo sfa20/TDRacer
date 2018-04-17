@@ -1,3 +1,5 @@
+#pragma once
+
 #include "engine.h"
 #include "game.h"
 #include "scenes/scene_menu.h"
@@ -14,6 +16,7 @@
 #include "scenes/scene_sounds.h"
 #include "system_resources.h"
 #include "SFML/Graphics.hpp"
+#include "SFML/Window/Joystick.hpp"
 
 using namespace std;
 using namespace sf;
@@ -45,32 +48,6 @@ int nHeight;
 int nWidth;
 
 int main() {
-	MyKeys myobj;
-	/*****************TEXTURES*****************/
-	*Resources::load<Texture>("grass.png");
-	*Resources::load<Texture>("Straights/straight_noBorder.png");
-	*Resources::load<Texture>("Straights/straight_horizontal_noBorder_bottom.png");
-	*Resources::load<Texture>("Straights/straight_horizontal_noBorder_top.png");
-	*Resources::load<Texture>("Corners/90DegreeTopRight.png");
-	*Resources::load<Texture>("Corners/90DegreeTopLeft.png");
-	*Resources::load<Texture>("Corners/90DegreeBottomLeft.png");
-	*Resources::load<Texture>("Corners/90DegreeBottomRight.png");
-	*Resources::load<Texture>("Straights/straight_vertical_noBorder_right.png");
-	*Resources::load<Texture>("Straights/straight_vertical_noBorder_left.png");
-	*Resources::load<Texture>("sfml.png");
-	*Resources::load<Texture>("box2d.png");
-	*Resources::load<Texture>("Straights/startLine_vertical_noBorder_left.png");
-	*Resources::load<Texture>("Straights/startLine_vertical_noBorder.png");
-	*Resources::load<Texture>("Straights/startLine_vertical_noBorder_right.png");
-	*Resources::load<Texture>("car_green_small_2.png");
-	*Resources::load<Texture>("Straights/startGrid_vertical_noBorder.png");
-
-
-	/*****************SOUND EFFECTS*****************/
-	*Resources::load<SoundBuffer>("opening.wav");
-	*Resources::load<SoundBuffer>("beep.wav");
-
-
 
 	Engine::Start(1980, 1080, "TD Championship Racer", &level1, false);
 

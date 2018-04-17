@@ -16,15 +16,15 @@
 #include "../components/cmp_lap_timer.h"
 #include "../components/cmp_car_body.h"
 #include "../components/cmp_player_controls.h"
-#include "../components//cmp_ai_physics.h"
+#include "../components//cmp_player2_physics.h"
 #include "../components/cmp_pause_menu.h"
 
 using namespace std;
 using namespace sf;
 using namespace Resources;
 
-static shared_ptr<Entity> player;
-static shared_ptr<Entity> ai;
+static shared_ptr<Entity> playerOne;
+static shared_ptr<Entity> playerTwo;
 
 static shared_ptr<Entity> raceTimer;
 static shared_ptr<Entity> WinnerMessage;
@@ -347,6 +347,7 @@ void Level1Scene::Load() {
 
 #pragma region Testing Checkpoints
 
+
 	auto checkpoint1Tiles = ls::findTiles(ls::CHECKPOINT1);
 	for each (auto t in checkpoint1Tiles)
 	{
@@ -359,6 +360,7 @@ void Level1Scene::Load() {
 		auto t2 = chkpt1->addComponent<SpriteComponent>();
 		t2->getSprite().setTexture(*Resources::get<Texture>("Straights/straight_vertical_noBorder_right.png"));
 		t2->getSprite().setScale(scale);
+
 
 
 		//get tile position - vector2f
@@ -407,14 +409,30 @@ void Level1Scene::Load() {
 
 	}
 
+#pragma region AI Waypoint testing
 
+	auto WayPointTiles = ls::findTiles(ls::WAYPOINT);
+	for each (auto t in WayPointTiles)
+	{
+		static shared_ptr<Entity> waypoint;
+		waypoint = makeEntity();
+		//Add a new sprite component set texture and scale
+		auto t1 = waypoint->addComponent<SpriteComponent>();
+		t1->getSprite().setTexture(*Resources::get<Texture>("Straights/straight_noBorder.png"));
+		t1->getSprite().setScale(scale);
 
+		//get tile position - vector2f
+		auto g = ls::getTilePosition(t);
+		waypoint->setPosition(g);
 
+		cout << "x: " << t.x << "\n" << "y: " << t.y << "\n" <<
 
-
+			endl;
+	}
 
 
 #pragma endregion
+
 
 
 
@@ -439,11 +457,11 @@ void Level1Scene::Load() {
 #pragma region CreatePlayer 
 
 	//Create an PlayerCar Entity, add component and set texture
-	player = makeEntity();
+	playerOne = makeEntity();
 
 	//Adds a Sprite component & set values
-	auto t = player->addComponent<SpriteComponent>(); //Add a sprite component
-	t->getSprite().setTexture(*Resources::get<Texture>("car_green_small_2.png"));
+	auto t = playerOne->addComponent<SpriteComponent>(); //Add a sprite component
+	t->getSprite().setTexture(*Resources::get<Texture>("Car.png"));
 	t->getSprite().setScale(.45f, .45f);
 	t->getSprite().setColor(Color::Red);
 	t->getSprite().setOrigin(10, 0);
@@ -451,7 +469,7 @@ void Level1Scene::Load() {
 	//Add a player controls component - This allows the user to have different controls
 	//for accel, brake etc and will allow these to be dynamically changed through an
 	//options menu
-	auto ctrl = player->addComponent<PlayerControls>();
+	auto ctrl = playerOne->addComponent<PlayerControls>();
 
 	forwardA = sf::Keyboard::W;
 	backA = sf::Keyboard::S;
@@ -466,7 +484,7 @@ void Level1Scene::Load() {
 	handbrakeB = sf::Keyboard::BackSlash;
 
 	//Add a Player Physics Component
-	auto p = player->addComponent<PlayerPhysicsComponent>(Vector2f(27.9f, 18.f));
+	auto p = playerOne->addComponent<PlayerPhysicsComponent>(Vector2f(27.9f, 18.f));
 	//p->setMass(10);
 
 	//Find the starting position 
@@ -474,7 +492,7 @@ void Level1Scene::Load() {
 	auto lv = ls::getTilePosition(l[0]);
 
 	//Set the players starting position
-	player->setPosition(Vector2f(lv));
+	playerOne->setPosition(Vector2f(lv));
 
 #pragma endregion
 
@@ -591,14 +609,14 @@ void Level1Scene::Load() {
 #pragma endregion
 
 
-#pragma region AI Testing
+#pragma region Player Two Testing
 
 	//Create an PlayerCar Entity, add component and set texture
-	ai = makeEntity();
+	playerTwo = makeEntity();
 
 	//Adds a Sprite component & set values
-	auto ait = ai->addComponent<SpriteComponent>(); //Add a sprite component
-	ait->getSprite().setTexture(*Resources::get<Texture>("car_green_small_2.png"));
+	auto ait = playerTwo->addComponent<SpriteComponent>(); //Add a sprite component
+	ait->getSprite().setTexture(*Resources::get<Texture>("Car.png"));
 	ait->getSprite().setScale(.45f, .45f);
 	ait->getSprite().setColor(Color::Red);
 	ait->getSprite().setOrigin(10, 0);
@@ -606,12 +624,12 @@ void Level1Scene::Load() {
 	//Add a player controls component - This allows the user to have different controls
 	//for accel, brake etc and will allow these to be dynamically changed through an
 	//options menu
-	auto aictrl = player->addComponent<PlayerControls>();
 
-
+	auto p2ctrl = playerTwo->addComponent<PlayerControls>();
+	//aictrl->ChangeControls("Accelerate", KeyValues[2]);  
 
 	//Add a Player Physics Component
-	auto aip = ai->addComponent<AIPhysicsComponent>(Vector2f(27.9f, 18.f));
+	auto p2physics = playerTwo->addComponent<PlayerTwoPhysicsComponent>(Vector2f(27.9f, 18.f));
 	//p->setMass(10);
 
 	//Find the starting position 
@@ -619,7 +637,7 @@ void Level1Scene::Load() {
 	auto lrv = ls::getTilePosition(lr[0]);
 
 	//Set the players starting position
-	ai->setPosition(Vector2f(lrv));
+	playerTwo->setPosition(Vector2f(lrv));
 
 
 #pragma endregion
@@ -677,9 +695,9 @@ void Level1Scene::Update(const double& dt) {
 	auto pausecmp = pauseMenu->GetCompatibleComponent<PauseMenu>()[0];
 	auto mainTimer = raceTimer->GetCompatibleComponent<Timer>()[0];
 	auto lapsTimer = raceTimer->GetCompatibleComponent<LapTimer>()[0];
-	auto playercmp = player->GetCompatibleComponent<PlayerPhysicsComponent>()[0];
+	auto playercmp = playerOne->GetCompatibleComponent<PlayerPhysicsComponent>()[0];
 
-	auto aicmp = ai->GetCompatibleComponent<AIPhysicsComponent>()[0];
+	auto aicmp = playerTwo->GetCompatibleComponent<PlayerTwoPhysicsComponent>()[0];
 	auto txt_cmp = pauseMenu->GetCompatibleComponent<TextComponent>();
 
 
@@ -879,18 +897,21 @@ void Level1Scene::Update(const double& dt) {
 	auto lt = raceTimer->GetCompatibleComponent<LapTimer>()[0];
 
 	//Check for player crossing 2nd checkpoint
-	if (player->getPosition().y > s1.y - tileSize / 2 && player->getPosition().y < s1.y + tileSize / 2) {
 
-		if (player->getPosition().x > s1.x - tileSize / 2 && player->getPosition().x < s3.x + tileSize / 2) {
+	if (playerOne->getPosition().y > s1.y - tileSize / 2 && playerOne->getPosition().y < s1.y + tileSize / 2) {
+
+		if (playerOne->getPosition().x > s1.x - tileSize / 2 && playerOne->getPosition().x < s3.x + tileSize / 2) {
+
 			playeroneCheckpoint = 1;
 			//cout << "Checkpoint " << playeroneCheckpoint << " reached" << endl;
 		}
 	}
 
 	//Check for player crossing 2nd checkpoint
-	if (player->getPosition().y > s4.y - tileSize / 2 && player->getPosition().y < s4.y + tileSize / 2) {
 
-		if (player->getPosition().x > s4.x - tileSize / 2 && player->getPosition().x < s6.x + tileSize / 2) {
+	if (playerOne->getPosition().y > s4.y - tileSize / 2 && playerOne->getPosition().y < s4.y + tileSize / 2) {
+
+		if (playerOne->getPosition().x > s4.x - tileSize / 2 && playerOne->getPosition().x < s6.x + tileSize / 2) {
 
 			playeroneCheckpoint = 2;
 			//cout << "Checkpoint " << playeroneCheckpoint << " reached" << endl;
@@ -899,8 +920,8 @@ void Level1Scene::Update(const double& dt) {
 
 	//Check for finish only if both checkpoints have been passed
 	if (playeroneCheckpoint == 2) {
-		if (player->getPosition().y > f1.y - tileSize / 2 && player->getPosition().y < f3.y + tileSize / 2) {
-			if (player->getPosition().x > f1.x - tileSize / 2 && player->getPosition().x < f3.x + tileSize / 2) {
+		if (playerOne->getPosition().y > f1.y - tileSize / 2 && playerOne->getPosition().y < f3.y + tileSize / 2) {
+			if (playerOne->getPosition().x > f1.x - tileSize / 2 && playerOne->getPosition().x < f3.x + tileSize / 2) {
 
 				lt->increaseLapCounter();
 				playeroneCheckpoint = 0;
@@ -928,7 +949,7 @@ void Level1Scene::Update(const double& dt) {
 	//selecting the track - Either 3 or 5
 	if (lt->getCurrentLap() == 5) {
 		cout << "Race Over" << endl;
-		player->setForDelete();
+		playerOne->setForDelete();
 		auto text = raceTimer->GetCompatibleComponent<TextComponent>()[1];
 		text->SetText("WINNER!");
 
