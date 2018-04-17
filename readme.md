@@ -2,10 +2,7 @@
 ## Games Development Module
 ### Copyright (C) 2016  Edinburgh Napier University
 
-| Windows Build | Linux / Mac Build |
-| ------------- | ------------- |
-| [![Build status](https://ci.appveyor.com/api/projects/status/ink9y6eyk0jt8wkg/branch/master?svg=true)](https://ci.appveyor.com/project/dooglz/set09121/branch/master)
- | |
+TDRACER WINDOWS 10, download the TDRACER.exe from the repo and let the fun begin the to play the game lauch the .exe and located in the bin/debug/ directory the game exe will be found
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
