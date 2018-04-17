@@ -425,13 +425,13 @@ void Level1Scene::Load() {
 
 
 #pragma region CreatePlayer 
-
+	 
 	//Create an PlayerCar Entity, add component and set texture
 	player = makeEntity();
 
 	//Adds a Sprite component & set values
 	auto t = player->addComponent<SpriteComponent>(); //Add a sprite component
-	t->getSprite().setTexture(*Resources::get<Texture>("car_green_small_2.png"));
+	t->getSprite().setTexture(*Resources::get<Texture>("Car.png"));
 	t->getSprite().setScale(.45f, .45f);
 	t->getSprite().setColor(Color::Red);
 	t->getSprite().setOrigin(10,0);
@@ -521,7 +521,7 @@ void Level1Scene::Load() {
 
 	//Adds a Sprite component & set values
 	auto ait = ai->addComponent<SpriteComponent>(); //Add a sprite component
-	ait->getSprite().setTexture(*Resources::get<Texture>("car_green_small_2.png"));
+	ait->getSprite().setTexture(*Resources::get<Texture>("Car.png"));
 	ait->getSprite().setScale(.45f, .45f);
 	ait->getSprite().setColor(Color::Red);
 	ait->getSprite().setOrigin(10, 0);

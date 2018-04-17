@@ -193,7 +193,7 @@ void SplashScreen::Load() {
 		t1->getSprite().setScale(0.400f, 0.400f);
 		//Add a new sprite component set texture and scale
 		auto t2 = stand->addComponent<SpriteComponent>();
-		t2->getSprite().setTexture(*Resources::get<Texture>("stand.png"));
+		t2->getSprite().setTexture(*Resources::get<Texture>("standP.png"));
 		t2->getSprite().setScale(0.400f, 0.400f);
 
 

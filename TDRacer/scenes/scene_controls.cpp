@@ -370,105 +370,7 @@ void ControlScreen::MoveDown() {
 
 void ControlScreen::Update(const double & dt)
 {
-<<<<<<< HEAD
-	//sf::Event event;
 
-	//sf::RenderWindow& window = Engine::GetWindow();
-	//sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-	//sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
-
-	////getting entity components
-	//auto txt_cmp = control->GetCompatibleComponent<TextComponent>();
-	//auto sound_cmp = controlSound->GetCompatibleComponent<SoundComponent>();
-
-	//window.pollEvent(event);
-
-	////Handles this mouse hovering over the menu options
-	//if (sf::Event::MouseMoved) {
-
-	//	if (txt_cmp[2]->GetText().getGlobalBounds().contains(mousePosF)) {
-	//		txt_cmp[selectedItemIndex]->setColor(255, 255, 255, 255);
-	//		selectedItemIndex = 1;
-	//		txt_cmp[selectedItemIndex]->setColor(255, 0, 0, 255);
-	//	}
-
-	//	if (txt_cmp[3]->GetText().getGlobalBounds().contains(mousePosF)) {
-	//		txt_cmp[selectedItemIndex]->setColor(255, 255, 255, 255);
-	//		selectedItemIndex = 2;
-	//		txt_cmp[selectedItemIndex]->setColor(255, 0, 0, 255);
-	//	}
-
-	//	if (txt_cmp[4]->GetText().getGlobalBounds().contains(mousePosF)) {
-	//		txt_cmp[selectedItemIndex]->setColor(255, 255, 255, 255);
-	//		selectedItemIndex = 3;
-	//		txt_cmp[selectedItemIndex]->setColor(255, 0, 0, 255);
-	//	}
-	//}
-
-	////Handles the Button controls against the menu options
-	//if (Mouse::isButtonPressed(Mouse::Left)) {
-
-	//	if (txt_cmp[2]->GetText().getGlobalBounds().contains(mousePosF)) {
-	//		cout << "Track 1 Pressed!" << endl;
-	//		selectedItemIndex = 1;
-	//		sound_cmp[0]->getSound().play();
-	//		std::this_thread::sleep_for(std::chrono::milliseconds(150));
-	//		Engine::ChangeScene(&loadScreen);
-	//	}
-
-	//	if (txt_cmp[3]->GetText().getGlobalBounds().contains(mousePosF)) {
-	//		cout << "Track 2 Pressed!" << endl;
-	//		selectedItemIndex = 2;
-	//		sound_cmp[0]->getSound().play();
-	//		std::this_thread::sleep_for(std::chrono::milliseconds(150));
-	//		Engine::ChangeScene(&optionScreen);
-	//	}
-
-	//	if (txt_cmp[4]->GetText().getGlobalBounds().contains(mousePosF)) {
-	//		cout << "Track 3 Pressed!" << endl;
-	//		sound_cmp[0]->getSound().play();
-	//		selectedItemIndex = 3;
-	//		std::this_thread::sleep_for(std::chrono::milliseconds(150));
-	//	}
-	//}
-
-	////Handles Keyboard input and checks against the Menu Options
-	//if (sf::Event::KeyPressed) {
-
-	//	if (sf::Keyboard::isKeyPressed(Keyboard::Up)) {
-	//		if (GetPressedItem() != 2)
-	//			MoveUp();
-	//	}
-
-	//	if (sf::Keyboard::isKeyPressed(Keyboard::Down)) {
-	//		if (GetPressedItem() != 5)
-	//			MoveDown();
-	//	}
-
-	//	if (sf::Keyboard::isKeyPressed(Keyboard::Return)) {
-	//		switch (GetPressedItem()) {
-
-	//		case 2:
-	//			std::cout << "Track 1 button has been pressed" << std::endl;
-	//			sound_cmp[0]->getSound().play();
-	//			std::this_thread::sleep_for(std::chrono::milliseconds(150));
-	//			Engine::ChangeScene(&level1);
-	//			break;
-	//		case 3:
-	//			std::cout << "Track 2 Options button has been pressed" << std::endl;
-	//			std::this_thread::sleep_for(std::chrono::milliseconds(150));
-	//			sound_cmp[0]->getSound().play();
-	//			Engine::ChangeScene(&level1);
-	//			break;
-	//		case 4:
-	//			std::cout << "Track 3 button has been pressed" << std::endl;
-	//			sound_cmp[0]->getSound().play();
-	//			std::this_thread::sleep_for(std::chrono::milliseconds(150));
-	//			break;
-	//		}
-	//	}
-	//}
-=======
 	sf::Event event;
 
 	sf::RenderWindow& window = Engine::GetWindow();
@@ -590,5 +492,5 @@ void ControlScreen::Update(const double & dt)
 			break;
 		}
 	}
->>>>>>> craig
+
 }
