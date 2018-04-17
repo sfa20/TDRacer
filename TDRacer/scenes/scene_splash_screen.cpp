@@ -154,8 +154,7 @@ void SplashScreen::Load() {
 		//get tile position - vector2f
 		auto g = ls::getTilePosition(t);
 		blue->setPosition(g);
-		/*t1->getSprite().setPosition(g);
-		t2->getSprite().setPosition(g);*/
+		
 
 	}
 
@@ -177,8 +176,7 @@ void SplashScreen::Load() {
 		//get tile position - vector2f
 		auto g = ls::getTilePosition(t);
 		red->setPosition(g);
-		/*t1->getSprite().setPosition(g);
-		t2->getSprite().setPosition(g);*/
+	
 
 	}
 
@@ -200,8 +198,6 @@ void SplashScreen::Load() {
 		//get tile position - vector2f
 		auto g = ls::getTilePosition(t);
 		stand->setPosition(g);
-		/*t1->getSprite().setPosition(g);
-		t2->getSprite().setPosition(g);*/
 
 	}
 
@@ -223,8 +219,6 @@ void SplashScreen::Load() {
 		//get tile position - vector2f
 		auto g = ls::getTilePosition(t);
 		tree->setPosition(g);
-		/*t1->getSprite().setPosition(g);
-		t2->getSprite().setPosition(g);*/
 
 	}
 
@@ -287,15 +281,4 @@ void SplashScreen::Update(const double & dt)
 	Scene::Update(dt);
 }
 
-/////
-// a = 0
-// b = 1
-// x = 2
-// y = 3
-// lb = 4
-// rb = 5
-// select = 6
-// start = 7
-// l3 = 8
-// r3 = 9
 

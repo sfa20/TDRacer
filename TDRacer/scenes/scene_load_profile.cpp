@@ -35,7 +35,6 @@ void LoadProfileScreen::Load()
 			//get tile position - vector2f
 			auto g = ls::getTilePosition(t);
 			grass->setPosition(g);
-			/*t3->getSprite().setPosition(g);*/
 
 		}
 		auto peakTiles = ls::findTiles(ls::TOP);
@@ -51,7 +50,6 @@ void LoadProfileScreen::Load()
 			//get tile position - vector2f
 			auto g = ls::getTilePosition(t);
 			peak->setPosition(g);
-			/*t2->getSprite().setPosition(g);*/
 
 
 		}
@@ -69,7 +67,6 @@ void LoadProfileScreen::Load()
 			//get tile position - vector2f
 			auto g = ls::getTilePosition(t);
 			bottom->setPosition(g);
-			/*t2->getSprite().setPosition(g);*/
 
 		}
 		auto trackTiles = ls::findTiles(ls::TRACK);
@@ -85,7 +82,6 @@ void LoadProfileScreen::Load()
 			//get tile position - vector2f
 			auto g = ls::getTilePosition(t);
 			track->setPosition(g);
-			/*t2->getSprite().setPosition(g);*/
 
 		}
 		////Get position of Corner tiles and set sprites to each postition
@@ -107,8 +103,6 @@ void LoadProfileScreen::Load()
 			//get tile position - vector2f
 			auto g = ls::getTilePosition(t);
 			corn1->setPosition(g);
-			/*t1->getSprite().setPosition(g);
-			t2->getSprite().setPosition(g);*/
 
 		}
 
@@ -130,8 +124,6 @@ void LoadProfileScreen::Load()
 			//get tile position - vector2f
 			auto g = ls::getTilePosition(t);
 			corn2->setPosition(g);
-			/*t1->getSprite().setPosition(g);
-			t2->getSprite().setPosition(g);*/
 
 		}
 
@@ -153,8 +145,6 @@ void LoadProfileScreen::Load()
 			//get tile position - vector2f
 			auto g = ls::getTilePosition(t);
 			corn3->setPosition(g);
-			/*t1->getSprite().setPosition(g);
-			t2->getSprite().setPosition(g);*/
 
 		}
 
@@ -176,8 +166,6 @@ void LoadProfileScreen::Load()
 			//get tile position - vector2f
 			auto g = ls::getTilePosition(t);
 			corn4->setPosition(g);
-			/*t1->getSprite().setPosition(g);
-			t2->getSprite().setPosition(g);*/
 
 		}
 		//Get position of RightTrack tiles and set sprites to each postition
@@ -195,7 +183,6 @@ void LoadProfileScreen::Load()
 			//get tile position - vector2f
 			auto g = ls::getTilePosition(t);
 			right->setPosition(g);
-			/*t2->getSprite().setPosition(g);*/
 
 		}
 
@@ -213,7 +200,6 @@ void LoadProfileScreen::Load()
 			//get tile position - vector2f
 			auto g = ls::getTilePosition(t);
 			left->setPosition(g);
-			/*t2->getSprite().setPosition(g);*/
 
 		}
 
@@ -235,8 +221,6 @@ void LoadProfileScreen::Load()
 			//get tile position - vector2f
 			auto g = ls::getTilePosition(t);
 			blue->setPosition(g);
-			/*t1->getSprite().setPosition(g);
-			t2->getSprite().setPosition(g);*/
 
 		}
 
@@ -258,8 +242,6 @@ void LoadProfileScreen::Load()
 			//get tile position - vector2f
 			auto g = ls::getTilePosition(t);
 			red->setPosition(g);
-			/*t1->getSprite().setPosition(g);
-			t2->getSprite().setPosition(g);*/
 
 		}
 
@@ -281,8 +263,6 @@ void LoadProfileScreen::Load()
 			//get tile position - vector2f
 			auto g = ls::getTilePosition(t);
 			stand->setPosition(g);
-			/*t1->getSprite().setPosition(g);
-			t2->getSprite().setPosition(g);*/
 
 		}
 
@@ -304,8 +284,6 @@ void LoadProfileScreen::Load()
 			//get tile position - vector2f
 			auto g = ls::getTilePosition(t);
 			standDwn->setPosition(g);
-			/*t1->getSprite().setPosition(g);
-			t2->getSprite().setPosition(g);*/
 
 		}
 
@@ -327,8 +305,6 @@ void LoadProfileScreen::Load()
 			//get tile position - vector2f
 			auto g = ls::getTilePosition(t);
 			tree->setPosition(g);
-			/*t1->getSprite().setPosition(g);
-			t2->getSprite().setPosition(g);*/
 
 		}
 

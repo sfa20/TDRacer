@@ -14,10 +14,10 @@
 #include <iostream>
 #include "../components/cmp_timer.h"
 #include "../components/cmp_lap_timer.h"
-#include "../components/cmp_car_body.h"
 #include "../components/cmp_player_controls.h"
 #include "../components//cmp_player2_physics.h"
 #include "../components/cmp_pause_menu.h"
+#include "../components/cmp_sound.h"
 
 using namespace std;
 using namespace sf;
@@ -25,6 +25,7 @@ using namespace Resources;
 
 static shared_ptr<Entity> playerOne;
 static shared_ptr<Entity> playerTwo;
+static shared_ptr<Entity> loadSound;
 
 static shared_ptr<Entity> raceTimer;
 static shared_ptr<Entity> WinnerMessage;
@@ -471,18 +472,21 @@ void Level1Scene::Load() {
 	//for accel, brake etc and will allow these to be dynamically changed through an
 	//options menu
 	auto ctrl = playerOne->addComponent<PlayerControls>();
+	auto ti = playerOne->addComponent<Timer>();
 
+
+
+	auto beep = playerOne->addComponent<SoundComponent>();
+	beep->getSound().setBuffer(*Resources::get<SoundBuffer>("AudiAcc.wav"));
+
+	//assign controls
 	forwardA = sf::Keyboard::W;
 	backA = sf::Keyboard::S;
 	rightA = sf::Keyboard::D;
 	leftA = sf::Keyboard::A;
 	handbrakeA = sf::Keyboard::LShift;
 
-	forwardB = sf::Keyboard::Up;
-	backB = sf::Keyboard::Down;
-	rightB = sf::Keyboard::Right;
-	leftB = sf::Keyboard::Left;
-	handbrakeB = sf::Keyboard::BackSlash;
+	
 
 	//Add a Player Physics Component
 	auto p = playerOne->addComponent<PlayerPhysicsComponent>(Vector2f(27.9f, 18.f));
@@ -633,6 +637,12 @@ void Level1Scene::Load() {
 		//Add a Player Physics Component
 		auto p2physics = playerTwo->addComponent<PlayerTwoPhysicsComponent>(Vector2f(27.9f, 18.f));
 		//p->setMass(10);
+
+		forwardB = sf::Keyboard::Up;
+		backB = sf::Keyboard::Down;
+		rightB = sf::Keyboard::Right;
+		leftB = sf::Keyboard::Left;
+		handbrakeB = sf::Keyboard::BackSlash;
 
 		//Find the starting position 
 		auto lr = ls::findTiles(ls::STARTRIGHT);

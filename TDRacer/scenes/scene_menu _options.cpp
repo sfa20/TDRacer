@@ -113,7 +113,6 @@ void OptionScreen::Load() {
 
 			//get tile position - vector2f
 			auto g = ls::getTilePosition(t);
-			/*corn1->setPosition(g);*/
 			t1->getSprite().setPosition(g);
 			t2->getSprite().setPosition(g);
 
@@ -136,7 +135,6 @@ void OptionScreen::Load() {
 
 			//get tile position - vector2f
 			auto g = ls::getTilePosition(t);
-			/*	corn2->setPosition(g);*/
 			t1->getSprite().setPosition(g);
 			t2->getSprite().setPosition(g);
 
@@ -159,7 +157,6 @@ void OptionScreen::Load() {
 
 			//get tile position - vector2f
 			auto g = ls::getTilePosition(t);
-			/*corn3->setPosition(g);*/
 			t1->getSprite().setPosition(g);
 			t2->getSprite().setPosition(g);
 
@@ -201,7 +198,6 @@ void OptionScreen::Load() {
 
 			//get tile position - vector2f
 			auto g = ls::getTilePosition(t);
-			/*right->setPosition(g);*/
 			t2->getSprite().setPosition(g);
 
 		}
@@ -219,7 +215,6 @@ void OptionScreen::Load() {
 
 			//get tile position - vector2f
 			auto g = ls::getTilePosition(t);
-			/*left->setPosition(g);*/
 			t2->getSprite().setPosition(g);
 
 		}
@@ -241,7 +236,6 @@ void OptionScreen::Load() {
 
 			//get tile position - vector2f
 			auto g = ls::getTilePosition(t);
-			/*blue->setPosition(g);*/
 			t1->getSprite().setPosition(g);
 			t2->getSprite().setPosition(g);
 
@@ -264,7 +258,6 @@ void OptionScreen::Load() {
 
 			//get tile position - vector2f
 			auto g = ls::getTilePosition(t);
-			/*red->setPosition(g);*/
 			t1->getSprite().setPosition(g);
 			t2->getSprite().setPosition(g);
 
@@ -287,7 +280,6 @@ void OptionScreen::Load() {
 
 			//get tile position - vector2f
 			auto g = ls::getTilePosition(t);
-			/*stand->setPosition(g);*/
 			t1->getSprite().setPosition(g);
 			t2->getSprite().setPosition(g);
 
@@ -310,7 +302,6 @@ void OptionScreen::Load() {
 
 			//get tile position - vector2f
 			auto g = ls::getTilePosition(t);
-			/*standDwn->setPosition(g);*/
 			t1->getSprite().setPosition(g);
 			t2->getSprite().setPosition(g);
 
@@ -333,7 +324,6 @@ void OptionScreen::Load() {
 
 			//get tile position - vector2f
 			auto g = ls::getTilePosition(t);
-			/*tree->setPosition(g);*/
 			t1->getSprite().setPosition(g);
 			t2->getSprite().setPosition(g);
 
@@ -366,7 +356,7 @@ void OptionScreen::Load() {
 		txt_cmp[1]->setColor(255, 0, 0, 255);
 
 	}
-	selectedItemIndex = 1; //added - sfa20
+	selectedItemIndex = 1; 
 
 	setLoaded(true);
 }

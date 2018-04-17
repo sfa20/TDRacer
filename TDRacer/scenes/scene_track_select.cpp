@@ -267,11 +267,10 @@ void TrackSelectScreen::Load() {
 		auto beep = selectTrackSound->addComponent<SoundComponent>();
 		beep->getSound().setBuffer(*Resources::get<SoundBuffer>("beep.wav"));
 	}
+	
 	setLoaded(true);
 	selectedItemIndex = 1;
 }
-
-
 
 void TrackSelectScreen::MoveUp() {
 	auto txt_cmp = txt->GetCompatibleComponent<TextComponent>();

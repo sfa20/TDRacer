@@ -1,7 +1,5 @@
 #include "scene_level2.h"
 #include "../components/cmp_enemy_ai.h"
-#include "../components/cmp_enemy_turret.h"
-#include "../components/cmp_hurt_player.h"
 #include "../components/cmp_physics.h"
 #include "../components/cmp_player_physics.h"
 #include "../game.h"
@@ -49,17 +47,7 @@ void Level2Scene::Load() {
 		// *********************************
 	}
 
-	// Create Turret
-	{
-		auto turret = makeEntity();
-		turret->setPosition(ls::getTilePosition(ls::findTiles('t')[0]) +
-			Vector2f(20, 0));
-		auto s = turret->addComponent<ShapeComponent>();
-		s->setShape<sf::CircleShape>(16.f, 3);
-		s->getShape().setFillColor(Color::Red);
-		s->getShape().setOrigin(16.f, 16.f);
-		turret->addComponent<EnemyTurretComponent>();
-	}
+
 
 	// Add physics colliders to level tiles.
 	{

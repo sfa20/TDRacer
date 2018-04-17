@@ -91,7 +91,6 @@ void GraphicScreen::Load() {
 
 			//get tile position - vector2f
 			auto g = ls::getTilePosition(t);
-			//peak->setPosition(g);
 			t2->getSprite().setPosition(g);
 
 

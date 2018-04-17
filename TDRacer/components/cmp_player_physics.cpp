@@ -4,13 +4,14 @@
 #include <SFML/Window/Keyboard.hpp>
 #include "cmp_player_controls.h"
 #include "../game.h"
-
+#include "cmp_sound.h"
+#include "cmp_timer.h"
 using namespace std;
 using namespace sf;
 using namespace Physics;
 
 int counttttt = 0;
-
+bool trip;
 void PlayerPhysicsComponent::update(double dt) {
 
 
@@ -35,31 +36,51 @@ void PlayerPhysicsComponent::update(double dt) {
 	//joystick events 	
 	Vector2f didItMove(sf::Joystick::getAxisPosition(0, sf::Joystick::X),
 		sf::Joystick::getAxisPosition(0, sf::Joystick::Y));
+	auto t = _parent->GetCompatibleComponent<Timer>()[0];
+	auto sndcmp = _parent->GetCompatibleComponent<SoundComponent>()[0];
 
 	if (controlsEnabled) {
-		sf::Keyboard::Key a = static_cast<sf::Keyboard::Key>(1);
 		//Handle keyboard input from user
 		if (Keyboard::isKeyPressed(forwardA) || Keyboard::isKeyPressed(backA) || sf::Joystick::isButtonPressed(0, 5) || sf::Joystick::isButtonPressed(0, 4)) {
 
 			auto checkGrass = ls::getTileAt(_parent->GetCompatibleComponent<SpriteComponent>()[0]->getSprite().getPosition() + Vector2f(0, 1));
 			auto checkGrassReverse = ls::getTileAt(_parent->GetCompatibleComponent<SpriteComponent>()[0]->getSprite().getPosition() + Vector2f(0, -1));
 
-
 			if (Keyboard::isKeyPressed(forwardA) || sf::Joystick::isButtonPressed(0, 5)) {
-				/*if (getVelocity().x < _maxVelocity.x) {*/
-				//updateFriction();
 				if (checkGrass == 'g') {
 					dampen({ 0.5f, 0.5f });
 					impulse({ -worldVector.x , -worldVector.y });
+
+				/*	if (trip) {
+						sndcmp->getSound().play();
+						t->getClock().restart();
+						trip = false;
+					}
+
+					auto passed = t->getClock().getElapsedTime().asMilliseconds();
+					if (passed > 7000)
+						trip = true;
+*/
+					
 				}
 				else {
+					/*if (trip) {
+						sndcmp->getSound().play();
+						t->getClock().restart();
+						trip = false;
+					}
+
+					auto passed = t->getClock().getElapsedTime().asMilliseconds();
+					if (passed > 7000)
+						trip = true;
+					*/
 					impulse({ -worldVector.x, -worldVector.y });
+					/*sndcmp->getSound().*/
+
 				}
 			}
 
 			else if (Keyboard::isKeyPressed(backA) || sf::Joystick::isButtonPressed(0, 4)) {
-				//if (getVelocity().x < _maxVelocity.x) {
-				//updateFriction();
 				if (checkGrassReverse == 'g') {
 					dampen({ 0.5f, 0.5f });
 					impulse({ worldVector.x, worldVector.y });
@@ -68,13 +89,20 @@ void PlayerPhysicsComponent::update(double dt) {
 					impulse({ worldVector.x, worldVector.y });
 
 				}
-				//stopTurning();
-				//}
-
 			}
 		}
 		else {
 			// Dampen X axis movement
+			/*if (trip) {
+				sndcmp->getSound().play();
+				t->getClock().restart();
+				trip = false;
+			}
+
+			auto passed = t->getClock().getElapsedTime().asMilliseconds();
+			if (passed > 7000)
+				trip = true;*/
+			
 			dampen({ 0.015f, 0.015f });
 			stopTurning(); //Added
 		}
