@@ -622,7 +622,7 @@ void Level1Scene::Load() {
 
 		//Adds a Sprite component & set values
 		auto ait = playerTwo->addComponent<SpriteComponent>(); //Add a sprite component
-		ait->getSprite().setTexture(*Resources::get<Texture>("Car.png"));
+		ait->getSprite().setTexture(*Resources::get<Texture>("black_viper.png"));
 		ait->getSprite().setScale(.45f, .45f);
 		ait->getSprite().setColor(Color::Red);
 		ait->getSprite().setOrigin(10, 0);
