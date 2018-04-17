@@ -55,7 +55,6 @@ extern bool joystick2;
 extern int j1buttonCount;
 extern int j2buttonCount;
 
-
 extern std::map<int, std::string> KeyValues;
 extern std::map<std::string, int > KeyValues2;
 

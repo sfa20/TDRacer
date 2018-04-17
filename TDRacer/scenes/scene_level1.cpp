@@ -938,6 +938,48 @@ void Level1Scene::Update(const double& dt) {
 		}
 	}
 
+	//Check for player crossing 2nd checkpoint
+
+	if (playerTwo->getPosition().y > s1.y - tileSize / 2 && playerTwo->getPosition().y < s1.y + tileSize / 2) {
+
+		if (playerTwo->getPosition().x > s1.x - tileSize / 2 && playerTwo->getPosition().x < s3.x + tileSize / 2) {
+
+			playeroneCheckpoint = 1;
+			//cout << "Checkpoint " << playeroneCheckpoint << " reached" << endl;
+		}
+	}
+
+	//Check for player crossing 2nd checkpoint
+
+	if (playerTwo->getPosition().y > s4.y - tileSize / 2 && playerTwo->getPosition().y < s4.y + tileSize / 2) {
+
+		if (playerTwo->getPosition().x > s4.x - tileSize / 2 && playerTwo->getPosition().x < s6.x + tileSize / 2) {
+
+			playertwoCheckpoint = 2;
+			//cout << "Checkpoint " << playeroneCheckpoint << " reached" << endl;
+		}
+	}
+
+	//Check for finish only if both checkpoints have been passed
+	if (playeroneCheckpoint == 2) {
+		if (playerTwo->getPosition().y > f1.y - tileSize / 2 && playerTwo->getPosition().y < f3.y + tileSize / 2) {
+			if (playerTwo->getPosition().x > f1.x - tileSize / 2 && playerTwo->getPosition().x < f3.x + tileSize / 2) {
+
+				lt->increaseLapCounter();
+				playertwoCheckpoint = 0;
+
+				lt->setLaptime(lt->getCurrentLap());
+
+				lt->reset();
+
+				//Displays current lap times
+				//cout << "Current Lap: " << lt->getCurrentLap() << endl;
+				//cout << lt->getLapTimes() << endl;
+
+			}
+		}
+	}
+
 
 #pragma endregion
 
