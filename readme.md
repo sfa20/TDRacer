@@ -2,7 +2,7 @@
 ## Games Development Module
 ### Copyright (C) 2016  Edinburgh Napier University
 
-TDRACER WINDOWS 10, download the TDRACER.exe from the repo and let the fun begin the to play the game lauch the .exe and located in the bin/debug/ directory the game exe will be found
+TDRACER WINDOWS 10, download the TDRACER.exe from the repo and let the fun begin the to play the game lauch the .exe and located in the bin/debug/ directory
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
