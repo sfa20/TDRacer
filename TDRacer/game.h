@@ -52,6 +52,7 @@ extern int nWidth;
 
 
 extern std::map<int, std::string> KeyValues;
+extern std::map<std::string, int > KeyValues2;
 
 extern std::map<std::string, MyKeys> Keys;
 extern MyKeys key;
@@ -60,6 +61,16 @@ extern int sizeOfControls;
 extern std::string * controls;
 extern int * controlsReverse;
 
+extern sf::Keyboard::Key forwardA;
+extern sf::Keyboard::Key backA;
+extern sf::Keyboard::Key leftA;
+extern sf::Keyboard::Key rightA;
+extern sf::Keyboard::Key forwardB;
+extern sf::Keyboard::Key backB;
+extern sf::Keyboard::Key leftB;
+extern sf::Keyboard::Key rightB;
+extern sf::Keyboard::Key handbrakeA;
+extern sf::Keyboard::Key handbrakeB;
 
 //extern const int32 velocityIterations;
 //extern const int32 positionIterations;

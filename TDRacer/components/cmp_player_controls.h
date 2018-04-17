@@ -25,23 +25,20 @@ class PlayerControls : public Component {
 public:
 	explicit PlayerControls(Entity* p);
 	bool KeyEvent(MyKeys k, sf::Event e);
-	
+
 	void DefineControls();
 	void ChangeControls(std::string control, int e);
 
 	void update(double dt) override;
 	void render();
 
-	void Forward();
-	void Back();
-	void Left();
-	void Right();
-	void Handbrake();
+
 
 	std::map<int, std::string> KeyValues;
 
 
 	std::string getAccelerateControl();
+	void setAccelerateControl(MyKeys pass, sf::Keyboard::Key please);
 	std::string getReverseControl();
 	std::string getHandBrakeControl();
 	std::string getTurnRightControl();

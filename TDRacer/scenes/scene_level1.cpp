@@ -31,6 +31,18 @@ static shared_ptr<Entity> WinnerMessage;
 static shared_ptr<Entity> pauseMenu;
 
 std::map<int, std::string> KeyValues;
+std::map<std::string, int> KeyValues2;
+
+sf::Keyboard::Key forwardA;
+sf::Keyboard::Key backA;
+sf::Keyboard::Key leftA;
+sf::Keyboard::Key rightA;
+sf::Keyboard::Key forwardB;
+sf::Keyboard::Key backB;
+sf::Keyboard::Key leftB;
+sf::Keyboard::Key rightB;
+sf::Keyboard::Key handbrakeA;
+sf::Keyboard::Key handbrakeB;
 
 sf::Vector2f scale = { 0.400f, 0.400f };
 int counter = 0;
@@ -74,7 +86,7 @@ void Level1Scene::Load() {
 
 	//Load Level File
 	ls::loadLevelFile("res/track_1.txt", size);
-	
+
 #pragma endregion
 
 
@@ -129,271 +141,271 @@ void Level1Scene::Load() {
 
 
 		//Get position of grass tiles and set sprites to each position
-		auto grassTiles = ls::findTiles(ls::GRASS);
-		for each (auto t in grassTiles)
-		{
-			static shared_ptr<Entity> grass;
-			grass = makeEntity();
-			//Add a new sprite component set texture and scale
-			auto t3 = grass->addComponent<SpriteComponent>();
-			t3->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
-			t3->getSprite().setScale(scale);
-	
-			//get tile position - vector2f
-			auto g = ls::getTilePosition(t);
-			grass->setPosition(g);
-		}
-	
-		auto wallTiles = ls::findTiles(ls::WALL);
-		for each (auto t in wallTiles)
-		{
+	auto grassTiles = ls::findTiles(ls::GRASS);
+	for each (auto t in grassTiles)
+	{
+		static shared_ptr<Entity> grass;
+		grass = makeEntity();
+		//Add a new sprite component set texture and scale
+		auto t3 = grass->addComponent<SpriteComponent>();
+		t3->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
+		t3->getSprite().setScale(scale);
 
-			static shared_ptr<Entity> wall;
-			wall = makeEntity();
-			//Add a new sprite component set texture and scale
-			auto t3 = wall->addComponent<SpriteComponent>();
-			t3->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
-			t3->getSprite().setScale(scale);
-			
-			//get tile position - vector2f
-			auto g = ls::getTilePosition(t);
-			wall->setPosition(g);
-	
-			auto barrier = wall->addComponent<PhysicsComponent>(false, Vector2f(51.2f, 51.2f));
-		}
-	
-	
-		//Get position of TopTrack tiles and set sprites to each postition
-		auto peakTiles = ls::findTiles(ls::TOP);
-		for each (auto t in peakTiles)
-		{
-			static shared_ptr<Entity> peak;
-			peak = makeEntity();
-			//Add a new sprite component set texture and scale
-			auto t2 = peak->addComponent<SpriteComponent>();
-			t2->getSprite().setTexture(*Resources::get<Texture>("Straights/straight_horizontal_noBorder_bottom.png"));
-			t2->getSprite().setScale(scale);
-	
-			//get tile position - vector2f
-			auto g = ls::getTilePosition(t);
-			peak->setPosition(g);
-	
-		}
-	
-		//Get position of BottomTrack tiles and set sprites to each postition
-		auto bottomTiles = ls::findTiles(ls::BOTTOM);
-		for each (auto t in bottomTiles)
-		{
-			static shared_ptr<Entity> bottom;
-			bottom = makeEntity();
-	
-			//Add a new sprite component set texture and scale
-			auto t2 = bottom->addComponent<SpriteComponent>();
-			t2->getSprite().setTexture(*Resources::get<Texture>("Straights/straight_horizontal_noBorder_top.png"));
-			t2->getSprite().setScale(scale);
-	
-			//get tile position - vector2f
-			auto g = ls::getTilePosition(t);
-			bottom->setPosition(g);
-	
-		}
-	
-		//Get position of RightTrack tiles and set sprites to each postition
-		auto rightTiles = ls::findTiles(ls::RIGHT);
-		for each (auto t in rightTiles)
-		{
-			static shared_ptr<Entity> right;
-			right = makeEntity();
-	
-			//Add a new sprite component set texture and scale
-			auto t2 = right->addComponent<SpriteComponent>();
-			t2->getSprite().setTexture(*Resources::get<Texture>("Straights/straight_vertical_noBorder_left.png"));
-			t2->getSprite().setScale(scale);
-	
-			//get tile position - vector2f
-			auto g = ls::getTilePosition(t);
-			right->setPosition(g);
-		}
-	
-		//Get position of LeftTrack tiles and set sprites to each postition
-		auto leftTiles = ls::findTiles(ls::LEFT);
-		for each (auto t in leftTiles)
-		{
-			static shared_ptr<Entity> left;
-			left = makeEntity();
-			//Add a new sprite component set texture and scale
-			auto t2 = left->addComponent<SpriteComponent>();
-			t2->getSprite().setTexture(*Resources::get<Texture>("Straights/straight_vertical_noBorder_right.png"));
-			t2->getSprite().setScale(scale);
-	
-			//get tile position - vector2f
-			auto g = ls::getTilePosition(t);
-			left->setPosition(g);
-	
-		}
-	
-		//Get position of track tiles and set sprites to each postition
-		auto trackTiles = ls::findTiles(ls::TRACK);
-		for each (auto t in trackTiles)
-		{
-			static shared_ptr<Entity> track;
-			track = makeEntity();
-			//Add a new sprite component set texture and scale
-			auto t2 = track->addComponent<SpriteComponent>();
-			t2->getSprite().setTexture(*Resources::get<Texture>("Straights/straight_noBorder.png"));
-			t2->getSprite().setScale(scale);
-	
-			//get tile position - vector2f
-			auto g = ls::getTilePosition(t);
-			track->setPosition(g);
-	
-		}
-	
-		//Get position of Corner tiles and set sprites to each postition
-		auto corner1Tiles = ls::findTiles(ls::CORNER1);
-		for each (auto t in corner1Tiles)
-		{
-			static shared_ptr<Entity> corn1;
-			corn1 = makeEntity();
-	
-			auto t1 = corn1->addComponent<SpriteComponent>();
-			t1->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
-			t1->getSprite().setScale(scale);
-			//Add a new sprite component set texture and scale
-			auto t2 = corn1->addComponent<SpriteComponent>();
-			t2->getSprite().setTexture(*Resources::get<Texture>("Corners/90DegreeTopRight.png"));
-			t2->getSprite().setScale(scale);
-	
-	
-			//get tile position - vector2f
-			auto g = ls::getTilePosition(t);
-			corn1->setPosition(g);
-	
-		}
-	
-		//Get position of track tiles and set sprites to each postition
-		auto corner2Tiles = ls::findTiles(ls::CORNER2);
-		for each (auto t in corner2Tiles)
-		{
-			static shared_ptr<Entity> corn2;
-			corn2 = makeEntity();
-			auto t1 = corn2->addComponent<SpriteComponent>();
-			t1->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
-			t1->getSprite().setScale(scale);
-			//Add a new sprite component set texture and scale
-			auto t2 = corn2->addComponent<SpriteComponent>();
-			t2->getSprite().setTexture(*Resources::get<Texture>("Corners/90DegreeTopLeft.png"));
-			t2->getSprite().setScale(scale);
-	
-			//get tile position - vector2f
-			auto g = ls::getTilePosition(t);
-			corn2->setPosition(g);
-	
-		}
-	
-		//Get position of track tiles and set sprites to each postition
-		auto corner3Tiles = ls::findTiles(ls::CORNER3);
-		for each (auto t in corner3Tiles)
-		{
-			static shared_ptr<Entity> corn3;
-			corn3 = makeEntity();
-			auto t1 = corn3->addComponent<SpriteComponent>();
-			t1->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
-			t1->getSprite().setScale(scale);
-			//Add a new sprite component set texture and scale
-			auto t2 = corn3->addComponent<SpriteComponent>();
-			t2->getSprite().setTexture(*Resources::get<Texture>("Corners/90DegreeBottomLeft.png"));
-			t2->getSprite().setScale(scale);
-	
-			//get tile position - vector2f
-			auto g = ls::getTilePosition(t);
-			corn3->setPosition(g);
-	
-		}
-	
-		//Get position of track tiles and set sprites to each postition
-		auto corner4Tiles = ls::findTiles(ls::CORNER4);
-		for each (auto t in corner4Tiles)
-		{
-			static shared_ptr<Entity> corn4;
-			corn4 = makeEntity();
-			auto t1 = corn4->addComponent<SpriteComponent>();
-			t1->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
-			t1->getSprite().setScale(scale);
-			//Add a new sprite component set texture and scale
-			auto t2 = corn4->addComponent<SpriteComponent>();
-			t2->getSprite().setTexture(*Resources::get<Texture>("Corners/90DegreeBottomRight.png"));
-			t2->getSprite().setScale(scale);
-	
-	
-			//get tile position - vector2f
-			auto g = ls::getTilePosition(t);
-			corn4->setPosition(g);
-	
-		}
+		//get tile position - vector2f
+		auto g = ls::getTilePosition(t);
+		grass->setPosition(g);
+	}
+
+	auto wallTiles = ls::findTiles(ls::WALL);
+	for each (auto t in wallTiles)
+	{
+
+		static shared_ptr<Entity> wall;
+		wall = makeEntity();
+		//Add a new sprite component set texture and scale
+		auto t3 = wall->addComponent<SpriteComponent>();
+		t3->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
+		t3->getSprite().setScale(scale);
+
+		//get tile position - vector2f
+		auto g = ls::getTilePosition(t);
+		wall->setPosition(g);
+
+		auto barrier = wall->addComponent<PhysicsComponent>(false, Vector2f(51.2f, 51.2f));
+	}
+
+
+	//Get position of TopTrack tiles and set sprites to each postition
+	auto peakTiles = ls::findTiles(ls::TOP);
+	for each (auto t in peakTiles)
+	{
+		static shared_ptr<Entity> peak;
+		peak = makeEntity();
+		//Add a new sprite component set texture and scale
+		auto t2 = peak->addComponent<SpriteComponent>();
+		t2->getSprite().setTexture(*Resources::get<Texture>("Straights/straight_horizontal_noBorder_bottom.png"));
+		t2->getSprite().setScale(scale);
+
+		//get tile position - vector2f
+		auto g = ls::getTilePosition(t);
+		peak->setPosition(g);
+
+	}
+
+	//Get position of BottomTrack tiles and set sprites to each postition
+	auto bottomTiles = ls::findTiles(ls::BOTTOM);
+	for each (auto t in bottomTiles)
+	{
+		static shared_ptr<Entity> bottom;
+		bottom = makeEntity();
+
+		//Add a new sprite component set texture and scale
+		auto t2 = bottom->addComponent<SpriteComponent>();
+		t2->getSprite().setTexture(*Resources::get<Texture>("Straights/straight_horizontal_noBorder_top.png"));
+		t2->getSprite().setScale(scale);
+
+		//get tile position - vector2f
+		auto g = ls::getTilePosition(t);
+		bottom->setPosition(g);
+
+	}
+
+	//Get position of RightTrack tiles and set sprites to each postition
+	auto rightTiles = ls::findTiles(ls::RIGHT);
+	for each (auto t in rightTiles)
+	{
+		static shared_ptr<Entity> right;
+		right = makeEntity();
+
+		//Add a new sprite component set texture and scale
+		auto t2 = right->addComponent<SpriteComponent>();
+		t2->getSprite().setTexture(*Resources::get<Texture>("Straights/straight_vertical_noBorder_left.png"));
+		t2->getSprite().setScale(scale);
+
+		//get tile position - vector2f
+		auto g = ls::getTilePosition(t);
+		right->setPosition(g);
+	}
+
+	//Get position of LeftTrack tiles and set sprites to each postition
+	auto leftTiles = ls::findTiles(ls::LEFT);
+	for each (auto t in leftTiles)
+	{
+		static shared_ptr<Entity> left;
+		left = makeEntity();
+		//Add a new sprite component set texture and scale
+		auto t2 = left->addComponent<SpriteComponent>();
+		t2->getSprite().setTexture(*Resources::get<Texture>("Straights/straight_vertical_noBorder_right.png"));
+		t2->getSprite().setScale(scale);
+
+		//get tile position - vector2f
+		auto g = ls::getTilePosition(t);
+		left->setPosition(g);
+
+	}
+
+	//Get position of track tiles and set sprites to each postition
+	auto trackTiles = ls::findTiles(ls::TRACK);
+	for each (auto t in trackTiles)
+	{
+		static shared_ptr<Entity> track;
+		track = makeEntity();
+		//Add a new sprite component set texture and scale
+		auto t2 = track->addComponent<SpriteComponent>();
+		t2->getSprite().setTexture(*Resources::get<Texture>("Straights/straight_noBorder.png"));
+		t2->getSprite().setScale(scale);
+
+		//get tile position - vector2f
+		auto g = ls::getTilePosition(t);
+		track->setPosition(g);
+
+	}
+
+	//Get position of Corner tiles and set sprites to each postition
+	auto corner1Tiles = ls::findTiles(ls::CORNER1);
+	for each (auto t in corner1Tiles)
+	{
+		static shared_ptr<Entity> corn1;
+		corn1 = makeEntity();
+
+		auto t1 = corn1->addComponent<SpriteComponent>();
+		t1->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
+		t1->getSprite().setScale(scale);
+		//Add a new sprite component set texture and scale
+		auto t2 = corn1->addComponent<SpriteComponent>();
+		t2->getSprite().setTexture(*Resources::get<Texture>("Corners/90DegreeTopRight.png"));
+		t2->getSprite().setScale(scale);
+
+
+		//get tile position - vector2f
+		auto g = ls::getTilePosition(t);
+		corn1->setPosition(g);
+
+	}
+
+	//Get position of track tiles and set sprites to each postition
+	auto corner2Tiles = ls::findTiles(ls::CORNER2);
+	for each (auto t in corner2Tiles)
+	{
+		static shared_ptr<Entity> corn2;
+		corn2 = makeEntity();
+		auto t1 = corn2->addComponent<SpriteComponent>();
+		t1->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
+		t1->getSprite().setScale(scale);
+		//Add a new sprite component set texture and scale
+		auto t2 = corn2->addComponent<SpriteComponent>();
+		t2->getSprite().setTexture(*Resources::get<Texture>("Corners/90DegreeTopLeft.png"));
+		t2->getSprite().setScale(scale);
+
+		//get tile position - vector2f
+		auto g = ls::getTilePosition(t);
+		corn2->setPosition(g);
+
+	}
+
+	//Get position of track tiles and set sprites to each postition
+	auto corner3Tiles = ls::findTiles(ls::CORNER3);
+	for each (auto t in corner3Tiles)
+	{
+		static shared_ptr<Entity> corn3;
+		corn3 = makeEntity();
+		auto t1 = corn3->addComponent<SpriteComponent>();
+		t1->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
+		t1->getSprite().setScale(scale);
+		//Add a new sprite component set texture and scale
+		auto t2 = corn3->addComponent<SpriteComponent>();
+		t2->getSprite().setTexture(*Resources::get<Texture>("Corners/90DegreeBottomLeft.png"));
+		t2->getSprite().setScale(scale);
+
+		//get tile position - vector2f
+		auto g = ls::getTilePosition(t);
+		corn3->setPosition(g);
+
+	}
+
+	//Get position of track tiles and set sprites to each postition
+	auto corner4Tiles = ls::findTiles(ls::CORNER4);
+	for each (auto t in corner4Tiles)
+	{
+		static shared_ptr<Entity> corn4;
+		corn4 = makeEntity();
+		auto t1 = corn4->addComponent<SpriteComponent>();
+		t1->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
+		t1->getSprite().setScale(scale);
+		//Add a new sprite component set texture and scale
+		auto t2 = corn4->addComponent<SpriteComponent>();
+		t2->getSprite().setTexture(*Resources::get<Texture>("Corners/90DegreeBottomRight.png"));
+		t2->getSprite().setScale(scale);
+
+
+		//get tile position - vector2f
+		auto g = ls::getTilePosition(t);
+		corn4->setPosition(g);
+
+	}
 
 
 #pragma region Testing Checkpoints
 
-		auto checkpoint1Tiles = ls::findTiles(ls::CHECKPOINT1);
-		for each (auto t in checkpoint1Tiles)
-		{
-			static shared_ptr<Entity> chkpt1;
-			chkpt1 = makeEntity();
-			auto t1 = chkpt1->addComponent<SpriteComponent>();
-			t1->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
-			t1->getSprite().setScale(scale);
-			//Add a new sprite component set texture and scale
-			auto t2 = chkpt1->addComponent<SpriteComponent>();
-			t2->getSprite().setTexture(*Resources::get<Texture>("Straights/straight_vertical_noBorder_right.png"));
-			t2->getSprite().setScale(scale);
+	auto checkpoint1Tiles = ls::findTiles(ls::CHECKPOINT1);
+	for each (auto t in checkpoint1Tiles)
+	{
+		static shared_ptr<Entity> chkpt1;
+		chkpt1 = makeEntity();
+		auto t1 = chkpt1->addComponent<SpriteComponent>();
+		t1->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
+		t1->getSprite().setScale(scale);
+		//Add a new sprite component set texture and scale
+		auto t2 = chkpt1->addComponent<SpriteComponent>();
+		t2->getSprite().setTexture(*Resources::get<Texture>("Straights/straight_vertical_noBorder_right.png"));
+		t2->getSprite().setScale(scale);
 
 
-			//get tile position - vector2f
-			auto g = ls::getTilePosition(t);
-			chkpt1->setPosition(g);
+		//get tile position - vector2f
+		auto g = ls::getTilePosition(t);
+		chkpt1->setPosition(g);
 
-		}
+	}
 
-		auto checkpoint2Tiles = ls::findTiles(ls::CHECKPOINT2);
-		for each (auto t in checkpoint2Tiles)
-		{
-			static shared_ptr<Entity> chkpt2;
-			chkpt2 = makeEntity();
-			auto t1 = chkpt2->addComponent<SpriteComponent>();
-			t1->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
-			t1->getSprite().setScale(scale);
-			//Add a new sprite component set texture and scale
-			auto t2 = chkpt2->addComponent<SpriteComponent>();
-			t2->getSprite().setTexture(*Resources::get<Texture>("Straights/straight_noBorder.png"));
-			t2->getSprite().setScale(scale);
-
-
-			//get tile position - vector2f
-			auto g = ls::getTilePosition(t);
-			chkpt2->setPosition(g);
-
-		}
-
-		auto checkpoint3Tiles = ls::findTiles(ls::CHECKPOINT3);
-		for each (auto t in checkpoint3Tiles)
-		{
-			static shared_ptr<Entity> chkpt3;
-			chkpt3 = makeEntity();
-			auto t1 = chkpt3->addComponent<SpriteComponent>();
-			t1->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
-			t1->getSprite().setScale(scale);
-			//Add a new sprite component set texture and scale
-			auto t2 = chkpt3->addComponent<SpriteComponent>();
-			t2->getSprite().setTexture(*Resources::get<Texture>("Straights/straight_vertical_noBorder_left.png"));
-			t2->getSprite().setScale(scale);
+	auto checkpoint2Tiles = ls::findTiles(ls::CHECKPOINT2);
+	for each (auto t in checkpoint2Tiles)
+	{
+		static shared_ptr<Entity> chkpt2;
+		chkpt2 = makeEntity();
+		auto t1 = chkpt2->addComponent<SpriteComponent>();
+		t1->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
+		t1->getSprite().setScale(scale);
+		//Add a new sprite component set texture and scale
+		auto t2 = chkpt2->addComponent<SpriteComponent>();
+		t2->getSprite().setTexture(*Resources::get<Texture>("Straights/straight_noBorder.png"));
+		t2->getSprite().setScale(scale);
 
 
-			//get tile position - vector2f
-			auto g = ls::getTilePosition(t);
-			chkpt3->setPosition(g);
+		//get tile position - vector2f
+		auto g = ls::getTilePosition(t);
+		chkpt2->setPosition(g);
 
-		}
+	}
+
+	auto checkpoint3Tiles = ls::findTiles(ls::CHECKPOINT3);
+	for each (auto t in checkpoint3Tiles)
+	{
+		static shared_ptr<Entity> chkpt3;
+		chkpt3 = makeEntity();
+		auto t1 = chkpt3->addComponent<SpriteComponent>();
+		t1->getSprite().setTexture(*Resources::get<Texture>("grass.png"));
+		t1->getSprite().setScale(scale);
+		//Add a new sprite component set texture and scale
+		auto t2 = chkpt3->addComponent<SpriteComponent>();
+		t2->getSprite().setTexture(*Resources::get<Texture>("Straights/straight_vertical_noBorder_left.png"));
+		t2->getSprite().setScale(scale);
+
+
+		//get tile position - vector2f
+		auto g = ls::getTilePosition(t);
+		chkpt3->setPosition(g);
+
+	}
 
 
 
@@ -413,13 +425,13 @@ void Level1Scene::Load() {
 
 #pragma region Setup Timer
 
-		raceTimer = makeEntity();
-		auto c = raceTimer->addComponent<TextComponent>("Timer: ");
-		c->setCenterPos(Engine::getWindowSize().x - 400.f, 20.f, 40.f);
-		auto c2 = raceTimer->addComponent<Timer>();
-		c2->start();
-		auto c3 = raceTimer->addComponent<LapTimer>();
-		c3->start();
+	raceTimer = makeEntity();
+	auto c = raceTimer->addComponent<TextComponent>("Timer: ");
+	c->setCenterPos(Engine::getWindowSize().x - 400.f, 20.f, 40.f);
+	auto c2 = raceTimer->addComponent<Timer>();
+	c2->start();
+	auto c3 = raceTimer->addComponent<LapTimer>();
+	c3->start();
 
 #pragma endregion
 
@@ -434,17 +446,29 @@ void Level1Scene::Load() {
 	t->getSprite().setTexture(*Resources::get<Texture>("car_green_small_2.png"));
 	t->getSprite().setScale(.45f, .45f);
 	t->getSprite().setColor(Color::Red);
-	t->getSprite().setOrigin(10,0);
+	t->getSprite().setOrigin(10, 0);
 
 	//Add a player controls component - This allows the user to have different controls
 	//for accel, brake etc and will allow these to be dynamically changed through an
 	//options menu
 	auto ctrl = player->addComponent<PlayerControls>();
 
+	forwardA = sf::Keyboard::W;
+	backA = sf::Keyboard::S;
+	rightA = sf::Keyboard::D;
+	leftA = sf::Keyboard::A;
+	handbrakeA = sf::Keyboard::LShift;
+
+	forwardB = sf::Keyboard::Up;
+	backB = sf::Keyboard::Down;
+	rightB = sf::Keyboard::Right;
+	leftB = sf::Keyboard::Left;
+	handbrakeB = sf::Keyboard::BackSlash;
+
 	//Add a Player Physics Component
 	auto p = player->addComponent<PlayerPhysicsComponent>(Vector2f(27.9f, 18.f));
 	//p->setMass(10);
-	
+
 	//Find the starting position 
 	auto l = ls::findTiles(ls::START);
 	auto lv = ls::getTilePosition(l[0]);
@@ -511,6 +535,59 @@ void Level1Scene::Load() {
 	KeyValues[83] = "NumPad 8";
 	KeyValues[84] = "NumPad 9";
 
+	KeyValues2["A"] = 0;
+	KeyValues2["B"] = 1;
+	KeyValues2["C"] = 2;
+	KeyValues2["D"] = 3;
+	KeyValues2["E"] = 4;
+	KeyValues2["F"] = 5;
+	KeyValues2["G"] = 6;
+	KeyValues2["H"] = 7;
+	KeyValues2["I"] = 8;
+	KeyValues2["J"] = 9;
+	KeyValues2["K"] = 10;
+	KeyValues2["L"] = 11;
+	KeyValues2["M"] = 12;
+	KeyValues2["N"] = 13;
+	KeyValues2["O"] = 14;
+	KeyValues2["P"] = 15;
+	KeyValues2["Q"] = 16;
+	KeyValues2["R"] = 17;
+	KeyValues2["S"] = 18;
+	KeyValues2["T"] = 19;
+	KeyValues2["U"] = 20;
+	KeyValues2["V"] = 21;
+	KeyValues2["W"] = 22;
+	KeyValues2["X"] = 23;
+	KeyValues2["Y"] = 24;
+	KeyValues2["Z"] = 25;
+	KeyValues2["Left Ctl"] = 37;
+	KeyValues2["Left Shift"] = 38;
+	KeyValues2["Left Alt"] = 39;
+	KeyValues2["Right Ctrl"] = 41;
+	KeyValues2["Right Shift"] = 42;
+	KeyValues2["Right Alt"] = 43;
+	KeyValues2["Comma"] = 49;
+	KeyValues2["Period"] = 50;
+	KeyValues2["Forward Slash (/)"] = 52;
+	KeyValues2["Back Slash ('')"] = 53;
+	KeyValues2["Space"] = 57;
+	KeyValues2["Backspace"] = 59;
+	KeyValues2["Left"] = 71;
+	KeyValues2["Right"] = 72;
+	KeyValues2["Up"] = 73;
+	KeyValues2["Down"] = 74;
+	KeyValues2["NumPad 0"] = 75;
+	KeyValues2["NumPad 1"] = 76;
+	KeyValues2["NumPad 2"] = 77;
+	KeyValues2["NumPad 3"] = 78;
+	KeyValues2["NumPad 4"] = 79;
+	KeyValues2["NumPad 5"] = 80;
+	KeyValues2["NumPad 6"] = 81;
+	KeyValues2["NumPad 7"] = 82;
+	KeyValues2["NumPad 8"] = 83;
+	KeyValues2["NumPad 9"] = 84;
+
 #pragma endregion
 
 
@@ -530,7 +607,7 @@ void Level1Scene::Load() {
 	//for accel, brake etc and will allow these to be dynamically changed through an
 	//options menu
 	auto aictrl = player->addComponent<PlayerControls>();
-	//aictrl->ChangeControls("Accelerate", KeyValues[2]);  
+
 
 
 	//Add a Player Physics Component
@@ -613,10 +690,10 @@ void Level1Scene::Update(const double& dt) {
 		aicmp->dampen(Vector2f(10, 10));
 		aicmp->controlsEnabled = false;
 	}
-	
-	if(pausecmp->active || pausecmp->submenuActive) {
+
+	if (pausecmp->active || pausecmp->submenuActive) {
 		if (sf::Event::KeyPressed) {
-			
+
 			if (sf::Keyboard::isKeyPressed(Keyboard::Up)) {
 				if (pausecmp->GetPressedItem() != 1) {
 					pausecmp->MoveUp();
@@ -745,6 +822,22 @@ void Level1Scene::Update(const double& dt) {
 				case 10:
 					std::cout << "Exit Menu pressed" << std::endl;
 					std::this_thread::sleep_for(std::chrono::milliseconds(150));
+
+					auto acc = KeyValues2[controls[accelIndex]];
+					forwardA = static_cast<sf::Keyboard::Key>(acc);
+
+					auto brk = KeyValues2[controls[reverseIndex]];
+					backA = static_cast<sf::Keyboard::Key>(brk);
+
+					auto rt = KeyValues2[controls[rightIndex]];
+					rightA = static_cast<sf::Keyboard::Key>(rt);
+
+					auto lt = KeyValues2[controls[leftIndex]];
+					leftA = static_cast<sf::Keyboard::Key>(lt);
+
+					auto brake = KeyValues2[controls[brakeIndex]];
+					handbrakeA = static_cast<sf::Keyboard::Key>(brake);
+
 					pausecmp->active = false;
 					pausecmp->active = true;
 					pausecmp->submenuActive = false;
@@ -759,10 +852,10 @@ void Level1Scene::Update(const double& dt) {
 			}
 		}
 	}
-	
+
 #pragma endregion
 
-	
+
 
 #pragma region Lap Checker
 
@@ -776,7 +869,7 @@ void Level1Scene::Update(const double& dt) {
 	auto s4 = ls::getTilePosition(ls::findTiles(ls::CHECKPOINT1)[1]);
 	auto s5 = ls::getTilePosition(ls::findTiles(ls::CHECKPOINT2)[1]);
 	auto s6 = ls::getTilePosition(ls::findTiles(ls::CHECKPOINT3)[1]);
-	
+
 	//get Finish Tiles
 	auto f1 = ls::getTilePosition(ls::findTiles(ls::START)[0]);
 	auto f2 = ls::getTilePosition(ls::findTiles(ls::STARTLEFT)[0]);
@@ -787,7 +880,7 @@ void Level1Scene::Update(const double& dt) {
 
 	//Check for player crossing 2nd checkpoint
 	if (player->getPosition().y > s1.y - tileSize / 2 && player->getPosition().y < s1.y + tileSize / 2) {
-		
+
 		if (player->getPosition().x > s1.x - tileSize / 2 && player->getPosition().x < s3.x + tileSize / 2) {
 			playeroneCheckpoint = 1;
 			//cout << "Checkpoint " << playeroneCheckpoint << " reached" << endl;
@@ -796,7 +889,7 @@ void Level1Scene::Update(const double& dt) {
 
 	//Check for player crossing 2nd checkpoint
 	if (player->getPosition().y > s4.y - tileSize / 2 && player->getPosition().y < s4.y + tileSize / 2) {
-		
+
 		if (player->getPosition().x > s4.x - tileSize / 2 && player->getPosition().x < s6.x + tileSize / 2) {
 
 			playeroneCheckpoint = 2;
@@ -840,7 +933,7 @@ void Level1Scene::Update(const double& dt) {
 		text->SetText("WINNER!");
 
 		if (counter <= 10) {
-			if (counter == 2 || counter == 4 || counter == 6 ) {
+			if (counter == 2 || counter == 4 || counter == 6) {
 				text->SetText("WINNER!");
 				std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 
@@ -851,7 +944,7 @@ void Level1Scene::Update(const double& dt) {
 
 			}
 		}
-		
+
 		if (counter > 6) {
 			Engine::ChangeScene(&menuScreen);
 		}

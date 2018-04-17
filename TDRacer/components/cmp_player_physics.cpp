@@ -3,14 +3,19 @@
 #include <LevelSystem.h>
 #include <SFML/Window/Keyboard.hpp>
 #include "cmp_player_controls.h"
+#include "../game.h"
+
 using namespace std;
 using namespace sf;
 using namespace Physics;
 
+int counttttt = 0;
+
 void PlayerPhysicsComponent::update(double dt) {
 
+
 	const auto pos = _parent->getPosition();
-	
+
 	//Teleport to start if we fall off map. 
 	if (pos.y > ls::getHeight() * ls::getTileSize() || pos.x > ls::getWidth() * ls::getTileSize() || pos.x < 0 || pos.y < 0) {
 		teleport(ls::getTilePosition(ls::findTiles(ls::START)[0]));
@@ -29,13 +34,13 @@ void PlayerPhysicsComponent::update(double dt) {
 	if (controlsEnabled) {
 
 		//Handle keyboard input from user
-		if (Keyboard::isKeyPressed(ctrl->getControl("Accelerate")) || Keyboard::isKeyPressed(ctrl->getControl("Reverse"))) {
+		if (Keyboard::isKeyPressed(forwardA) || Keyboard::isKeyPressed(backA) || Keyboard::isKeyPressed(forwardB) || Keyboard::isKeyPressed(backB)) {
 
 			auto checkGrass = ls::getTileAt(_parent->GetCompatibleComponent<SpriteComponent>()[0]->getSprite().getPosition() + Vector2f(0, 1));
 			auto checkGrassReverse = ls::getTileAt(_parent->GetCompatibleComponent<SpriteComponent>()[0]->getSprite().getPosition() + Vector2f(0, -1));
 
 
-			if (Keyboard::isKeyPressed(ctrl->getControl("Accelerate"))) {
+			if (Keyboard::isKeyPressed(forwardA) || Keyboard::isKeyPressed(forwardB)) {
 				/*if (getVelocity().x < _maxVelocity.x) {*/
 				//updateFriction();
 				if (checkGrass == 'g') {
@@ -46,7 +51,8 @@ void PlayerPhysicsComponent::update(double dt) {
 					impulse({ -worldVector.x, -worldVector.y });
 				}
 			}
-			else if (Keyboard::isKeyPressed(ctrl->getControl("Reverse"))) {
+
+			else if (Keyboard::isKeyPressed(backA) || Keyboard::isKeyPressed(backB)) {
 				//if (getVelocity().x < _maxVelocity.x) {
 				//updateFriction();
 				if (checkGrassReverse == 'g') {
@@ -69,13 +75,13 @@ void PlayerPhysicsComponent::update(double dt) {
 		}
 
 		//Turning
-		if (Keyboard::isKeyPressed(ctrl->getControl("Left")) || Keyboard::isKeyPressed(ctrl->getControl("Right"))) {
+		if (Keyboard::isKeyPressed(leftA) || Keyboard::isKeyPressed(rightA) || Keyboard::isKeyPressed(leftB) || Keyboard::isKeyPressed(rightB)) {
 
-			if (Keyboard::isKeyPressed(ctrl->getControl("Right"))) {
+			if (Keyboard::isKeyPressed(rightA) || Keyboard::isKeyPressed(rightB)) {
 				turnRight();
 				dampen({ 0.05f, 0.05f });
 			}
-			else if (Keyboard::isKeyPressed(ctrl->getControl("Left"))) {
+			else if (Keyboard::isKeyPressed(leftA) || Keyboard::isKeyPressed(leftB)) {
 				turnLeft();
 				dampen({ 0.05f, 0.05f });
 			}
@@ -88,15 +94,14 @@ void PlayerPhysicsComponent::update(double dt) {
 
 
 		//Handbrake
-		if (Keyboard::isKeyPressed(Keyboard::Space)) {
+		if (Keyboard::isKeyPressed(handbrakeA) || Keyboard::isKeyPressed(handbrakeB)) {
 			updateFriction();
 		}
 
 
-		//Respawn
+		//Respawndsawasaw
 		if (Keyboard::isKeyPressed(Keyboard::R)) {
-			teleport(ls::getTilePosition(ls::findTiles(ls::START)[0]));
-
+			/*teleport(ls::getTilePosition(ls::findTiles(ls::START)[0]));*/
 		}
 
 
@@ -119,9 +124,10 @@ PlayerPhysicsComponent::PlayerPhysicsComponent(Entity* p, const Vector2f& size) 
 	_groundspeed = 60.f;
 	_body->SetSleepingAllowed(false);
 	_body->SetFixedRotation(true);
-	
+
 	//Bullet items have higher-res collision detection
 	_body->SetBullet(true);
 
 }
+
 

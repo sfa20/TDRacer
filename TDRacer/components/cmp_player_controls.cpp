@@ -58,7 +58,7 @@ sf::Keyboard::Key PlayerControls::getControl(std::string control) {
 }
 
 
-PlayerControls::PlayerControls(Entity* p) : Component(p ) {
+PlayerControls::PlayerControls(Entity* p) : Component(p) {
 	DefineControls();
 
 #pragma region SetKeyValues
@@ -144,51 +144,51 @@ PlayerControls::PlayerControls(Entity* p) : Component(p ) {
 void PlayerControls::ChangeControls(std::string control, int e) {
 
 	//auto test = Engine::GetEvent();
-	
+
 		//cout << "Event Type: " << to_string(test.type) << endl;
 		//cout << control << " before: " << Keys[control].myKeyCode << endl;
 
 		/*auto a = e.key.code;*/
 		//Keys[control].myKeyCode = Keyboard::W;
 
-		Keys[control].myKeyCode = static_cast<sf::Keyboard::Key>(e);
+	Keys[control].myKeyCode = static_cast<sf::Keyboard::Key>(e);
 
-		std::this_thread::sleep_for(std::chrono::milliseconds(300));
+	std::this_thread::sleep_for(std::chrono::milliseconds(300));
 
-		//cout << control <<" after: " << Keys[control].myKeyCode << endl;
-		
+	//cout << control <<" after: " << Keys[control].myKeyCode << endl;
+
 
 }
 
 
-void PlayerControls::Forward() {
-
-	//auto checkGrass = ls::getTileAt(_parent->GetCompatibleComponent<SpriteComponent>()[0]->getSprite().getPosition() + Vector2f(0, 1));
-	//auto worldVector = _body->GetWorldVector(b2Vec2(0, 1));
-
-	//if (checkGrass == 'g') {
-	//	dampen({ 0.5f, 0.5f });
-	//	impulse({ -worldVector.x , -worldVector.y });
-	//}
-	//else {
-	//	impulse({ -worldVector.x, -worldVector.y });
-	//}
-}
-
-
-void PlayerControls::Back() {
-
-	//auto checkGrassReverse = ls::getTileAt(_parent->GetCompatibleComponent<SpriteComponent>()[0]->getSprite().getPosition() + Vector2f(0, -1));
-	//auto worldVector = _body->GetWorldVector(b2Vec2(0, 1));
-
-	//if (checkGrassReverse == 'g') {
-	//	dampen({ 0.5f, 0.5f });
-	//	impulse({ worldVector.x, worldVector.y });
-	//}
-	//else {
-	//	impulse({ worldVector.x, worldVector.y });
-	//}
-}
+//void PlayerControls::Forward() {
+//
+//	//auto checkGrass = ls::getTileAt(_parent->GetCompatibleComponent<SpriteComponent>()[0]->getSprite().getPosition() + Vector2f(0, 1));
+//	//auto worldVector = _body->GetWorldVector(b2Vec2(0, 1));
+//
+//	//if (checkGrass == 'g') {
+//	//	dampen({ 0.5f, 0.5f });
+//	//	impulse({ -worldVector.x , -worldVector.y });
+//	//}
+//	//else {
+//	//	impulse({ -worldVector.x, -worldVector.y });
+//	//}
+//}
+//
+//
+//void PlayerControls::Back() {
+//
+//	//auto checkGrassReverse = ls::getTileAt(_parent->GetCompatibleComponent<SpriteComponent>()[0]->getSprite().getPosition() + Vector2f(0, -1));
+//	//auto worldVector = _body->GetWorldVector(b2Vec2(0, 1));
+//
+//	//if (checkGrassReverse == 'g') {
+//	//	dampen({ 0.5f, 0.5f });
+//	//	impulse({ worldVector.x, worldVector.y });
+//	//}
+//	//else {
+//	//	impulse({ worldVector.x, worldVector.y });
+//	//}
+//}
 
 
 bool PlayerControls::KeyEvent(MyKeys k, sf::Event e)
@@ -376,11 +376,15 @@ void PlayerControls::update(double dt) {
 }
 
 
-void PlayerControls::render(){}
+void PlayerControls::render() {}
 
 
 std::string PlayerControls::getAccelerateControl() {
 	return to_string(Keys["Accelerate"].myKeyCode);
+}
+void PlayerControls::setAccelerateControl(MyKeys pass, sf::Keyboard::Key please) {
+	pass.myKeyCode = please;
+	Keys["Accelerate"].myKeyCode = sf::Keyboard::X;
 }
 
 std::string PlayerControls::getReverseControl() {
@@ -395,7 +399,7 @@ std::string PlayerControls::getTurnLeftControl() {
 	return to_string(Keys["Left"].myKeyCode);
 }
 
-std::string PlayerControls::getTurnRightControl(){
+std::string PlayerControls::getTurnRightControl() {
 	return to_string(Keys["Right"].myKeyCode);
 }
 

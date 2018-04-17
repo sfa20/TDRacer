@@ -45,6 +45,7 @@ int nHeight;
 int nWidth;
 
 int main() {
+	MyKeys myobj;
 	/*****************TEXTURES*****************/
 	*Resources::load<Texture>("grass.png");
 	*Resources::load<Texture>("Straights/straight_noBorder.png");
