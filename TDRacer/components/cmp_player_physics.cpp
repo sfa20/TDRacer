@@ -106,7 +106,7 @@ void PlayerPhysicsComponent::update(double dt) {
 
 		//Respawndsawasaw
 		if (Keyboard::isKeyPressed(Keyboard::R)) {
-			/*teleport(ls::getTilePosition(ls::findTiles(ls::START)[0]));*/
+			teleport(ls::getTilePosition(ls::findTiles(ls::START)[0]));
 		}
 
 

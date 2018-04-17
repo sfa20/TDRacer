@@ -433,6 +433,7 @@ void Level1Scene::Load() {
 
 #pragma endregion
 
+#pragma endregion
 
 
 
@@ -611,34 +612,35 @@ void Level1Scene::Load() {
 
 #pragma region Player Two Testing
 
-	//Create an PlayerCar Entity, add component and set texture
-	playerTwo = makeEntity();
+	if (gameMode == 1) {
+		//Create an PlayerCar Entity, add component and set texture
+		playerTwo = makeEntity();
 
-	//Adds a Sprite component & set values
-	auto ait = playerTwo->addComponent<SpriteComponent>(); //Add a sprite component
-	ait->getSprite().setTexture(*Resources::get<Texture>("Car.png"));
-	ait->getSprite().setScale(.45f, .45f);
-	ait->getSprite().setColor(Color::Red);
-	ait->getSprite().setOrigin(10, 0);
+		//Adds a Sprite component & set values
+		auto ait = playerTwo->addComponent<SpriteComponent>(); //Add a sprite component
+		ait->getSprite().setTexture(*Resources::get<Texture>("Car.png"));
+		ait->getSprite().setScale(.45f, .45f);
+		ait->getSprite().setColor(Color::Red);
+		ait->getSprite().setOrigin(10, 0);
 
-	//Add a player controls component - This allows the user to have different controls
-	//for accel, brake etc and will allow these to be dynamically changed through an
-	//options menu
+		//Add a player controls component - This allows the user to have different controls
+		//for accel, brake etc and will allow these to be dynamically changed through an
+		//options menu
 
-	auto p2ctrl = playerTwo->addComponent<PlayerControls>();
-	//aictrl->ChangeControls("Accelerate", KeyValues[2]);  
+		auto p2ctrl = playerTwo->addComponent<PlayerControls>();
+		//aictrl->ChangeControls("Accelerate", KeyValues[2]);  
 
-	//Add a Player Physics Component
-	auto p2physics = playerTwo->addComponent<PlayerTwoPhysicsComponent>(Vector2f(27.9f, 18.f));
-	//p->setMass(10);
+		//Add a Player Physics Component
+		auto p2physics = playerTwo->addComponent<PlayerTwoPhysicsComponent>(Vector2f(27.9f, 18.f));
+		//p->setMass(10);
 
-	//Find the starting position 
-	auto lr = ls::findTiles(ls::STARTRIGHT);
-	auto lrv = ls::getTilePosition(lr[0]);
+		//Find the starting position 
+		auto lr = ls::findTiles(ls::STARTRIGHT);
+		auto lrv = ls::getTilePosition(lr[0]);
 
-	//Set the players starting position
-	playerTwo->setPosition(Vector2f(lrv));
-
+		//Set the players starting position
+		playerTwo->setPosition(Vector2f(lrv));
+	}
 
 #pragma endregion
 
@@ -896,25 +898,23 @@ void Level1Scene::Update(const double& dt) {
 	auto tileSize = ls::getTileSize();
 	auto lt = raceTimer->GetCompatibleComponent<LapTimer>()[0];
 
-	//Check for player crossing 2nd checkpoint
-
+	//Check for playerOne crossing 1st checkpoint
 	if (playerOne->getPosition().y > s1.y - tileSize / 2 && playerOne->getPosition().y < s1.y + tileSize / 2) {
 
 		if (playerOne->getPosition().x > s1.x - tileSize / 2 && playerOne->getPosition().x < s3.x + tileSize / 2) {
 
 			playeroneCheckpoint = 1;
-			//cout << "Checkpoint " << playeroneCheckpoint << " reached" << endl;
+			cout << "Checkpoint " << playeroneCheckpoint << " reached" << endl;
 		}
 	}
 
-	//Check for player crossing 2nd checkpoint
-
+	//Check for playerOne crossing 2nd checkpoint
 	if (playerOne->getPosition().y > s4.y - tileSize / 2 && playerOne->getPosition().y < s4.y + tileSize / 2) {
 
 		if (playerOne->getPosition().x > s4.x - tileSize / 2 && playerOne->getPosition().x < s6.x + tileSize / 2) {
 
 			playeroneCheckpoint = 2;
-			//cout << "Checkpoint " << playeroneCheckpoint << " reached" << endl;
+			cout << "Checkpoint " << playeroneCheckpoint << " reached" << endl;
 		}
 	}
 
@@ -925,7 +925,7 @@ void Level1Scene::Update(const double& dt) {
 
 				lt->increaseLapCounter();
 				playeroneCheckpoint = 0;
-
+				playeroneLapNo++;
 				lt->setLaptime(lt->getCurrentLap());
 
 				lt->reset();
@@ -938,34 +938,33 @@ void Level1Scene::Update(const double& dt) {
 		}
 	}
 
-	//Check for player crossing 2nd checkpoint
-
+	//Check for playerTwo crossing 1st checkpoint
 	if (playerTwo->getPosition().y > s1.y - tileSize / 2 && playerTwo->getPosition().y < s1.y + tileSize / 2) {
 
 		if (playerTwo->getPosition().x > s1.x - tileSize / 2 && playerTwo->getPosition().x < s3.x + tileSize / 2) {
 
-			playeroneCheckpoint = 1;
-			//cout << "Checkpoint " << playeroneCheckpoint << " reached" << endl;
+			playertwoCheckpoint = 1;
+			cout << "Checkpoint " << playeroneCheckpoint << " reached" << endl;
 		}
 	}
 
-	//Check for player crossing 2nd checkpoint
-
+	//Check for playerTwo crossing 2nd checkpoint
 	if (playerTwo->getPosition().y > s4.y - tileSize / 2 && playerTwo->getPosition().y < s4.y + tileSize / 2) {
 
 		if (playerTwo->getPosition().x > s4.x - tileSize / 2 && playerTwo->getPosition().x < s6.x + tileSize / 2) {
 
 			playertwoCheckpoint = 2;
-			//cout << "Checkpoint " << playeroneCheckpoint << " reached" << endl;
+			cout << "Checkpoint " << playeroneCheckpoint << " reached" << endl;
 		}
 	}
 
 	//Check for finish only if both checkpoints have been passed
-	if (playeroneCheckpoint == 2) {
+	if (playertwoCheckpoint == 2) {
 		if (playerTwo->getPosition().y > f1.y - tileSize / 2 && playerTwo->getPosition().y < f3.y + tileSize / 2) {
 			if (playerTwo->getPosition().x > f1.x - tileSize / 2 && playerTwo->getPosition().x < f3.x + tileSize / 2) {
 
 				lt->increaseLapCounter();
+				playertwoLapNo++;
 				playertwoCheckpoint = 0;
 
 				lt->setLaptime(lt->getCurrentLap());
@@ -973,7 +972,7 @@ void Level1Scene::Update(const double& dt) {
 				lt->reset();
 
 				//Displays current lap times
-				//cout << "Current Lap: " << lt->getCurrentLap() << endl;
+				cout << "Current Lap: " << lt->getCurrentLap() << endl;
 				//cout << lt->getLapTimes() << endl;
 
 			}
@@ -986,35 +985,24 @@ void Level1Scene::Update(const double& dt) {
 
 #pragma region Check Game End
 
-
 	//Checks if game is over - will be changed for a variable depending on what player selects when
 	//selecting the track - Either 3 or 5
 	if (lt->getCurrentLap() == 5) {
 		cout << "Race Over" << endl;
-		playerOne->setForDelete();
 		auto text = raceTimer->GetCompatibleComponent<TextComponent>()[1];
-		text->SetText("WINNER!");
 
-		if (counter <= 10) {
-			if (counter == 2 || counter == 4 || counter == 6) {
-				text->SetText("WINNER!");
-				std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-
-			}
-			else {
-				text->SetText("");
-				std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-
-			}
+		if (playeroneLapNo > playertwoLapNo) {
+			text->SetText("Player One Wins!!!");
+			std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+		}
+		else {
+			text->SetText("Player Two Wins!!!");
+			std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 		}
 
-		if (counter > 6) {
-			Engine::ChangeScene(&menuScreen);
-		}
-		counter++;
-
-
-		//std::this_thread::sleep_for(std::chrono::milliseconds(3000));
+		playerOne->setForDelete();
+		playerTwo->setForDelete();
+		Engine::ChangeScene(&menuScreen);
 	}
 #pragma endregion
 

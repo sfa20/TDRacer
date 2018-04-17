@@ -76,5 +76,7 @@ extern sf::Keyboard::Key rightB;
 extern sf::Keyboard::Key handbrakeA;
 extern sf::Keyboard::Key handbrakeB;
 
+extern int gameMode;
+
 //extern const int32 velocityIterations;
 //extern const int32 positionIterations;
