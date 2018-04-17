@@ -3,9 +3,13 @@
 #include <LevelSystem.h>
 #include <SFML/Window/Keyboard.hpp>
 #include "cmp_player_controls.h"
+
 using namespace std;
 using namespace sf;
 using namespace Physics;
+
+
+int checkpointCounter;
 
 AIPhysicsComponent::AIPhysicsComponent(Entity* p, const Vector2f& size) : PhysicsComponent(p, true, size) {
 	_size = sv2_to_bv2(size, true);
@@ -26,7 +30,7 @@ AIPhysicsComponent::AIPhysicsComponent(Entity* p, const Vector2f& size) : Physic
 void AIPhysicsComponent::update(double dt) {
 
 	const auto pos = _parent->getPosition();
-	
+
 	//Teleport to start if we fall off map. 
 	if (pos.y > ls::getHeight() * ls::getTileSize() || pos.x > ls::getWidth() * ls::getTileSize() || pos.x < 0 || pos.y < 0) {
 		teleport(ls::getTilePosition(ls::findTiles(ls::STARTRIGHT)[0]));
@@ -41,10 +45,34 @@ void AIPhysicsComponent::update(double dt) {
 	//auto ctrl = _parent->GetCompatibleComponent<PlayerControls>()[0];
 
 #pragma region Player Movement
-	if (controlsEnabled) {
+	
+	
+	switch (checkpointCounter) {
+	case 1:
+		break;
+	case 2:
+		break;
+	case 3:
+		break;
+	case 4:
+		break;
+	case 5:
+		break;
+	case 6:
+		break;
+	case 7:
+		break;
+	case 8:
+		break;
+	case 9:
+		break;
+	case 10:
+		break;
+	}
+
 
 		//Handle keyboard input from user
-		if (Keyboard::isKeyPressed(Keyboard::W) || Keyboard::isKeyPressed(Keyboard::S)) {
+		if (Keyboard::isKeyPressed(Keyboard::Numpad8) || Keyboard::isKeyPressed(Keyboard::Numpad2)) {
 
 			auto checkGrass = ls::getTileAt(_parent->GetCompatibleComponent<SpriteComponent>()[0]->getSprite().getPosition() + Vector2f(0, 1));
 			auto checkGrassReverse = ls::getTileAt(_parent->GetCompatibleComponent<SpriteComponent>()[0]->getSprite().getPosition() + Vector2f(0, -1));
@@ -114,12 +142,11 @@ void AIPhysicsComponent::update(double dt) {
 
 		}
 
-	}
+	
 #pragma endregion
 
 
 	PhysicsComponent::update(dt);
 }
-
 
 
