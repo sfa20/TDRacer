@@ -18,13 +18,15 @@
 #include "../components/cmp_player_controls.h"
 #include "../components//cmp_player2_physics.h"
 #include "../components/cmp_pause_menu.h"
+#include "../components/cmp_ai_physics.h"
 
 using namespace std;
 using namespace sf;
 using namespace Resources;
 
 static shared_ptr<Entity> playerOne;
-static shared_ptr<Entity> playerTwo;
+//static shared_ptr<Entity> playerTwo;
+static shared_ptr<Entity> ai;
 
 static shared_ptr<Entity> raceTimer;
 static shared_ptr<Entity> WinnerMessage;
@@ -530,10 +532,42 @@ void Level1Scene::Load() {
 #pragma region Player Two Testing
 
 	//Create an PlayerCar Entity, add component and set texture
-	playerTwo = makeEntity();
+	//playerTwo = makeEntity();
+
+	////Adds a Sprite component & set values
+	//auto ait = playerTwo->addComponent<SpriteComponent>(); //Add a sprite component
+	//ait->getSprite().setTexture(*Resources::get<Texture>("Car.png"));
+	//ait->getSprite().setScale(.45f, .45f);
+	//ait->getSprite().setColor(Color::Red);
+	//ait->getSprite().setOrigin(10, 0);
+
+	////Add a player controls component - This allows the user to have different controls
+	////for accel, brake etc and will allow these to be dynamically changed through an
+	////options menu
+	//auto p2ctrl = playerTwo->addComponent<PlayerControls>();
+	////aictrl->ChangeControls("Accelerate", KeyValues[2]);  
+
+
+	////Add a Player Physics Component
+	//auto p2physics = playerTwo->addComponent<PlayerTwoPhysicsComponent>(Vector2f(27.9f, 18.f));
+	////p->setMass(10);
+
+	////Find the starting position 
+	//auto lr = ls::findTiles(ls::STARTRIGHT);
+	//auto lrv = ls::getTilePosition(lr[0]);
+
+	////Set the players starting position
+	//playerTwo->setPosition(Vector2f(lrv));
+
+
+#pragma endregion
+
+#pragma region AI Testing
+
+	ai = makeEntity();
 
 	//Adds a Sprite component & set values
-	auto ait = playerTwo->addComponent<SpriteComponent>(); //Add a sprite component
+	auto ait = ai->addComponent<SpriteComponent>(); //Add a sprite component
 	ait->getSprite().setTexture(*Resources::get<Texture>("Car.png"));
 	ait->getSprite().setScale(.45f, .45f);
 	ait->getSprite().setColor(Color::Red);
@@ -542,12 +576,13 @@ void Level1Scene::Load() {
 	//Add a player controls component - This allows the user to have different controls
 	//for accel, brake etc and will allow these to be dynamically changed through an
 	//options menu
-	auto p2ctrl = playerTwo->addComponent<PlayerControls>();
+	auto p2ctrl = ai->addComponent<PlayerControls>();
 	//aictrl->ChangeControls("Accelerate", KeyValues[2]);  
 
 
 	//Add a Player Physics Component
-	auto p2physics = playerTwo->addComponent<PlayerTwoPhysicsComponent>(Vector2f(27.9f, 18.f));
+	auto p2physics = ai->addComponent<AIPhysicsComponent>(Vector2f(27.9f, 18.f));
+	Physics::GetWorld()->GetBodyList()[0].SetAngularDamping(0);
 	//p->setMass(10);
 
 	//Find the starting position 
@@ -555,11 +590,9 @@ void Level1Scene::Load() {
 	auto lrv = ls::getTilePosition(lr[0]);
 
 	//Set the players starting position
-	playerTwo->setPosition(Vector2f(lrv));
-
+	ai->setPosition(Vector2f(lrv));
 
 #pragma endregion
-
 
 
 #pragma region Testing
@@ -615,7 +648,7 @@ void Level1Scene::Update(const double& dt) {
 	auto lapsTimer = raceTimer->GetCompatibleComponent<LapTimer>()[0];
 	auto playercmp = playerOne->GetCompatibleComponent<PlayerPhysicsComponent>()[0];
 
-	auto aicmp = playerTwo->GetCompatibleComponent<PlayerTwoPhysicsComponent>()[0];
+	auto aicmp = ai->GetCompatibleComponent<AIPhysicsComponent>()[0];
 	auto txt_cmp = pauseMenu->GetCompatibleComponent<TextComponent>();
 
 

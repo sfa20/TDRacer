@@ -167,10 +167,10 @@ void PhysicsComponent::updateFriction() {
 void PhysicsComponent::turnRight() {
 
 	if (currentForwardSpeed != 0.f)
-		_body->SetAngularVelocity(1.5);
-
+		_body->SetAngularVelocity(100.5);
+	_body->
 	
-	//////testing
+	////testing
 	//float steerTorque = 0.01;
 	//float steerTorqueOffset = 0.004;
 	//float desiredTorque = 0;

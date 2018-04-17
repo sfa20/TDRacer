@@ -9,7 +9,7 @@ using namespace sf;
 using namespace Physics;
 
 
-int checkpointCounter;
+int checkpointCounter = 0;
 
 AIPhysicsComponent::AIPhysicsComponent(Entity* p, const Vector2f& size) : PhysicsComponent(p, true, size) {
 	_size = sv2_to_bv2(size, true);
@@ -46,8 +46,33 @@ void AIPhysicsComponent::update(double dt) {
 
 #pragma region Player Movement
 	
-	
+	auto checkGrass = ls::getTileAt(_parent->GetCompatibleComponent<SpriteComponent>()[0]->getSprite().getPosition() + Vector2f(0, 1));
+	auto checkGrassReverse = ls::getTileAt(_parent->GetCompatibleComponent<SpriteComponent>()[0]->getSprite().getPosition() + Vector2f(0, -1));
+	auto tileSize = ls::getTileSize();
+	auto s1 = ls::getTilePosition(ls::findTiles(ls::WAYPOINT)[0]);
 	switch (checkpointCounter) {
+	case 0:
+
+		cout << "Parent pos: " << _parent->getPosition() << endl;
+		cout << "s1: " << s1 << endl;
+
+		if (checkGrass == 'g') {
+			dampen({ 0.5f, 0.5f });
+			impulse({ -worldVector.x , -worldVector.y });
+			
+		}
+		else {
+			//impulse({ -worldVector.x, -worldVector.y });
+			
+
+			if (_parent->getPosition().y > s1.y - 150 && _parent->getPosition().x < s1.x + 100) {
+				dampen({ 0.05f, 0.05f });
+				turnRight();
+
+
+			}
+		}
+		break;
 	case 1:
 		break;
 	case 2:
@@ -74,9 +99,7 @@ void AIPhysicsComponent::update(double dt) {
 		//Handle keyboard input from user
 		if (Keyboard::isKeyPressed(Keyboard::Numpad8) || Keyboard::isKeyPressed(Keyboard::Numpad2)) {
 
-			auto checkGrass = ls::getTileAt(_parent->GetCompatibleComponent<SpriteComponent>()[0]->getSprite().getPosition() + Vector2f(0, 1));
-			auto checkGrassReverse = ls::getTileAt(_parent->GetCompatibleComponent<SpriteComponent>()[0]->getSprite().getPosition() + Vector2f(0, -1));
-
+		
 
 			if (Keyboard::isKeyPressed(Keyboard::W)) {
 				/*if (getVelocity().x < _maxVelocity.x) {*/
